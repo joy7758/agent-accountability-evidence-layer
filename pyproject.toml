@@ -23,6 +23,8 @@ dev = [
 
 [project.scripts]
 asiep-validator = "asiep_validator.__main__:main"
+asiep-repairer = "asiep_repairer.__main__:main"
+asiep-resolver = "asiep_resolver.__main__:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

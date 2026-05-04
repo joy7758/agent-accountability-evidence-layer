@@ -1,0 +1,5 @@
+{
+  "decision": "promote",
+  "gatekeeper": "agent:gatekeeper",
+  "basis": ["score", "diagnosis", "candidate_diff"]
+}

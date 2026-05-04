@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_bundle_resolution.schema.json",
+  "title": "ASIEP Bundle Resolution Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "profile_version",
+    "bundle_id",
+    "valid",
+    "bundle_root",
+    "resolved_refs",
+    "unresolved_refs",
+    "digest_checks",
+    "errors",
+    "warnings"
+  ],
+  "properties": {
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "bundle_id": { "type": "string" },
+    "valid": { "type": "boolean" },
+    "bundle_root": { "type": "string", "minLength": 1 },
+    "resolved_refs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/resolved_ref" }
+    },
+    "unresolved_refs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unresolved_ref" }
+    },
+    "digest_checks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/digest_check" }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/error" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/warning" }
+    }
+  },
+  "$defs": {
+    "repairability": {
+      "type": "string",
+      "enum": [
+        "auto_fixable",
+        "agent_fixable",
+        "external_evidence_required",
+        "human_required",
+        "not_fixable"
+      ]
+    },
+    "resolved_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "path",
+        "role",
+        "media_type",
+        "digest_expected",
+        "digest_actual",
+        "digest_match"
+      ],
+      "properties": {
+        "uri": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "media_type": { "type": "string", "minLength": 1 },
+        "digest_expected": { "type": "string", "minLength": 1 },
+        "digest_actual": { "type": "string", "minLength": 1 },
+        "digest_match": { "type": "boolean" }
+      }
+    },
+    "unresolved_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "json_path", "json_pointer", "reason"],
+      "properties": {
+        "uri": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "json_pointer": { "type": "string" },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "digest_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "path", "digest_expected", "digest_actual", "digest_match"],
+      "properties": {
+        "uri": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "digest_expected": { "type": "string", "minLength": 1 },
+        "digest_actual": { "type": "string", "minLength": 1 },
+        "digest_match": { "type": "boolean" }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "json_path",
+        "json_pointer",
+        "remediation_hint",
+        "repairability"
+      ],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "message": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "json_pointer": { "type": "string" },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": { "$ref": "#/$defs/repairability" }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "severity", "message", "json_path", "json_pointer", "remediation_hint", "repairability"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["warning", "info"] },
+        "message": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "json_pointer": { "type": "string" },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": { "$ref": "#/$defs/repairability" }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "turns": [
+    {"user": "I need help", "agent": "I can route this."},
+    {"user": "Still unresolved", "agent": "I will escalate with context."}
+  ]
+}

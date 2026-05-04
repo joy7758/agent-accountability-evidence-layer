@@ -1,0 +1,80 @@
+{
+  "bundle_id": "bundle:valid_chatbot_bundle",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "bundle_version": "0.1.0",
+  "created_at": "2026-05-05T01:30:00Z",
+  "evidence_record_path": "evidence.json",
+  "bundle_root": ".",
+  "artifacts": [
+    {
+      "artifact_id": "artifact:trace-json",
+      "uri": "bundle://valid_chatbot_bundle/artifacts/trace.json",
+      "path": "artifacts/trace.json",
+      "media_type": "application/json",
+      "digest": "sha256:478bd98a174394be68d5dea7040ceddecef9225020ba42db550970f9af226f66",
+      "role": "trace",
+      "required": true
+    },
+    {
+      "artifact_id": "artifact:feedback-json",
+      "uri": "bundle://valid_chatbot_bundle/artifacts/feedback.json",
+      "path": "artifacts/feedback.json",
+      "media_type": "application/json",
+      "digest": "sha256:64a0fc6d682f64af65a7033d7fea73185a4f2baf22bfbd343e4c64ec593dad25",
+      "role": "feedback",
+      "required": true
+    },
+    {
+      "artifact_id": "artifact:score-json",
+      "uri": "bundle://valid_chatbot_bundle/artifacts/score.json",
+      "path": "artifacts/score.json",
+      "media_type": "application/json",
+      "digest": "sha256:03596ae6cb2c590e3c70baec0dab2c1376a5de0f9e34713a51716eae6ea0b210",
+      "role": "score",
+      "required": true
+    },
+    {
+      "artifact_id": "artifact:diagnosis-md",
+      "uri": "bundle://valid_chatbot_bundle/artifacts/diagnosis.md",
+      "path": "artifacts/diagnosis.md",
+      "media_type": "text/markdown",
+      "digest": "sha256:5377841c50589cf7f0f24ea01c006f3eaf3885786ab0be778046e100ea328e3b",
+      "role": "diagnosis",
+      "required": true
+    },
+    {
+      "artifact_id": "artifact:candidate-diff",
+      "uri": "bundle://valid_chatbot_bundle/artifacts/candidate.diff",
+      "path": "artifacts/candidate.diff",
+      "media_type": "text/x-diff",
+      "digest": "sha256:14022557bf6c2e60b8d0e3c9971603bc7b0bddaee358f26d14ceb8cd1c039223",
+      "role": "candidate_diff",
+      "required": true
+    },
+    {
+      "artifact_id": "artifact:gate_report-json",
+      "uri": "bundle://valid_chatbot_bundle/artifacts/gate_report.json",
+      "path": "artifacts/gate_report.json",
+      "media_type": "application/json",
+      "digest": "sha256:c5f20e63736fe7267e815046290dc3e4ffd368894183fd7970a7a47512dbca7f",
+      "role": "gate_report",
+      "required": true
+    }
+  ],
+  "access_policy": {
+    "classification": "local-fixture",
+    "allowed_resolvers": [
+      "asiep_resolver"
+    ],
+    "network_access": false
+  },
+  "redaction_policy": {
+    "contains_redactions": false,
+    "redaction_summary": "No redactions in local fixture."
+  },
+  "integrity": {
+    "bundle_manifest_hash": "sha256:768f55ebce73d8a5aa4c0348d3a4c04363aca5d5559c0c7fe0febc9039911620",
+    "hash_algorithm": "sha256"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "annotator": "agent:evaluator",
+  "escalation_clarity": "improved",
+  "unsafe_response_delta": 0
+}

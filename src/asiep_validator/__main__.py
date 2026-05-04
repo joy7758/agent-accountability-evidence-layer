@@ -17,9 +17,14 @@ def main(argv: list[str] | None = None) -> int:
         default="text",
         help="Output format. Defaults to text for backward compatibility.",
     )
+    parser.add_argument(
+        "--bundle-root",
+        type=Path,
+        help="Optional local evidence bundle root. When set, bundle refs and artifact digests are verified.",
+    )
     args = parser.parse_args(argv)
 
-    report = validate_file(args.profile)
+    report = validate_file(args.profile, bundle_root=args.bundle_root)
     if args.format == "json":
         print(json.dumps(report.to_agent_dict(), indent=2, sort_keys=True))
         return 0 if report.valid else 1

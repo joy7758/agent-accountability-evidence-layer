@@ -1,0 +1,169 @@
+{
+  "@context": "https://w3id.org/asiep/v0.1/context.jsonld",
+  "profile_version": "ASIEP-0.1",
+  "profile_id": "asiep:invalid_digest_mismatch_bundle",
+  "subject_agent": {
+    "id": "agent:customer-chatbot",
+    "name": "Customer Chatbot",
+    "version": "1.2.1",
+    "implementation": "bundle-local-fixture"
+  },
+  "improvement": {
+    "id": "improvement:invalid_digest_mismatch_bundle",
+    "summary": "Improve escalation wording with locally bundled evidence.",
+    "hypothesis": "Bundled score, diagnosis, and gate evidence support promotion without safety regression."
+  },
+  "lifecycle": [
+    {
+      "event_id": "event:001-draft",
+      "state": "DRAFT",
+      "at": "2026-05-05T01:00:00Z",
+      "actor": "agent:evidence-author",
+      "evidence_refs": [
+        "ev:candidate-diff"
+      ]
+    },
+    {
+      "event_id": "event:002-candidate",
+      "state": "CANDIDATE",
+      "at": "2026-05-05T01:05:00Z",
+      "actor": "agent:evidence-author",
+      "evidence_refs": [
+        "ev:trace",
+        "ev:feedback"
+      ]
+    },
+    {
+      "event_id": "event:003-evaluated",
+      "state": "EVALUATED",
+      "at": "2026-05-05T01:10:00Z",
+      "actor": "agent:evaluator",
+      "evidence_refs": [
+        "ev:score",
+        "ev:diagnosis"
+      ]
+    },
+    {
+      "event_id": "event:004-gated",
+      "state": "GATED",
+      "at": "2026-05-05T01:15:00Z",
+      "actor": "agent:gatekeeper",
+      "evidence_refs": [
+        "ev:gate-report"
+      ]
+    },
+    {
+      "event_id": "event:005-promoted",
+      "state": "PROMOTED",
+      "at": "2026-05-05T01:20:00Z",
+      "actor": "agent:gatekeeper",
+      "evidence_refs": [
+        "ev:gate-report"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev:candidate-diff",
+      "type": "proposal",
+      "uri": "bundle://invalid_digest_mismatch_bundle/artifacts/candidate.diff",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "14022557bf6c2e60b8d0e3c9971603bc7b0bddaee358f26d14ceb8cd1c039223"
+      },
+      "produced_by": "agent:evaluator"
+    },
+    {
+      "id": "ev:trace",
+      "type": "dataset",
+      "uri": "bundle://invalid_digest_mismatch_bundle/artifacts/trace.json",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "478bd98a174394be68d5dea7040ceddecef9225020ba42db550970f9af226f66"
+      },
+      "produced_by": "agent:evaluator"
+    },
+    {
+      "id": "ev:feedback",
+      "type": "dataset",
+      "uri": "bundle://invalid_digest_mismatch_bundle/artifacts/feedback.json",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "64a0fc6d682f64af65a7033d7fea73185a4f2baf22bfbd343e4c64ec593dad25"
+      },
+      "produced_by": "agent:evaluator"
+    },
+    {
+      "id": "ev:score",
+      "type": "evaluation_report",
+      "uri": "bundle://invalid_digest_mismatch_bundle/artifacts/score.json",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "produced_by": "agent:evaluator",
+      "refs": [
+        "ev:trace",
+        "ev:feedback"
+      ]
+    },
+    {
+      "id": "ev:diagnosis",
+      "type": "safety_check",
+      "uri": "bundle://invalid_digest_mismatch_bundle/artifacts/diagnosis.md",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "5377841c50589cf7f0f24ea01c006f3eaf3885786ab0be778046e100ea328e3b"
+      },
+      "produced_by": "agent:evaluator",
+      "refs": [
+        "ev:score"
+      ]
+    },
+    {
+      "id": "ev:gate-report",
+      "type": "gate_report",
+      "uri": "bundle://invalid_digest_mismatch_bundle/artifacts/gate_report.json",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "c5f20e63736fe7267e815046290dc3e4ffd368894183fd7970a7a47512dbca7f"
+      },
+      "produced_by": "agent:evaluator",
+      "refs": [
+        "ev:score",
+        "ev:diagnosis",
+        "ev:candidate-diff"
+      ]
+    }
+  ],
+  "safety_checks": [
+    {
+      "id": "safety:bundle-regression-check",
+      "evidence_ref": "ev:diagnosis",
+      "check": "No bundled evidence indicates a safety regression.",
+      "passed": true,
+      "severity": "none",
+      "regression": false
+    }
+  ],
+  "flip_counts": {
+    "prompt_to_fail": {
+      "count": 1,
+      "threshold": 2,
+      "evidence_ref": "ev:score"
+    }
+  },
+  "gates": [
+    {
+      "id": "gate:bundle-promotion",
+      "decision": "promote",
+      "gate_report_ref": "ev:gate-report",
+      "evidence_refs": [
+        "ev:score",
+        "ev:diagnosis",
+        "ev:candidate-diff"
+      ]
+    }
+  ],
+  "references": []
+}

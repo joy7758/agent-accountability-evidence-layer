@@ -16,6 +16,8 @@ agent that needs to validate, repair, review, or package an evidence object.
 - `conformance/asiep_v0.1_matrix.yaml` is the rule index that maps invariants to
   schema fields, validator rules, examples, and cross-standard mappings.
 - `src/asiep_validator/validator.py` is the machine referee for the profile.
+- `src/asiep_resolver/resolver.py` is the local evidence binding layer. It
+  resolves bundle artifacts and recomputes digests without network access.
 - `src/asiep_validator/error_codes.py` is the agent repair interface. Stable
   codes and remediation hints let another agent patch an evidence object.
 - `examples/` is the conformance corpus for positive and adversarial evidence.

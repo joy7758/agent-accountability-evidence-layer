@@ -8,7 +8,9 @@
     "entrypoint_role": "repair_policy",
     "related_interfaces": [
       "interfaces/asiep_validator_output.schema.json",
-      "interfaces/asiep_repair_plan.schema.json"
+      "interfaces/asiep_repair_plan.schema.json",
+      "interfaces/asiep_evidence_bundle.schema.json",
+      "interfaces/asiep_bundle_resolution.schema.json"
     ],
     "related_cli": "PYTHONPATH=src python -m asiep_repairer {evidence_path} --format json"
   },
@@ -115,6 +117,87 @@
       "default_strategy": "Ask the evidence-producing agent to restore or correct the evidence chain.",
       "remediation_hint": "Restore the referenced evidence object or update the evidence refs to close the chain.",
       "requires_external_evidence": true
+    },
+    {
+      "code": "BUNDLE_ARTIFACT_MISSING",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["provide the real artifact file at the declared bundle-relative path", "correct the artifact path to a real in-bundle file"],
+      "forbidden_actions": ["forge an artifact", "write placeholder content as if it were evidence", "point outside bundle_root"],
+      "default_strategy": "Require the evidence-producing agent to supply the real missing artifact or correct the reference.",
+      "remediation_hint": "Provide the real artifact file at the declared bundle-relative path or correct the artifact declaration.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "BUNDLE_DIGEST_MISMATCH",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["verify artifact version with the evidence producer", "replace artifact with the expected version", "update expected digest only after external confirmation"],
+      "forbidden_actions": ["blindly replace expected digest with actual digest", "randomly generate a digest", "treat mismatched artifact as valid evidence without review"],
+      "default_strategy": "Block promotion until an agent or human confirms whether the artifact or expected digest is authoritative.",
+      "remediation_hint": "Verify the evidence version; do not replace expected digest with actual digest unless an external review confirms the artifact is correct.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "BUNDLE_PATH_ESCAPE",
+      "repairability": "human_required",
+      "allowed_actions": ["reject the unsafe bundle path", "move the real artifact inside bundle_root and declare a safe relative path"],
+      "forbidden_actions": ["read bundle_root external files", "follow ../ paths", "turn path escape into a valid reference automatically"],
+      "default_strategy": "Stop resolution and require a safe in-bundle path.",
+      "remediation_hint": "Reject this bundle path and require a safe path inside bundle_root.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "BUNDLE_REF_UNDECLARED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["declare an existing real artifact in bundle artifacts", "correct the evidence URI to an already declared real artifact"],
+      "forbidden_actions": ["invent an artifact file", "invent a digest", "declare a URI that has no real local file"],
+      "default_strategy": "Add a bundle artifact declaration only when a real local artifact and digest are available.",
+      "remediation_hint": "Declare the real artifact in bundle artifacts or correct the evidence URI.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "BUNDLE_REF_UNUSED",
+      "repairability": "auto_fixable",
+      "allowed_actions": ["remove the unused artifact declaration if it is not needed by the evidence record"],
+      "forbidden_actions": ["delete artifact files that may be used by another bundle", "edit the evidence record only to consume unused artifacts"],
+      "default_strategy": "Remove unused artifact declarations from bundle.json after confirming they are not intended evidence.",
+      "remediation_hint": "Remove the unused artifact declaration if it is not needed by the evidence record.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "BUNDLE_SCHEMA",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair bundle.json to match interfaces/asiep_evidence_bundle.schema.json"],
+      "forbidden_actions": ["drop required integrity or access fields to hide a bundle issue"],
+      "default_strategy": "Make the bundle manifest schema-valid before digest resolution.",
+      "remediation_hint": "Repair bundle.json so it conforms to interfaces/asiep_evidence_bundle.schema.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "BUNDLE_MEDIA_TYPE_MISMATCH",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["correct media_type declaration", "provide artifact in the declared media type"],
+      "forbidden_actions": ["ignore media type mismatch when downstream agents depend on it"],
+      "default_strategy": "Align media_type with the real artifact content.",
+      "remediation_hint": "Correct the media_type declaration or provide the artifact in the declared media type.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "BUNDLE_RECORD_MISSING",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["provide the real ASIEP evidence record", "correct evidence_record_path to an in-bundle record"],
+      "forbidden_actions": ["generate a fake evidence record", "point outside bundle_root"],
+      "default_strategy": "Require the actual ASIEP evidence record before resolving artifacts.",
+      "remediation_hint": "Provide the real ASIEP evidence record at evidence_record_path or correct the bundle manifest.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "BUNDLE_MANIFEST_HASH_MISMATCH",
+      "repairability": "human_required",
+      "allowed_actions": ["review bundle manifest changes", "update manifest hash only after confirming manifest contents are correct"],
+      "forbidden_actions": ["blindly update bundle_manifest_hash to silence the resolver"],
+      "default_strategy": "Require review of bundle.json before accepting a new manifest hash.",
+      "remediation_hint": "Review bundle.json changes and update the manifest hash only after confirming the manifest is correct.",
+      "requires_external_evidence": false
     }
   ]
 }
