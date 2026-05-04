@@ -1,0 +1,245 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/asiep.schema.json",
+  "title": "ASIEP v0.1",
+  "description": "Agent Self-Improvement Evidence Profile v0.1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "@context",
+    "profile_version",
+    "profile_id",
+    "subject_agent",
+    "improvement",
+    "lifecycle",
+    "evidence",
+    "safety_checks",
+    "flip_counts",
+    "gates",
+    "references"
+  ],
+  "properties": {
+    "@context": {
+      "description": "JSON-LD context URI or embedded context.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "array" }
+      ]
+    },
+    "profile_version": {
+      "const": "ASIEP-0.1"
+    },
+    "profile_id": {
+      "type": "string",
+      "pattern": "^asiep:[A-Za-z0-9._:-]+$"
+    },
+    "subject_agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "version": { "type": "string", "minLength": 1 },
+        "implementation": { "type": "string" }
+      }
+    },
+    "improvement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "summary", "hypothesis"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^improvement:[A-Za-z0-9._:-]+$"
+        },
+        "summary": { "type": "string", "minLength": 1 },
+        "hypothesis": { "type": "string", "minLength": 1 },
+        "parent_profile_id": { "type": "string" }
+      }
+    },
+    "lifecycle": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/lifecycle_event" }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/evidence_item" }
+    },
+    "safety_checks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/safety_check" }
+    },
+    "flip_counts": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/flip_count" },
+      "minProperties": 1
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/gate" }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reason", "evidence_ref"],
+      "properties": {
+        "reason": { "type": "string", "minLength": 1 },
+        "evidence_ref": { "$ref": "#/$defs/evidence_ref" },
+        "target_profile_id": { "type": "string" }
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reference_item" }
+    }
+  },
+  "$defs": {
+    "evidence_ref": {
+      "type": "string",
+      "pattern": "^ev:[A-Za-z0-9._:-]+$"
+    },
+    "digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": { "type": "string", "minLength": 1 },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "lifecycle_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "state", "at", "actor", "evidence_refs"],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "pattern": "^event:[A-Za-z0-9._:-]+$"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "CANDIDATE",
+            "EVALUATED",
+            "GATED",
+            "PROMOTED",
+            "REJECTED",
+            "ROLLED_BACK"
+          ]
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actor": { "type": "string", "minLength": 1 },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence_ref" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "digest"],
+      "properties": {
+        "id": { "$ref": "#/$defs/evidence_ref" },
+        "type": {
+          "type": "string",
+          "enum": [
+            "proposal",
+            "dataset",
+            "evaluation_report",
+            "safety_check",
+            "threshold_policy",
+            "flip_count_report",
+            "gate_report",
+            "rollback_report",
+            "reference_digest"
+          ]
+        },
+        "uri": { "type": "string" },
+        "digest": { "$ref": "#/$defs/digest" },
+        "produced_by": { "type": "string" },
+        "refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence_ref" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "safety_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "evidence_ref", "check", "passed", "severity", "regression"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^safety:[A-Za-z0-9._:-]+$"
+        },
+        "evidence_ref": { "$ref": "#/$defs/evidence_ref" },
+        "check": { "type": "string", "minLength": 1 },
+        "passed": { "type": "boolean" },
+        "severity": {
+          "type": "string",
+          "enum": ["none", "p3", "p2", "p1", "p0"]
+        },
+        "regression": { "type": "boolean" }
+      }
+    },
+    "flip_count": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "threshold", "evidence_ref"],
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "threshold": { "type": "integer", "minimum": 0 },
+        "evidence_ref": { "$ref": "#/$defs/evidence_ref" }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "decision", "gate_report_ref", "evidence_refs"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^gate:[A-Za-z0-9._:-]+$"
+        },
+        "decision": {
+          "type": "string",
+          "enum": ["promote", "reject", "rollback"]
+        },
+        "gate_report_ref": { "$ref": "#/$defs/evidence_ref" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence_ref" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "reference_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "uri", "digest"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ref:[A-Za-z0-9._:-]+$"
+        },
+        "uri": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" }
+      }
+    }
+  }
+}

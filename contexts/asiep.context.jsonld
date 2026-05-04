@@ -1,0 +1,24 @@
+{
+  "@context": {
+    "asiep": "https://w3id.org/asiep/v0.1#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/",
+    "profile_id": "@id",
+    "profile_version": "asiep:profileVersion",
+    "subject_agent": "asiep:subjectAgent",
+    "improvement": "asiep:improvement",
+    "lifecycle": "asiep:lifecycle",
+    "evidence": "asiep:evidence",
+    "safety_checks": "asiep:safetyChecks",
+    "flip_counts": "asiep:flipCounts",
+    "gates": "asiep:gates",
+    "references": "asiep:references",
+    "digest": "asiep:digest",
+    "state": "asiep:state",
+    "actor": "prov:wasAssociatedWith",
+    "at": "prov:generatedAtTime",
+    "uri": "@id",
+    "summary": "schema:description",
+    "hypothesis": "asiep:hypothesis"
+  }
+}

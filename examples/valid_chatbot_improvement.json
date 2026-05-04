@@ -1,0 +1,184 @@
+{
+  "@context": "https://w3id.org/asiep/v0.1/context.jsonld",
+  "profile_version": "ASIEP-0.1",
+  "profile_id": "asiep:chatbot-improvement-001",
+  "subject_agent": {
+    "id": "agent:customer-chatbot",
+    "name": "Customer Chatbot",
+    "version": "1.2.0",
+    "implementation": "implementation-neutral"
+  },
+  "improvement": {
+    "id": "improvement:handoff-clarity-001",
+    "summary": "Improve escalation wording for unresolved customer intents.",
+    "hypothesis": "Clearer escalation wording reduces repeated failed turns without increasing unsafe responses."
+  },
+  "lifecycle": [
+    {
+      "event_id": "event:001-draft",
+      "state": "DRAFT",
+      "at": "2026-05-05T00:00:00Z",
+      "actor": "agent:evidence-author",
+      "evidence_refs": ["ev:proposal"]
+    },
+    {
+      "event_id": "event:002-candidate",
+      "state": "CANDIDATE",
+      "at": "2026-05-05T00:05:00Z",
+      "actor": "agent:evidence-author",
+      "evidence_refs": ["ev:dataset-baseline"]
+    },
+    {
+      "event_id": "event:003-evaluated",
+      "state": "EVALUATED",
+      "at": "2026-05-05T00:10:00Z",
+      "actor": "agent:evaluator",
+      "evidence_refs": ["ev:evaluation-report", "ev:safety-checks", "ev:flip-count-report"]
+    },
+    {
+      "event_id": "event:004-gated",
+      "state": "GATED",
+      "at": "2026-05-05T00:15:00Z",
+      "actor": "agent:gatekeeper",
+      "evidence_refs": ["ev:gate-report"]
+    },
+    {
+      "event_id": "event:005-promoted",
+      "state": "PROMOTED",
+      "at": "2026-05-05T00:20:00Z",
+      "actor": "agent:gatekeeper",
+      "evidence_refs": ["ev:gate-report"]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev:proposal",
+      "type": "proposal",
+      "uri": "memory://proposal/handoff-clarity-001",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "produced_by": "agent:evidence-author"
+    },
+    {
+      "id": "ev:dataset-baseline",
+      "type": "dataset",
+      "uri": "memory://dataset/chatbot-baseline-v1",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "produced_by": "agent:evaluator"
+    },
+    {
+      "id": "ev:evaluation-report",
+      "type": "evaluation_report",
+      "uri": "memory://reports/evaluation-001",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "produced_by": "agent:evaluator",
+      "refs": ["ev:dataset-baseline"]
+    },
+    {
+      "id": "ev:safety-checks",
+      "type": "safety_check",
+      "uri": "memory://reports/safety-001",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      },
+      "produced_by": "agent:evaluator",
+      "refs": ["ev:evaluation-report"]
+    },
+    {
+      "id": "ev:threshold-policy",
+      "type": "threshold_policy",
+      "uri": "memory://policies/asiep-v0.1-gate",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      },
+      "produced_by": "agent:gatekeeper"
+    },
+    {
+      "id": "ev:flip-count-report",
+      "type": "flip_count_report",
+      "uri": "memory://reports/flip-count-001",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "produced_by": "agent:evaluator",
+      "refs": ["ev:evaluation-report"]
+    },
+    {
+      "id": "ev:gate-report",
+      "type": "gate_report",
+      "uri": "memory://reports/gate-001",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "produced_by": "agent:gatekeeper",
+      "refs": [
+        "ev:evaluation-report",
+        "ev:safety-checks",
+        "ev:flip-count-report",
+        "ev:threshold-policy"
+      ]
+    },
+    {
+      "id": "ev:reference-digest",
+      "type": "reference_digest",
+      "uri": "memory://references/chatbot-benchmark",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "produced_by": "agent:evidence-author"
+    }
+  ],
+  "safety_checks": [
+    {
+      "id": "safety:unsafe-response-regression",
+      "evidence_ref": "ev:safety-checks",
+      "check": "No increase in unsafe responses on regression suite.",
+      "passed": true,
+      "severity": "none",
+      "regression": false
+    }
+  ],
+  "flip_counts": {
+    "prompt_to_fail": {
+      "count": 1,
+      "threshold": 2,
+      "evidence_ref": "ev:flip-count-report"
+    }
+  },
+  "gates": [
+    {
+      "id": "gate:promotion-001",
+      "decision": "promote",
+      "gate_report_ref": "ev:gate-report",
+      "evidence_refs": [
+        "ev:evaluation-report",
+        "ev:safety-checks",
+        "ev:flip-count-report",
+        "ev:threshold-policy"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "ref:chatbot-benchmark-v1",
+      "uri": "https://example.org/benchmarks/chatbot-v1",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "3333333333333333333333333333333333333333333333333333333333333333"
+      }
+    }
+  ]
+}
