@@ -14,7 +14,10 @@
         "validator_json_output",
         "repair_policy",
         "repair_plan",
-        "repair_loop"
+        "repair_loop",
+        "evidence_bundle",
+        "bundle_resolver",
+        "digest_verification"
       ],
       "keywords": [
         "ASIEP",

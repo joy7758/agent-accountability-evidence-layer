@@ -37,6 +37,9 @@ PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json
 PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json --format json
 PYTHONPATH=src python -m asiep_repairer examples/invalid_promote_with_regression.json --format json
 PYTHONPATH=src python scripts/repair_loop_demo.py
+PYTHONPATH=src python -m asiep_resolver examples/bundles/valid_chatbot_bundle/bundle.json --format json
+PYTHONPATH=src python -m asiep_validator examples/bundles/valid_chatbot_bundle/evidence.json --bundle-root examples/bundles/valid_chatbot_bundle --format json
+PYTHONPATH=src python scripts/resolve_bundle_demo.py
 ```
 
 Expected CLI result for the valid example:
@@ -83,6 +86,39 @@ Current limits:
 - no remote fetching or importer/exporter work
 - unsafe `promote` decisions are planned toward `reject` or real reevaluation,
   not toward falsifying safety evidence
+
+## M3 Evidence Bundles
+
+M3 adds a local evidence bundle resolver. Bundles are described by
+`interfaces/asiep_evidence_bundle.schema.json`; resolver output is constrained
+by `interfaces/asiep_bundle_resolution.schema.json`; and the ASIEP manifest
+links the resolver entrypoint.
+
+Run the local resolver:
+
+```bash
+PYTHONPATH=src python -m asiep_resolver examples/bundles/valid_chatbot_bundle/bundle.json --format json
+```
+
+Run validator with local digest verification:
+
+```bash
+PYTHONPATH=src python -m asiep_validator examples/bundles/valid_chatbot_bundle/evidence.json --bundle-root examples/bundles/valid_chatbot_bundle --format json
+```
+
+Run all bundle fixtures:
+
+```bash
+PYTHONPATH=src python scripts/resolve_bundle_demo.py
+```
+
+Current M3 limits:
+
+- local bundle resolution only
+- no remote URI fetching
+- no importer/exporter work
+- no automatic digest repair
+- no reading paths outside `bundle_root`
 
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.

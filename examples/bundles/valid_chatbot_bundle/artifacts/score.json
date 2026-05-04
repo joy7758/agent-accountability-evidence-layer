@@ -1,0 +1,4 @@
+{
+  "prompt_to_fail": {"count": 1, "threshold": 2},
+  "task_success_delta": 0.07
+}

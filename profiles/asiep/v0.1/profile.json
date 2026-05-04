@@ -10,6 +10,8 @@
       "validate evidence object",
       "interpret validation errors",
       "generate evidence-preserving repair plan",
+      "resolve local evidence bundle",
+      "verify local artifact digests",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -29,8 +31,16 @@
   "invariants_doc": "docs/invariants.md",
   "validator_output_schema_path": "interfaces/asiep_validator_output.schema.json",
   "repair_plan_schema_path": "interfaces/asiep_repair_plan.schema.json",
+  "evidence_bundle_schema_path": "interfaces/asiep_evidence_bundle.schema.json",
+  "bundle_resolution_schema_path": "interfaces/asiep_bundle_resolution.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "repair_loop_supported": true,
+  "bundle_resolver_supported": true,
+  "supported_reference_schemes": [
+    "bundle://",
+    "file-relative",
+    "repo-relative"
+  ],
   "validator_entrypoint": {
     "module": "asiep_validator",
     "cli": "python -m asiep_validator",
@@ -44,6 +54,13 @@
     "default_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_repairer {evidence_path} --format json",
     "output_command_template": "PYTHONPATH=src python -m asiep_repairer {evidence_path} --format json --output {repair_plan_path}"
+  },
+  "resolver_entrypoint": {
+    "module": "asiep_resolver",
+    "cli": "python -m asiep_resolver",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_resolver {bundle_path} --format json"
   },
   "examples": {
     "valid_examples": [
@@ -101,6 +118,16 @@
     "INV_ROLLBACK_EVIDENCE",
     "ROLLBACK_EVIDENCE",
     "HASH_CHAIN_BROKEN"
+    ,
+    "BUNDLE_SCHEMA",
+    "BUNDLE_ARTIFACT_MISSING",
+    "BUNDLE_DIGEST_MISMATCH",
+    "BUNDLE_MEDIA_TYPE_MISMATCH",
+    "BUNDLE_PATH_ESCAPE",
+    "BUNDLE_RECORD_MISSING",
+    "BUNDLE_REF_UNDECLARED",
+    "BUNDLE_REF_UNUSED",
+    "BUNDLE_MANIFEST_HASH_MISMATCH"
   ],
   "supported_output_formats": [
     {
@@ -114,6 +141,10 @@
     {
       "format": "repair-plan-json",
       "consumer": "agent diagnosis, repair planning, and revalidation loops"
+    },
+    {
+      "format": "bundle-resolution-json",
+      "consumer": "agent local evidence binding and digest verification loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"

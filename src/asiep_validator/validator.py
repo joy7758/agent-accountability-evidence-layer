@@ -90,11 +90,18 @@ class ValidationReport:
         }
 
 
-def validate_file(profile_path: str | Path) -> ValidationReport:
+def validate_file(profile_path: str | Path, bundle_root: str | Path | None = None) -> ValidationReport:
     path = Path(profile_path)
     with path.open("r", encoding="utf-8") as handle:
         profile = json.load(handle)
-    return validate_profile(profile)
+    report = validate_profile(profile)
+    if not bundle_root:
+        return report
+
+    bundle_issues = _validate_bundle(path, Path(bundle_root))
+    if not bundle_issues:
+        return report
+    return ValidationReport(False, tuple((*report.issues, *bundle_issues)), record_id=report.record_id)
 
 
 def validate_profile(profile: Mapping[str, Any]) -> ValidationReport:
@@ -372,6 +379,24 @@ def _missing_required_field(message: str) -> str | None:
     if not match:
         return None
     return match.group(1)
+
+
+def _validate_bundle(profile_path: Path, bundle_root: Path) -> list[ValidationIssue]:
+    from asiep_resolver import resolve_bundle
+
+    resolution = resolve_bundle(bundle_root / "bundle.json", expected_record_path=profile_path)
+    issues: list[ValidationIssue] = []
+    for error in resolution["errors"]:
+        issues.append(
+            ValidationIssue(
+                error["code"],
+                error["message"],
+                error["json_path"],
+                agent_code=error["code"],
+                remediation_hint=error["remediation_hint"],
+            )
+        )
+    return issues
 
 
 def _json_path_to_pointer(path: str) -> str:

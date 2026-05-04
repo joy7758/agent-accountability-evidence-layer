@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from asiep_resolver import resolve_bundle
 from asiep_validator import validate_file
 
 
@@ -16,6 +17,13 @@ CASES = [
     ("invalid_transition_order.json", ["STATE_TRANSITION"]),
 ]
 
+BUNDLE_CASES = [
+    ("valid_chatbot_bundle", True, []),
+    ("invalid_missing_artifact_bundle", False, ["BUNDLE_ARTIFACT_MISSING"]),
+    ("invalid_digest_mismatch_bundle", False, ["BUNDLE_DIGEST_MISMATCH"]),
+    ("invalid_path_escape_bundle", False, ["BUNDLE_PATH_ESCAPE"]),
+]
+
 
 def main() -> int:
     for filename, expected in CASES:
@@ -24,6 +32,15 @@ def main() -> int:
         status = "PASS" if codes == expected else "FAIL"
         print(f"{status} {filename}: {codes}")
         if codes != expected:
+            return 1
+    for dirname, expected_valid, expected_codes in BUNDLE_CASES:
+        result = resolve_bundle(ROOT / "examples" / "bundles" / dirname / "bundle.json")
+        codes = [error["code"] for error in result["errors"]]
+        valid_matches = result["valid"] is expected_valid
+        codes_match = codes == expected_codes
+        status = "PASS" if valid_matches and codes_match else "FAIL"
+        print(f"{status} {dirname}/bundle.json: {codes if codes else ['VALID']}")
+        if not valid_matches or not codes_match:
             return 1
     return 0
 
