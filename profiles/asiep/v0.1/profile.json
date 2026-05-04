@@ -2,16 +2,48 @@
   "profile_name": "ASIEP",
   "profile_version": "0.1.0",
   "profile_uri": "https://w3id.org/asiep/v0.1",
+  "discovery": {
+    "package_role": "agent-readable profile conformance and repair package",
+    "registry_path": "profiles/index.json",
+    "primary_entrypoint": "profiles/asiep/v0.1/profile.json",
+    "agent_tasks": [
+      "validate evidence object",
+      "interpret validation errors",
+      "generate evidence-preserving repair plan",
+      "revalidate after repair",
+      "route cross-standard mapping"
+    ],
+    "keywords": [
+      "AAEL",
+      "ASIEP",
+      "agent accountability",
+      "evidence profile",
+      "validator",
+      "repair plan",
+      "conformance"
+    ]
+  },
   "schema_path": "schemas/asiep.schema.json",
   "jsonld_context_path": "contexts/asiep.context.jsonld",
   "state_machine_doc": "docs/state_machine.md",
   "invariants_doc": "docs/invariants.md",
+  "validator_output_schema_path": "interfaces/asiep_validator_output.schema.json",
+  "repair_plan_schema_path": "interfaces/asiep_repair_plan.schema.json",
+  "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
+  "repair_loop_supported": true,
   "validator_entrypoint": {
     "module": "asiep_validator",
     "cli": "python -m asiep_validator",
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_validator {evidence_path} --format json"
+  },
+  "repairer_entrypoint": {
+    "module": "asiep_repairer",
+    "cli": "python -m asiep_repairer",
+    "default_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_repairer {evidence_path} --format json",
+    "output_command_template": "PYTHONPATH=src python -m asiep_repairer {evidence_path} --format json --output {repair_plan_path}"
   },
   "examples": {
     "valid_examples": [
@@ -78,6 +110,10 @@
     {
       "format": "json",
       "consumer": "agent repair and review loops"
+    },
+    {
+      "format": "repair-plan-json",
+      "consumer": "agent diagnosis, repair planning, and revalidation loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"

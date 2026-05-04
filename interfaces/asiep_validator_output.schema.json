@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_validator_output.schema.json",
+  "title": "ASIEP Validator JSON Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "profile_version",
+    "valid",
+    "record_id",
+    "errors",
+    "warnings"
+  ],
+  "properties": {
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "valid": { "type": "boolean" },
+    "record_id": { "type": "string" },
+    "errors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/error" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/warning" }
+    }
+  },
+  "$defs": {
+    "repairability": {
+      "type": "string",
+      "enum": [
+        "auto_fixable",
+        "agent_fixable",
+        "external_evidence_required",
+        "human_required",
+        "not_fixable"
+      ]
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "json_path",
+        "json_pointer",
+        "invariant_id",
+        "remediation_hint",
+        "repairability"
+      ],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "message": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "json_pointer": { "type": "string" },
+        "invariant_id": { "type": "string", "pattern": "^I[0-9]+$" },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": { "$ref": "#/$defs/repairability" }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

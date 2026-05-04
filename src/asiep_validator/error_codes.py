@@ -10,6 +10,7 @@ class ErrorCodeSpec:
     severity: str
     description: str
     remediation_hint: str
+    repairability: str
     invariant_id: str | None = None
 
     def to_dict(self) -> dict[str, str]:
@@ -24,6 +25,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="The evidence object does not satisfy the ASIEP JSON Schema.",
         remediation_hint="Repair the JSON object so it conforms to schemas/asiep.schema.json.",
+        repairability="agent_fixable",
         invariant_id="I1",
     ),
     "SCHEMA_REQUIRED_FIELD": ErrorCodeSpec(
@@ -32,6 +34,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="A field required by the ASIEP schema is missing.",
         remediation_hint="Add the missing required field at the reported json_path.",
+        repairability="agent_fixable",
         invariant_id="I1",
     ),
     "SCHEMA_TYPE_MISMATCH": ErrorCodeSpec(
@@ -40,6 +43,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="A field has a value type that is not allowed by the ASIEP schema.",
         remediation_hint="Change the field value to the schema-required type.",
+        repairability="agent_fixable",
         invariant_id="I1",
     ),
     "SCHEMA_CONST_MISMATCH": ErrorCodeSpec(
@@ -48,6 +52,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="A field does not match a fixed value required by the ASIEP schema.",
         remediation_hint="Set the field to the constant value required by the schema.",
+        repairability="agent_fixable",
         invariant_id="I1",
     ),
     "STATE_TRANSITION": ErrorCodeSpec(
@@ -56,6 +61,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="The lifecycle does not follow the ASIEP state machine.",
         remediation_hint="Reorder lifecycle events to follow DRAFT -> CANDIDATE -> EVALUATED -> GATED -> PROMOTED or REJECTED.",
+        repairability="agent_fixable",
     ),
     "REF_UNRESOLVED": ErrorCodeSpec(
         code="REF_UNRESOLVED",
@@ -63,6 +69,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="A referenced evidence id is not present in the evidence array.",
         remediation_hint="Add the missing evidence object or update the reference to an existing evidence id.",
+        repairability="external_evidence_required",
         invariant_id="I4",
     ),
     "REF_DIGEST_FORMAT": ErrorCodeSpec(
@@ -71,6 +78,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="An evidence or external reference digest is not a sha256 64-character hex value.",
         remediation_hint="Set digest.algorithm to sha256 and digest.value to a 64-character hexadecimal SHA-256 digest.",
+        repairability="external_evidence_required",
         invariant_id="I10",
     ),
     "DIGEST_BASIC": ErrorCodeSpec(
@@ -79,6 +87,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="Compatibility code for a basic digest format failure.",
         remediation_hint="Set digest.algorithm to sha256 and digest.value to a 64-character hexadecimal SHA-256 digest.",
+        repairability="external_evidence_required",
         invariant_id="I10",
     ),
     "INV_MISSING_GATE_REPORT": ErrorCodeSpec(
@@ -87,6 +96,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="A gate object is missing the evidence reference for its gate report.",
         remediation_hint="Add gates[].gate_report_ref pointing to gate_report evidence.",
+        repairability="external_evidence_required",
         invariant_id="I5",
     ),
     "INV_SAFETY_REGRESSION": ErrorCodeSpec(
@@ -95,6 +105,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="The profile promotes an improvement while safety evidence records a regression or p2-or-higher failure.",
         remediation_hint="Do not promote when safety regression is true or a p2-or-higher safety check failed.",
+        repairability="agent_fixable",
     ),
     "INV_FLIP_THRESHOLD": ErrorCodeSpec(
         code="INV_FLIP_THRESHOLD",
@@ -102,6 +113,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="A flip-count metric exceeds the threshold while the gate decision promotes the improvement.",
         remediation_hint="Do not promote until flip_counts[].count is less than or equal to its threshold.",
+        repairability="agent_fixable",
         invariant_id="I8",
     ),
     "INV_ROLLBACK_EVIDENCE": ErrorCodeSpec(
@@ -110,6 +122,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="A rollback state or rollback gate decision lacks rollback evidence.",
         remediation_hint="Add rollback.evidence_ref pointing to evidence with type rollback_report.",
+        repairability="external_evidence_required",
         invariant_id="I9",
     ),
     "ROLLBACK_EVIDENCE": ErrorCodeSpec(
@@ -118,6 +131,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="Compatibility code for missing rollback evidence.",
         remediation_hint="Add rollback.evidence_ref pointing to evidence with type rollback_report.",
+        repairability="external_evidence_required",
         invariant_id="I9",
     ),
     "HASH_CHAIN_BROKEN": ErrorCodeSpec(
@@ -126,6 +140,7 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         severity="error",
         description="An evidence link references a missing evidence object, breaking evidence-chain closure.",
         remediation_hint="Restore the referenced evidence object or update the evidence refs to close the chain.",
+        repairability="external_evidence_required",
         invariant_id="I4",
     ),
 }
@@ -140,6 +155,7 @@ def get_error_code(code: str) -> ErrorCodeSpec:
             severity="error",
             description="The validator emitted an unregistered error code.",
             remediation_hint="Inspect the validator issue and register a stable remediation hint for this code.",
+            repairability="human_required",
         ),
     )
 
