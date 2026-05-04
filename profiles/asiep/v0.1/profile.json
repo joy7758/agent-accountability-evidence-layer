@@ -1,0 +1,84 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "profile_uri": "https://w3id.org/asiep/v0.1",
+  "schema_path": "schemas/asiep.schema.json",
+  "jsonld_context_path": "contexts/asiep.context.jsonld",
+  "state_machine_doc": "docs/state_machine.md",
+  "invariants_doc": "docs/invariants.md",
+  "validator_entrypoint": {
+    "module": "asiep_validator",
+    "cli": "python -m asiep_validator",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_validator {evidence_path} --format json"
+  },
+  "examples": {
+    "valid_examples": [
+      {
+        "path": "examples/valid_chatbot_improvement.json",
+        "expected_text_codes": ["VALID"],
+        "expected_json_valid": true
+      }
+    ],
+    "invalid_examples": [
+      {
+        "path": "examples/invalid_missing_gate_report.json",
+        "expected_text_codes": ["SCHEMA"],
+        "expected_json_codes": ["INV_MISSING_GATE_REPORT"],
+        "invariant_ids": ["I5"]
+      },
+      {
+        "path": "examples/invalid_promote_with_regression.json",
+        "expected_text_codes": ["INV_SAFETY_REGRESSION"],
+        "expected_json_codes": ["INV_SAFETY_REGRESSION"],
+        "invariant_ids": ["I6"]
+      },
+      {
+        "path": "examples/invalid_hash_chain_break.json",
+        "expected_text_codes": ["REF_UNRESOLVED"],
+        "expected_json_codes": ["REF_UNRESOLVED"],
+        "invariant_ids": ["I4"]
+      },
+      {
+        "path": "examples/invalid_promote_with_p2f_threshold_violation.json",
+        "expected_text_codes": ["INV_FLIP_THRESHOLD"],
+        "expected_json_codes": ["INV_FLIP_THRESHOLD"],
+        "invariant_ids": ["I8"]
+      },
+      {
+        "path": "examples/invalid_transition_order.json",
+        "expected_text_codes": ["STATE_TRANSITION"],
+        "expected_json_codes": ["STATE_TRANSITION"],
+        "invariant_ids": ["I3"]
+      }
+    ]
+  },
+  "expected_error_codes": [
+    "SCHEMA",
+    "SCHEMA_REQUIRED_FIELD",
+    "SCHEMA_TYPE_MISMATCH",
+    "SCHEMA_CONST_MISMATCH",
+    "STATE_TRANSITION",
+    "REF_UNRESOLVED",
+    "REF_DIGEST_FORMAT",
+    "DIGEST_BASIC",
+    "INV_MISSING_GATE_REPORT",
+    "INV_SAFETY_REGRESSION",
+    "INV_FLIP_THRESHOLD",
+    "INV_ROLLBACK_EVIDENCE",
+    "ROLLBACK_EVIDENCE",
+    "HASH_CHAIN_BROKEN"
+  ],
+  "supported_output_formats": [
+    {
+      "format": "text",
+      "consumer": "human-compatible CLI and legacy scripts"
+    },
+    {
+      "format": "json",
+      "consumer": "agent repair and review loops"
+    }
+  ],
+  "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"
+}

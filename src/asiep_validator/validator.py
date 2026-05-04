@@ -9,6 +9,8 @@ from typing import Any, Mapping
 
 from jsonschema import Draft202012Validator
 
+from .error_codes import get_error_code
+
 
 SHA256_RE = re.compile(r"^[a-fA-F0-9]{64}$")
 
@@ -28,12 +30,38 @@ class ValidationIssue:
     code: str
     message: str
     path: str = ""
+    invariant_id: str | None = None
+    agent_code: str | None = None
+    remediation_hint: str | None = None
+
+    @property
+    def json_code(self) -> str:
+        return self.agent_code or self.code
+
+    @property
+    def json_path(self) -> str:
+        return _as_json_path(self.path)
+
+    def to_agent_error(self) -> dict[str, str]:
+        spec = get_error_code(self.json_code)
+        error = {
+            "code": self.json_code,
+            "severity": spec.severity,
+            "message": self.message,
+            "json_path": self.json_path,
+            "remediation_hint": self.remediation_hint or spec.remediation_hint,
+        }
+        invariant_id = self.invariant_id or spec.invariant_id
+        if invariant_id:
+            error["invariant_id"] = invariant_id
+        return error
 
 
 @dataclass(frozen=True)
 class ValidationReport:
     valid: bool
     issues: tuple[ValidationIssue, ...]
+    record_id: str | None = None
 
     @property
     def codes(self) -> list[str]:
@@ -45,6 +73,16 @@ class ValidationReport:
                 codes.append(issue.code)
         return codes if codes else ["VALID"]
 
+    def to_agent_dict(self) -> dict[str, Any]:
+        return {
+            "profile": "ASIEP",
+            "profile_version": "0.1.0",
+            "valid": self.valid,
+            "record_id": self.record_id or "",
+            "errors": [issue.to_agent_error() for issue in self.issues],
+            "warnings": [],
+        }
+
 
 def validate_file(profile_path: str | Path) -> ValidationReport:
     path = Path(profile_path)
@@ -54,9 +92,10 @@ def validate_file(profile_path: str | Path) -> ValidationReport:
 
 
 def validate_profile(profile: Mapping[str, Any]) -> ValidationReport:
+    record_id = str(profile.get("profile_id", "")) if isinstance(profile, Mapping) else ""
     schema_issues = _validate_schema(profile)
     if schema_issues:
-        return ValidationReport(False, tuple(schema_issues))
+        return ValidationReport(False, tuple(schema_issues), record_id=record_id)
 
     checks = (
         _check_state_machine,
@@ -68,8 +107,8 @@ def validate_profile(profile: Mapping[str, Any]) -> ValidationReport:
     for check in checks:
         issues = check(profile)
         if issues:
-            return ValidationReport(False, tuple(issues))
-    return ValidationReport(True, tuple())
+            return ValidationReport(False, tuple(issues), record_id=record_id)
+    return ValidationReport(True, tuple(), record_id=record_id)
 
 
 def _validate_schema(profile: Mapping[str, Any]) -> list[ValidationIssue]:
@@ -83,8 +122,35 @@ def _validate_schema(profile: Mapping[str, Any]) -> list[ValidationIssue]:
         return []
 
     first = errors[0]
-    path = _format_path(first.path)
-    return [ValidationIssue("SCHEMA", first.message, path)]
+    return [_schema_issue(first)]
+
+
+def _schema_issue(error: Any) -> ValidationIssue:
+    path = _format_path(error.path)
+    if error.validator == "required":
+        missing_field = _missing_required_field(error.message)
+        missing_path = _append_json_path(path, missing_field) if missing_field else path
+        if missing_field == "gate_report_ref":
+            return ValidationIssue(
+                "SCHEMA",
+                error.message,
+                missing_path,
+                invariant_id="I5",
+                agent_code="INV_MISSING_GATE_REPORT",
+                remediation_hint="Add gates[].gate_report_ref pointing to gate_report evidence.",
+            )
+        return ValidationIssue(
+            "SCHEMA",
+            error.message,
+            missing_path,
+            invariant_id="I1",
+            agent_code="SCHEMA_REQUIRED_FIELD",
+        )
+    if error.validator == "type":
+        return ValidationIssue("SCHEMA", error.message, path, invariant_id="I1", agent_code="SCHEMA_TYPE_MISMATCH")
+    if error.validator == "const":
+        return ValidationIssue("SCHEMA", error.message, path, invariant_id="I1", agent_code="SCHEMA_CONST_MISMATCH")
+    return ValidationIssue("SCHEMA", error.message, path, invariant_id="I1")
 
 
 def _schema_path() -> Path:
@@ -111,7 +177,8 @@ def _check_state_machine(profile: Mapping[str, Any]) -> list[ValidationIssue]:
             ValidationIssue(
                 "STATE_TRANSITION",
                 "lifecycle must start at DRAFT",
-                "lifecycle[0].state",
+                "$.lifecycle[0].state",
+                invariant_id="I2",
             )
         ]
 
@@ -121,7 +188,8 @@ def _check_state_machine(profile: Mapping[str, Any]) -> list[ValidationIssue]:
                 ValidationIssue(
                     "STATE_TRANSITION",
                     f"invalid transition {previous} -> {current}",
-                    f"lifecycle[{index}].state",
+                    f"$.lifecycle[{index}].state",
+                    invariant_id="I3",
                 )
             ]
     return []
@@ -132,24 +200,24 @@ def _check_evidence_refs(profile: Mapping[str, Any]) -> list[ValidationIssue]:
     refs: list[tuple[str, str]] = []
 
     for index, item in enumerate(profile["evidence"]):
-        refs.extend((ref, f"evidence[{index}].refs") for ref in item.get("refs", []))
+        refs.extend((ref, f"$.evidence[{index}].refs") for ref in item.get("refs", []))
 
     for index, event in enumerate(profile["lifecycle"]):
-        refs.extend((ref, f"lifecycle[{index}].evidence_refs") for ref in event["evidence_refs"])
+        refs.extend((ref, f"$.lifecycle[{index}].evidence_refs") for ref in event["evidence_refs"])
 
     for index, check in enumerate(profile["safety_checks"]):
-        refs.append((check["evidence_ref"], f"safety_checks[{index}].evidence_ref"))
+        refs.append((check["evidence_ref"], f"$.safety_checks[{index}].evidence_ref"))
 
     for metric, record in profile["flip_counts"].items():
-        refs.append((record["evidence_ref"], f"flip_counts.{metric}.evidence_ref"))
+        refs.append((record["evidence_ref"], f"$.flip_counts.{metric}.evidence_ref"))
 
     for index, gate in enumerate(profile["gates"]):
-        refs.append((gate["gate_report_ref"], f"gates[{index}].gate_report_ref"))
-        refs.extend((ref, f"gates[{index}].evidence_refs") for ref in gate["evidence_refs"])
+        refs.append((gate["gate_report_ref"], f"$.gates[{index}].gate_report_ref"))
+        refs.extend((ref, f"$.gates[{index}].evidence_refs") for ref in gate["evidence_refs"])
 
     rollback = profile.get("rollback")
     if rollback:
-        refs.append((rollback["evidence_ref"], "rollback.evidence_ref"))
+        refs.append((rollback["evidence_ref"], "$.rollback.evidence_ref"))
 
     for ref, path in refs:
         if ref not in evidence_ids:
@@ -158,6 +226,7 @@ def _check_evidence_refs(profile: Mapping[str, Any]) -> list[ValidationIssue]:
                     "REF_UNRESOLVED",
                     f"evidence reference {ref} is not defined",
                     path,
+                    invariant_id="I4",
                 )
             ]
     return []
@@ -174,7 +243,8 @@ def _check_gate_decisions(profile: Mapping[str, Any]) -> list[ValidationIssue]:
                 ValidationIssue(
                     "INV_SAFETY_REGRESSION",
                     "promotion is not allowed with a safety regression",
-                    f"safety_checks[{index}].regression",
+                    f"$.safety_checks[{index}].regression",
+                    invariant_id="I6",
                 )
             ]
         if not check["passed"] and check["severity"] in {"p2", "p1", "p0"}:
@@ -182,7 +252,8 @@ def _check_gate_decisions(profile: Mapping[str, Any]) -> list[ValidationIssue]:
                 ValidationIssue(
                     "INV_SAFETY_REGRESSION",
                     "promotion is not allowed with an unresolved p2-or-higher safety failure",
-                    f"safety_checks[{index}].passed",
+                    f"$.safety_checks[{index}].passed",
+                    invariant_id="I7",
                 )
             ]
 
@@ -192,7 +263,8 @@ def _check_gate_decisions(profile: Mapping[str, Any]) -> list[ValidationIssue]:
                 ValidationIssue(
                     "INV_FLIP_THRESHOLD",
                     f"{metric} count {record['count']} exceeds threshold {record['threshold']}",
-                    f"flip_counts.{metric}.count",
+                    f"$.flip_counts.{metric}.count",
+                    invariant_id="I8",
                 )
             ]
     return []
@@ -210,7 +282,9 @@ def _check_rollback_evidence(profile: Mapping[str, Any]) -> list[ValidationIssue
             ValidationIssue(
                 "ROLLBACK_EVIDENCE",
                 "rollback state or decision requires rollback evidence",
-                "rollback",
+                "$.rollback",
+                invariant_id="I9",
+                agent_code="INV_ROLLBACK_EVIDENCE",
             )
         ]
 
@@ -221,7 +295,9 @@ def _check_rollback_evidence(profile: Mapping[str, Any]) -> list[ValidationIssue
             ValidationIssue(
                 "ROLLBACK_EVIDENCE",
                 "rollback evidence_ref must point to rollback_report evidence",
-                "rollback.evidence_ref",
+                "$.rollback.evidence_ref",
+                invariant_id="I9",
+                agent_code="INV_ROLLBACK_EVIDENCE",
             )
         ]
     return []
@@ -235,7 +311,9 @@ def _check_reference_digests(profile: Mapping[str, Any]) -> list[ValidationIssue
                 ValidationIssue(
                     "DIGEST_BASIC",
                     "evidence digest must be sha256 with a 64-character hex value",
-                    f"evidence[{index}].digest",
+                    f"$.evidence[{index}].digest",
+                    invariant_id="I10",
+                    agent_code="REF_DIGEST_FORMAT",
                 )
             ]
 
@@ -246,7 +324,9 @@ def _check_reference_digests(profile: Mapping[str, Any]) -> list[ValidationIssue
                 ValidationIssue(
                     "DIGEST_BASIC",
                     "reference digest must be sha256 with a 64-character hex value",
-                    f"references[{index}].digest",
+                    f"$.references[{index}].digest",
+                    invariant_id="I10",
+                    agent_code="REF_DIGEST_FORMAT",
                 )
             ]
     return []
@@ -263,3 +343,26 @@ def _format_path(path: Any) -> str:
         else:
             rendered += f".{part}"
     return rendered
+
+
+def _as_json_path(path: str) -> str:
+    if not path:
+        return "$"
+    if path.startswith("$"):
+        return path
+    return f"$.{path}"
+
+
+def _append_json_path(path: str, field: str | None) -> str:
+    if not field:
+        return path
+    if path == "$":
+        return f"$.{field}"
+    return f"{path}.{field}"
+
+
+def _missing_required_field(message: str) -> str | None:
+    match = re.search(r"'([^']+)' is a required property", message)
+    if not match:
+        return None
+    return match.group(1)
