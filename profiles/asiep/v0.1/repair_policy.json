@@ -1,0 +1,120 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "repair_policy_version": "0.1.0",
+  "default_patch_format": "json-patch",
+  "discovery": {
+    "purpose": "Machine-readable evidence-preserving repair policy for ASIEP v0.1 validation errors.",
+    "entrypoint_role": "repair_policy",
+    "related_interfaces": [
+      "interfaces/asiep_validator_output.schema.json",
+      "interfaces/asiep_repair_plan.schema.json"
+    ],
+    "related_cli": "PYTHONPATH=src python -m asiep_repairer {evidence_path} --format json"
+  },
+  "evidence_preservation_rules": [
+    "Do not forge gate reports, approvals, external references, or evidence digests.",
+    "Do not change safety regression evidence from true to false to force validation success.",
+    "Do not relax flip-count thresholds to force validation success.",
+    "Do not invent evidence ids, URIs, or hashes without marking them as external evidence requirements.",
+    "Do not modify production or deployment state.",
+    "Prefer reject decisions over unsafe promotion when evidence does not support promotion.",
+    "After any agent applies a repair plan, rerun the ASIEP validator before review or promotion."
+  ],
+  "error_code_repair_map": [
+    {
+      "code": "SCHEMA_REQUIRED_FIELD",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add JSON Patch skeleton for the missing required field"],
+      "forbidden_actions": ["invent external evidence values without marking the action as externally required"],
+      "default_strategy": "Add a TODO placeholder only when the missing value must be supplied by an agent or human.",
+      "remediation_hint": "Add the missing required field at the reported json_path.",
+      "requires_external_evidence": false,
+      "safe_patch_template": [{ "op": "add", "path": "{json_pointer}", "value": "TODO:provide-required-value" }]
+    },
+    {
+      "code": "SCHEMA_TYPE_MISMATCH",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["replace the field with a schema-compatible value skeleton"],
+      "forbidden_actions": ["coerce evidence semantics silently"],
+      "default_strategy": "Point the agent to the schema type and require semantic review.",
+      "remediation_hint": "Change the field value to the schema-required type.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "STATE_TRANSITION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["reorder lifecycle events while preserving event ids, timestamps, actors, and evidence_refs"],
+      "forbidden_actions": ["delete lifecycle evidence to hide invalid transitions"],
+      "default_strategy": "Reconstruct the lifecycle according to docs/state_machine.md and preserve all event evidence.",
+      "remediation_hint": "Reorder lifecycle events to follow the ASIEP state machine.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "REF_UNRESOLVED",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["request a real evidence object for the missing ref", "update the ref to a real existing evidence id"],
+      "forbidden_actions": ["generate a fake URI", "generate a fake digest", "invent an evidence object without marking external evidence required"],
+      "default_strategy": "Ask an agent or human to provide a real evidence object or correct the reference.",
+      "remediation_hint": "Add the missing evidence object or update the reference to an existing evidence id.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "REF_DIGEST_FORMAT",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["replace digest with a real SHA-256 digest computed from the referenced evidence"],
+      "forbidden_actions": ["randomly generate a hash", "use a placeholder digest without marking external evidence required"],
+      "default_strategy": "Request the true digest from the evidence producer.",
+      "remediation_hint": "Set digest.algorithm to sha256 and digest.value to a real 64-character hexadecimal SHA-256 digest.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "INV_MISSING_GATE_REPORT",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["request a real gate_report_ref", "add a JSON Patch skeleton that points to TODO real gate report evidence"],
+      "forbidden_actions": ["forge a gate report", "forge approval", "invent gate_report_ref as if it already exists"],
+      "default_strategy": "Require a real gate report from the gatekeeper agent before promotion.",
+      "remediation_hint": "Add gates[].gate_report_ref pointing to real gate_report evidence.",
+      "requires_external_evidence": true,
+      "safe_patch_template": [{ "op": "add", "path": "{json_pointer}", "value": "TODO:ev:real-gate-report" }]
+    },
+    {
+      "code": "INV_SAFETY_REGRESSION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["replace unsafe promote decision with reject", "request reevaluation and a new gate report if promotion is still desired"],
+      "forbidden_actions": ["change regression from true to false", "change failed safety check to passed without new evidence", "forge gate approval"],
+      "default_strategy": "Reject the promotion unless a new evaluation and real gate report justify a future promotion.",
+      "remediation_hint": "Do not promote when safety regression is true.",
+      "requires_external_evidence": false,
+      "safe_patch_template": [{ "op": "replace", "path": "/gates/0/decision", "value": "reject" }]
+    },
+    {
+      "code": "INV_FLIP_THRESHOLD",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["replace unsafe promote decision with reject", "request reevaluation if promotion is still desired"],
+      "forbidden_actions": ["increase threshold to force success", "decrease count without new evidence", "forge gate approval"],
+      "default_strategy": "Reject the promotion unless new evaluation evidence brings flip counts within threshold.",
+      "remediation_hint": "Do not promote while flip counts exceed thresholds.",
+      "requires_external_evidence": false,
+      "safe_patch_template": [{ "op": "replace", "path": "/gates/0/decision", "value": "reject" }]
+    },
+    {
+      "code": "INV_ROLLBACK_EVIDENCE",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["request real rollback_report evidence", "add rollback field skeleton marked as external evidence required"],
+      "forbidden_actions": ["forge rollback report", "invent rollback evidence digest"],
+      "default_strategy": "Require a real rollback report before representing the profile as rolled back.",
+      "remediation_hint": "Add rollback.evidence_ref pointing to evidence with type rollback_report.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "HASH_CHAIN_BROKEN",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["restore missing evidence object", "correct broken refs to existing evidence"],
+      "forbidden_actions": ["generate fake evidence object", "generate fake URI", "generate fake digest"],
+      "default_strategy": "Ask the evidence-producing agent to restore or correct the evidence chain.",
+      "remediation_hint": "Restore the referenced evidence object or update the evidence refs to close the chain.",
+      "requires_external_evidence": true
+    }
+  ]
+}

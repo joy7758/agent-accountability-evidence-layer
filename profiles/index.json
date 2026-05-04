@@ -1,0 +1,28 @@
+{
+  "package_name": "agent-accountability-evidence-layer",
+  "package_version": "0.1.0",
+  "discovery_role": "agent profile registry",
+  "profiles": [
+    {
+      "profile_name": "ASIEP",
+      "profile_version": "0.1.0",
+      "profile_uri": "https://w3id.org/asiep/v0.1",
+      "manifest_path": "profiles/asiep/v0.1/profile.json",
+      "capabilities": [
+        "validate",
+        "conformance_matrix",
+        "validator_json_output",
+        "repair_policy",
+        "repair_plan",
+        "repair_loop"
+      ],
+      "keywords": [
+        "ASIEP",
+        "agent evidence",
+        "agent accountability",
+        "self-improvement evidence",
+        "repair loop"
+      ]
+    }
+  ]
+}

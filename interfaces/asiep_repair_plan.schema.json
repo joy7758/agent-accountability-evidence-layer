@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_repair_plan.schema.json",
+  "title": "ASIEP Repair Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "profile_version",
+    "input_path",
+    "valid_before",
+    "repairable",
+    "strategy",
+    "errors",
+    "repair_actions",
+    "blocked_actions",
+    "revalidation_command",
+    "safety_notes"
+  ],
+  "properties": {
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "input_path": { "type": "string", "minLength": 1 },
+    "valid_before": { "type": "boolean" },
+    "repairable": { "type": "boolean" },
+    "strategy": { "type": "string", "minLength": 1 },
+    "errors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/error" }
+    },
+    "repair_actions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/repair_action" }
+    },
+    "blocked_actions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/blocked_action" }
+    },
+    "revalidation_command": { "type": "string", "minLength": 1 },
+    "safety_notes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "repairability": {
+      "type": "string",
+      "enum": [
+        "auto_fixable",
+        "agent_fixable",
+        "external_evidence_required",
+        "human_required",
+        "not_fixable"
+      ]
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "json_path",
+        "json_pointer",
+        "invariant_id",
+        "remediation_hint",
+        "repairability"
+      ],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "message": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "json_pointer": { "type": "string" },
+        "invariant_id": { "type": "string", "pattern": "^I[0-9]+$" },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": { "$ref": "#/$defs/repairability" }
+      }
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "json_patch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op", "path", "value"],
+      "properties": {
+        "op": { "enum": ["add", "replace", "remove", "copy", "move", "test"] },
+        "path": { "type": "string" },
+        "value": {}
+      }
+    },
+    "repair_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id",
+        "error_code",
+        "invariant_id",
+        "repairability",
+        "description",
+        "json_patch",
+        "requires_external_evidence",
+        "evidence_requirements",
+        "risk_level",
+        "agent_instruction"
+      ],
+      "properties": {
+        "action_id": { "type": "string", "minLength": 1 },
+        "error_code": { "type": "string", "minLength": 1 },
+        "invariant_id": { "type": "string", "pattern": "^I[0-9]+$" },
+        "repairability": { "$ref": "#/$defs/repairability" },
+        "description": { "type": "string", "minLength": 1 },
+        "json_patch": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/json_patch" }
+        },
+        "requires_external_evidence": { "type": "boolean" },
+        "evidence_requirements": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "risk_level": { "$ref": "#/$defs/risk_level" },
+        "agent_instruction": { "type": "string", "minLength": 1 }
+      }
+    },
+    "blocked_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id",
+        "error_code",
+        "invariant_id",
+        "reason",
+        "forbidden_patch_patterns",
+        "agent_instruction"
+      ],
+      "properties": {
+        "action_id": { "type": "string", "minLength": 1 },
+        "error_code": { "type": "string", "minLength": 1 },
+        "invariant_id": { "type": "string", "pattern": "^I[0-9]+$" },
+        "reason": { "type": "string", "minLength": 1 },
+        "forbidden_patch_patterns": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "agent_instruction": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

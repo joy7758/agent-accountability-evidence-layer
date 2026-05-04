@@ -35,6 +35,8 @@ pip install -e .[dev]
 PYTHONPATH=src python scripts/selftest.py
 PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json
 PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json --format json
+PYTHONPATH=src python -m asiep_repairer examples/invalid_promote_with_regression.json --format json
+PYTHONPATH=src python scripts/repair_loop_demo.py
 ```
 
 Expected CLI result for the valid example:
@@ -46,9 +48,9 @@ PASS
 ## Validation Layers
 
 The agent-native profile entrypoint is
-`profiles/asiep/v0.1/profile.json`. Agents should start there, then load the
-schema, JSON-LD context, conformance matrix, examples, and validator entrypoint
-listed in the manifest.
+`profiles/index.json`. Agents can discover ASIEP from that registry, then load
+`profiles/asiep/v0.1/profile.json` to find the schema, JSON-LD context,
+conformance matrix, examples, validator, repair policy, and repairer.
 
 The v0.1 validator checks:
 
@@ -59,6 +61,28 @@ The v0.1 validator checks:
 - gate decision consistency with flip-count thresholds
 - rollback evidence presence
 - evidence and reference digest basics
+
+## M2 Repair Loop
+
+M2 adds an agent-readable, evidence-preserving repair loop. The validator JSON
+output is constrained by `interfaces/asiep_validator_output.schema.json`; repair
+plans are constrained by `interfaces/asiep_repair_plan.schema.json`; and repair
+boundaries live in `profiles/asiep/v0.1/repair_policy.json`.
+
+The repairer does not edit input files. It generates JSON Patch skeletons,
+blocked actions, evidence requirements, and a revalidation command:
+
+```bash
+PYTHONPATH=src python -m asiep_repairer examples/invalid_promote_with_regression.json --format json
+```
+
+Current limits:
+
+- no automatic evidence mutation
+- no generated gate reports, approvals, refs, or digests
+- no remote fetching or importer/exporter work
+- unsafe `promote` decisions are planned toward `reject` or real reevaluation,
+  not toward falsifying safety evidence
 
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.

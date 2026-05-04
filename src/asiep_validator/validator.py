@@ -42,6 +42,10 @@ class ValidationIssue:
     def json_path(self) -> str:
         return _as_json_path(self.path)
 
+    @property
+    def json_pointer(self) -> str:
+        return _json_path_to_pointer(self.json_path)
+
     def to_agent_error(self) -> dict[str, str]:
         spec = get_error_code(self.json_code)
         error = {
@@ -49,7 +53,9 @@ class ValidationIssue:
             "severity": spec.severity,
             "message": self.message,
             "json_path": self.json_path,
+            "json_pointer": self.json_pointer,
             "remediation_hint": self.remediation_hint or spec.remediation_hint,
+            "repairability": spec.repairability,
         }
         invariant_id = self.invariant_id or spec.invariant_id
         if invariant_id:
@@ -366,3 +372,39 @@ def _missing_required_field(message: str) -> str | None:
     if not match:
         return None
     return match.group(1)
+
+
+def _json_path_to_pointer(path: str) -> str:
+    if path in {"", "$"}:
+        return ""
+    body = path[2:] if path.startswith("$.") else path.lstrip("$")
+    pointer_parts: list[str] = []
+    index = 0
+    token = ""
+    while index < len(body):
+        char = body[index]
+        if char == ".":
+            if token:
+                pointer_parts.append(_escape_pointer_token(token))
+                token = ""
+            index += 1
+            continue
+        if char == "[":
+            if token:
+                pointer_parts.append(_escape_pointer_token(token))
+                token = ""
+            end = body.find("]", index)
+            if end == -1:
+                break
+            pointer_parts.append(_escape_pointer_token(body[index + 1 : end]))
+            index = end + 1
+            continue
+        token += char
+        index += 1
+    if token:
+        pointer_parts.append(_escape_pointer_token(token))
+    return "/" + "/".join(pointer_parts)
+
+
+def _escape_pointer_token(token: str) -> str:
+    return token.replace("~", "~0").replace("/", "~1")

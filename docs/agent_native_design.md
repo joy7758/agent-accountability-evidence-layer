@@ -6,6 +6,8 @@ agent that needs to validate, repair, review, or package an evidence object.
 
 ## Machine-First Sources
 
+- `profiles/index.json` is the package-level discovery registry. Agents should
+  start there when they do not already know the exact profile path.
 - `profiles/asiep/v0.1/profile.json` is the agent entrypoint. It tells an agent
   where the schema, context, state machine, invariants, examples, validator, and
   conformance matrix live.
