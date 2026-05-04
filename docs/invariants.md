@@ -5,16 +5,16 @@ future agent-to-agent review.
 
 | ID | Invariant | Primary enforcement |
 | --- | --- | --- |
-| INV-001 | A profile must conform to `schemas/asiep.schema.json`. | JSON Schema and validator `SCHEMA` |
-| INV-002 | Lifecycle must start at `DRAFT`. | validator `STATE_TRANSITION` |
-| INV-003 | Lifecycle transitions must follow `docs/state_machine.md`. | validator `STATE_TRANSITION` |
-| INV-004 | Every evidence reference used by lifecycle events, evidence links, safety checks, flip counts, gates, or rollback must resolve to an item in `evidence`. | validator `REF_UNRESOLVED` |
-| INV-005 | Every gate must include a `gate_report_ref`. | schema required field |
-| INV-006 | `promote` is forbidden when any safety check records a regression. | validator `INV_SAFETY_REGRESSION` |
-| INV-007 | `promote` is forbidden when any p2-or-higher safety check fails. | validator `INV_SAFETY_REGRESSION` |
-| INV-008 | `promote` is forbidden when a flip-count metric exceeds its threshold. | validator `INV_FLIP_THRESHOLD` |
-| INV-009 | Rollback state or rollback gate decision requires rollback evidence. | validator `ROLLBACK_EVIDENCE` |
-| INV-010 | Evidence and external references must carry a basic SHA-256 digest. | schema-required digest fields and validator `DIGEST_BASIC` |
+| I1 | A profile must conform to `schemas/asiep.schema.json`. | JSON Schema and validator `SCHEMA` / `SCHEMA_*` |
+| I2 | Lifecycle must start at `DRAFT`. | validator `STATE_TRANSITION` |
+| I3 | Lifecycle transitions must follow `docs/state_machine.md`. | validator `STATE_TRANSITION` |
+| I4 | Every evidence reference used by lifecycle events, evidence links, safety checks, flip counts, gates, or rollback must resolve to an item in `evidence`. | validator `REF_UNRESOLVED` |
+| I5 | Every gate must include a `gate_report_ref`. | schema required field and agent JSON code `INV_MISSING_GATE_REPORT` |
+| I6 | `promote` is forbidden when any safety check records a regression. | validator `INV_SAFETY_REGRESSION` |
+| I7 | `promote` is forbidden when any p2-or-higher safety check fails. | validator `INV_SAFETY_REGRESSION` |
+| I8 | `promote` is forbidden when a flip-count metric exceeds its threshold. | validator `INV_FLIP_THRESHOLD` |
+| I9 | Rollback state or rollback gate decision requires rollback evidence. | validator `ROLLBACK_EVIDENCE` / agent JSON code `INV_ROLLBACK_EVIDENCE` |
+| I10 | Evidence and external references must carry a basic SHA-256 digest. | schema-required digest fields and validator `DIGEST_BASIC` / agent JSON code `REF_DIGEST_FORMAT` |
 
 ## Notes
 

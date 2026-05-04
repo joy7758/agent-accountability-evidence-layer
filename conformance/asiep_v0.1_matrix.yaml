@@ -1,0 +1,167 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "matrix_version": "0.1.0",
+  "invariants": [
+    {
+      "invariant_id": "I1",
+      "invariant_text": "A profile must conform to schemas/asiep.schema.json.",
+      "required_fields": ["@context", "profile_version", "profile_id", "subject_agent", "improvement", "lifecycle", "evidence", "safety_checks", "flip_counts", "gates", "references"],
+      "schema_json_pointers": ["/required", "/properties", "/$defs"],
+      "validator_function_or_rule": "_validate_schema using jsonschema.Draft202012Validator",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["examples/invalid_missing_gate_report.json"],
+      "expected_error_codes": ["SCHEMA", "SCHEMA_REQUIRED_FIELD", "SCHEMA_TYPE_MISMATCH", "SCHEMA_CONST_MISMATCH"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "profile_id as prov:Bundle"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "profile_id as trace or resource attribute"],
+        "FDO": ["mappings/fdo_mapping.md", "profile_id as persistent object identifier candidate"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "profile_id as crate identifier"]
+      }
+    },
+    {
+      "invariant_id": "I2",
+      "invariant_text": "Lifecycle must start at DRAFT.",
+      "required_fields": ["lifecycle[].state"],
+      "schema_json_pointers": ["/properties/lifecycle", "/$defs/lifecycle_event/properties/state"],
+      "validator_function_or_rule": "_check_state_machine start-state rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["tests/test_validator.py::test_state_machine_start_rule_has_agent_error"],
+      "expected_error_codes": ["STATE_TRANSITION"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "lifecycle event as prov:Activity boundary"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "lifecycle state as ordered span event"],
+        "FDO": ["mappings/fdo_mapping.md", "lifecycle as object metadata"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "lifecycle as contextual entity metadata"]
+      }
+    },
+    {
+      "invariant_id": "I3",
+      "invariant_text": "Lifecycle transitions must follow docs/state_machine.md.",
+      "required_fields": ["lifecycle[].state"],
+      "schema_json_pointers": ["/properties/lifecycle", "/$defs/lifecycle_event/properties/state"],
+      "validator_function_or_rule": "_check_state_machine transition graph rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["examples/invalid_transition_order.json"],
+      "expected_error_codes": ["STATE_TRANSITION"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "ordered lifecycle as activity sequence"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "ordered span events"],
+        "FDO": ["mappings/fdo_mapping.md", "state history as integrity metadata"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "state history as crate metadata"]
+      }
+    },
+    {
+      "invariant_id": "I4",
+      "invariant_text": "Every evidence reference used by lifecycle events, evidence links, safety checks, flip counts, gates, or rollback must resolve to an item in evidence.",
+      "required_fields": ["evidence[].id", "evidence[].refs", "lifecycle[].evidence_refs", "safety_checks[].evidence_ref", "flip_counts.*.evidence_ref", "gates[].gate_report_ref", "gates[].evidence_refs", "rollback.evidence_ref"],
+      "schema_json_pointers": ["/properties/evidence", "/$defs/evidence_ref"],
+      "validator_function_or_rule": "_check_evidence_refs reference-closure rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["examples/invalid_hash_chain_break.json"],
+      "expected_error_codes": ["REF_UNRESOLVED", "HASH_CHAIN_BROKEN"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "evidence refs as prov:wasDerivedFrom"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "evidence ids as event attributes"],
+        "FDO": ["mappings/fdo_mapping.md", "evidence objects as typed components"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "evidence objects as file or contextual entities"]
+      }
+    },
+    {
+      "invariant_id": "I5",
+      "invariant_text": "Every gate must include a gate_report_ref.",
+      "required_fields": ["gates[].gate_report_ref"],
+      "schema_json_pointers": ["/$defs/gate/required", "/$defs/gate/properties/gate_report_ref"],
+      "validator_function_or_rule": "schema required field rule, normalized to INV_MISSING_GATE_REPORT in JSON output",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["examples/invalid_missing_gate_report.json"],
+      "expected_error_codes": ["SCHEMA", "INV_MISSING_GATE_REPORT"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "gate report as prov:Entity generated by gate activity"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "gate decision and report ref as span attributes"],
+        "FDO": ["mappings/fdo_mapping.md", "gate report as typed object component"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "gate report as crate entity"]
+      }
+    },
+    {
+      "invariant_id": "I6",
+      "invariant_text": "promote is forbidden when any safety check records a regression.",
+      "required_fields": ["gates[].decision", "safety_checks[].regression"],
+      "schema_json_pointers": ["/properties/gates", "/properties/safety_checks", "/$defs/safety_check/properties/regression"],
+      "validator_function_or_rule": "_check_gate_decisions safety regression rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["examples/invalid_promote_with_regression.json"],
+      "expected_error_codes": ["INV_SAFETY_REGRESSION"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "safety check as evidence entity used by gate activity"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "safety result as gate span attribute"],
+        "FDO": ["mappings/fdo_mapping.md", "safety report as typed component"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "safety report as crate entity"]
+      }
+    },
+    {
+      "invariant_id": "I7",
+      "invariant_text": "promote is forbidden when any p2-or-higher safety check fails.",
+      "required_fields": ["gates[].decision", "safety_checks[].passed", "safety_checks[].severity"],
+      "schema_json_pointers": ["/properties/gates", "/properties/safety_checks", "/$defs/safety_check/properties/passed", "/$defs/safety_check/properties/severity"],
+      "validator_function_or_rule": "_check_gate_decisions p2-or-higher failed safety check rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["tests/test_validator.py::test_failed_p2_safety_check_has_agent_error"],
+      "expected_error_codes": ["INV_SAFETY_REGRESSION"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "failed safety check as evidence entity used by gate activity"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "safety severity as span attribute"],
+        "FDO": ["mappings/fdo_mapping.md", "safety severity as component metadata"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "safety severity as contextual metadata"]
+      }
+    },
+    {
+      "invariant_id": "I8",
+      "invariant_text": "promote is forbidden when a flip-count metric exceeds its threshold.",
+      "required_fields": ["gates[].decision", "flip_counts.*.count", "flip_counts.*.threshold"],
+      "schema_json_pointers": ["/properties/flip_counts", "/$defs/flip_count/properties/count", "/$defs/flip_count/properties/threshold"],
+      "validator_function_or_rule": "_check_gate_decisions flip-count threshold rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["examples/invalid_promote_with_p2f_threshold_violation.json"],
+      "expected_error_codes": ["INV_FLIP_THRESHOLD"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "flip-count report as evidence entity"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "flip count and threshold as span attributes"],
+        "FDO": ["mappings/fdo_mapping.md", "flip-count report as typed component"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "flip-count report as crate entity"]
+      }
+    },
+    {
+      "invariant_id": "I9",
+      "invariant_text": "Rollback state or rollback gate decision requires rollback evidence.",
+      "required_fields": ["lifecycle[].state", "gates[].decision", "rollback.evidence_ref", "evidence[].type"],
+      "schema_json_pointers": ["/properties/rollback", "/$defs/evidence_item/properties/type"],
+      "validator_function_or_rule": "_check_rollback_evidence rollback evidence rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["tests/test_validator.py::test_rollback_state_requires_rollback_evidence"],
+      "expected_error_codes": ["ROLLBACK_EVIDENCE", "INV_ROLLBACK_EVIDENCE"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "rollback report as evidence entity generated after promotion"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "rollback as lifecycle span event"],
+        "FDO": ["mappings/fdo_mapping.md", "rollback report as typed component"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "rollback report as crate entity"]
+      }
+    },
+    {
+      "invariant_id": "I10",
+      "invariant_text": "Evidence and external references must carry a basic SHA-256 digest.",
+      "required_fields": ["evidence[].digest.algorithm", "evidence[].digest.value", "references[].digest.algorithm", "references[].digest.value"],
+      "schema_json_pointers": ["/$defs/digest", "/$defs/evidence_item/properties/digest", "/$defs/reference_item/properties/digest"],
+      "validator_function_or_rule": "_check_reference_digests sha256/64hex format rule",
+      "positive_examples": ["examples/valid_chatbot_improvement.json"],
+      "negative_examples": ["tests/test_validator.py::test_digest_basic_check_is_validator_layer"],
+      "expected_error_codes": ["DIGEST_BASIC", "REF_DIGEST_FORMAT"],
+      "related_standard_mapping": {
+        "PROV": ["mappings/prov_mapping.md", "digest as integrity metadata on evidence entity"],
+        "OpenTelemetry": ["mappings/otel_mapping.md", "digest as event/resource attribute"],
+        "FDO": ["mappings/fdo_mapping.md", "digest as integrity metadata"],
+        "RO-Crate": ["mappings/ro_crate_mapping.md", "digest as integrity metadata"]
+      }
+    }
+  ]
+}

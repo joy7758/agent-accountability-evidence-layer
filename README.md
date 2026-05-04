@@ -34,6 +34,7 @@ pip install -e .[dev]
 
 PYTHONPATH=src python scripts/selftest.py
 PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json
+PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json --format json
 ```
 
 Expected CLI result for the valid example:
@@ -43,6 +44,11 @@ PASS
 ```
 
 ## Validation Layers
+
+The agent-native profile entrypoint is
+`profiles/asiep/v0.1/profile.json`. Agents should start there, then load the
+schema, JSON-LD context, conformance matrix, examples, and validator entrypoint
+listed in the manifest.
 
 The v0.1 validator checks:
 
