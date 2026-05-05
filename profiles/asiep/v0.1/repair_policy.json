@@ -198,6 +198,96 @@
       "default_strategy": "Require review of bundle.json before accepting a new manifest hash.",
       "remediation_hint": "Review bundle.json changes and update the manifest hash only after confirming the manifest is correct.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_SCHEMA",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair the import request or fixture to match the declared interface schema"],
+      "forbidden_actions": ["drop required import policy fields", "bypass fixture schema validation"],
+      "default_strategy": "Make the request and fixture schema-valid before importing.",
+      "remediation_hint": "Repair the request or fixture so it conforms to the relevant interface schema.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_SOURCE_UNSUPPORTED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["change source_type to a supported local fixture type"],
+      "forbidden_actions": ["call external APIs to compensate for an unsupported source"],
+      "default_strategy": "Use a supported local source type.",
+      "remediation_hint": "Use one of the supported_import_sources declared in profiles/asiep/v0.1/profile.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_SOURCE_MISSING",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["provide the real local source fixture", "correct source_path"],
+      "forbidden_actions": ["fabricate a trace fixture", "download remote traces"],
+      "default_strategy": "Require the source trace fixture to exist locally.",
+      "remediation_hint": "Provide the local source fixture or correct source_path.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "IMPORT_REQUIRED_ROLE_MISSING",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["provide real source evidence for the missing role", "disable the requirement only if policy permits"],
+      "forbidden_actions": ["fabricate_missing_gate_report", "fabricate_missing_candidate_diff", "invent feedback or score evidence"],
+      "default_strategy": "Stop import until the required role is present in the local fixture.",
+      "remediation_hint": "Provide real source evidence for the missing role; do not fabricate gate reports, candidate diffs, feedback, or score artifacts.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "IMPORT_SENSITIVE_CONTENT_BLOCKED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["replace raw content with refs", "redact sensitive content", "use full_content_for_test_only only for synthetic tests"],
+      "forbidden_actions": ["inline_raw_prompt_by_default", "inline_raw_user_input_by_default", "inline_raw_model_output_by_default"],
+      "default_strategy": "Keep import in ref_only mode and remove raw sensitive content from the fixture.",
+      "remediation_hint": "Remove raw sensitive content, replace it with external refs or redacted summaries, or explicitly use a test-only policy.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_MAPPING_INCOMPLETE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add local role markers", "complete source metadata needed by import_policy"],
+      "forbidden_actions": ["guess missing accountability roles without source evidence"],
+      "default_strategy": "Complete role mapping before generating ASIEP evidence.",
+      "remediation_hint": "Add source role markers or mapping metadata required by import_policy.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_ARTIFACT_WRITE_FAILED",
+      "repairability": "human_required",
+      "allowed_actions": ["fix local output directory permissions", "choose a writable output_bundle_dir"],
+      "forbidden_actions": ["drop artifacts silently"],
+      "default_strategy": "Fix local filesystem access and rerun importer.",
+      "remediation_hint": "Check output_bundle_dir permissions and rerun the local importer.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_BUNDLE_VALIDATION_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["inspect resolver errors", "regenerate bundle from source fixture"],
+      "forbidden_actions": ["edit digests by hand to force resolver success"],
+      "default_strategy": "Regenerate the bundle and verify with asiep_resolver.",
+      "remediation_hint": "Inspect resolver errors and regenerate the bundle without editing digests by hand.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_VALIDATOR_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["inspect validator errors", "repair source mapping or import policy"],
+      "forbidden_actions": ["forge required evidence to satisfy validator"],
+      "default_strategy": "Regenerate ASIEP evidence after fixing mapping defects.",
+      "remediation_hint": "Inspect validator errors and repair source mapping or import policy.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "IMPORT_POLICY_VIOLATION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["change request or fixture to comply with import_policy"],
+      "forbidden_actions": ["inline raw sensitive content by default", "fabricate missing artifacts", "fabricate digest"],
+      "default_strategy": "Align the request with the machine-readable import policy.",
+      "remediation_hint": "Change the request or source fixture to comply with profiles/asiep/v0.1/import_policy.json.",
+      "requires_external_evidence": false
     }
   ]
 }

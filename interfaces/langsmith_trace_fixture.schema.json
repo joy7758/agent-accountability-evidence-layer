@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/langsmith_trace_fixture.schema.json",
+  "title": "Minimal LangSmith-like Trace Fixture",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["project_name", "trace_id", "runs", "feedback"],
+  "properties": {
+    "project_name": { "type": "string", "minLength": 1 },
+    "trace_id": { "type": "string", "minLength": 1 },
+    "runs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/run" }
+    },
+    "feedback": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/feedback" }
+    }
+  },
+  "$defs": {
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "parent_run_id",
+        "name",
+        "run_type",
+        "start_time",
+        "end_time",
+        "inputs_ref",
+        "outputs_ref",
+        "error",
+        "tags",
+        "metadata",
+        "asiep_role"
+      ],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "parent_run_id": { "type": ["string", "null"] },
+        "name": { "type": "string", "minLength": 1 },
+        "run_type": { "type": "string", "minLength": 1 },
+        "start_time": { "type": "string", "format": "date-time" },
+        "end_time": { "type": "string", "format": "date-time" },
+        "inputs_ref": { "type": "string" },
+        "outputs_ref": { "type": "string" },
+        "error": { "type": ["string", "null"] },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "metadata": { "type": "object", "additionalProperties": true },
+        "asiep_role": {
+          "enum": ["trace", "feedback", "score", "diagnosis", "candidate_diff", "gate_report", "incident", "monitoring", "approval", "rollback"]
+        }
+      }
+    },
+    "feedback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "run_id", "key", "score", "comment_ref", "source", "created_at"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "run_id": { "type": "string", "minLength": 1 },
+        "key": { "type": "string", "minLength": 1 },
+        "score": { "type": "number" },
+        "comment_ref": { "type": "string" },
+        "source": { "type": "string", "minLength": 1 },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

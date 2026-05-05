@@ -1,0 +1,90 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "import_policy_version": "0.1.0",
+  "supported_sources": [
+    "otel_genai",
+    "langsmith",
+    "generic_agent_trace"
+  ],
+  "default_content_mode": "ref_only",
+  "sensitive_content_rules": {
+    "blocked_keys": [
+      "prompt",
+      "raw_prompt",
+      "raw_user_input",
+      "raw_model_output",
+      "input",
+      "inputs",
+      "output",
+      "outputs",
+      "messages",
+      "completion"
+    ],
+    "default_action": "block_when_fail_on_sensitive_content_true",
+    "evidence_record_content_mode": "artifact_refs_only"
+  },
+  "required_artifact_roles": [
+    "trace",
+    "feedback",
+    "score",
+    "candidate_diff",
+    "gate_report"
+  ],
+  "role_mapping": {
+    "trace": "dataset",
+    "feedback": "dataset",
+    "score": "evaluation_report",
+    "diagnosis": "safety_check",
+    "candidate_diff": "proposal",
+    "gate_report": "gate_report",
+    "incident": "reference_digest",
+    "monitoring": "reference_digest",
+    "approval": "gate_report",
+    "rollback": "rollback_report"
+  },
+  "source_type_mapping": {
+    "otel_genai": {
+      "role_field": "spans[].attributes.asiep.role",
+      "identity_fields": [
+        "trace_id",
+        "spans[].span_id"
+      ]
+    },
+    "langsmith": {
+      "role_field": "runs[].asiep_role",
+      "identity_fields": [
+        "trace_id",
+        "runs[].run_id",
+        "feedback[].id"
+      ]
+    },
+    "generic_agent_trace": {
+      "role_field": "events[].asiep_role",
+      "identity_fields": [
+        "trace_id"
+      ]
+    }
+  },
+  "forbidden_actions": [
+    "inline_raw_prompt_by_default",
+    "inline_raw_user_input_by_default",
+    "inline_raw_model_output_by_default",
+    "fabricate_missing_gate_report",
+    "fabricate_missing_candidate_diff",
+    "fabricate_digest"
+  ],
+  "default_redaction_policy": {
+    "mode": "ref_only",
+    "allow_raw_content": false,
+    "notes": "Store references and redacted summaries only unless a test fixture explicitly opts into full content."
+  },
+  "output_bundle_rules": {
+    "bundle_root_policy": "output_bundle_dir",
+    "artifact_dir": "artifacts",
+    "network_access": false,
+    "write_bundle_manifest": true,
+    "run_resolver_after_import": true,
+    "run_validator_after_import": true
+  }
+}

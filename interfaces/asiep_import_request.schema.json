@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_import_request.schema.json",
+  "title": "ASIEP Import Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "import_id",
+    "source_type",
+    "source_path",
+    "output_bundle_dir",
+    "profile",
+    "profile_version",
+    "agent_id",
+    "parent_release_id",
+    "base_blueprint_id",
+    "candidate_blueprint_id",
+    "change_scope",
+    "import_policy",
+    "redaction_policy",
+    "created_at"
+  ],
+  "properties": {
+    "import_id": { "type": "string", "pattern": "^import:[A-Za-z0-9._:-]+$" },
+    "source_type": { "enum": ["otel_genai", "langsmith", "generic_agent_trace"] },
+    "source_path": { "type": "string", "minLength": 1 },
+    "output_bundle_dir": { "type": "string", "minLength": 1 },
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "agent_id": { "type": "string", "minLength": 1 },
+    "parent_release_id": { "type": "string", "minLength": 1 },
+    "base_blueprint_id": { "type": "string", "minLength": 1 },
+    "candidate_blueprint_id": { "type": "string", "minLength": 1 },
+    "change_scope": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "import_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_mode",
+        "require_gate_report",
+        "require_candidate_diff",
+        "require_feedback",
+        "require_score",
+        "fail_on_sensitive_content"
+      ],
+      "properties": {
+        "content_mode": {
+          "enum": ["ref_only", "redacted_summary", "full_content_for_test_only"],
+          "default": "ref_only"
+        },
+        "require_gate_report": { "type": "boolean" },
+        "require_candidate_diff": { "type": "boolean" },
+        "require_feedback": { "type": "boolean" },
+        "require_score": { "type": "boolean" },
+        "fail_on_sensitive_content": { "type": "boolean" }
+      }
+    },
+    "redaction_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "allow_raw_content"],
+      "properties": {
+        "mode": { "type": "string", "minLength": 1 },
+        "allow_raw_content": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

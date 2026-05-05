@@ -1,0 +1,27 @@
+{
+  "import_id": "import:invalid-missing-gate-001",
+  "source_type": "otel_genai",
+  "source_path": "../fixtures/invalid_missing_gate_report_trace.json",
+  "output_bundle_dir": "examples/generated_bundles/invalid_missing_gate_bundle",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "agent_id": "agent:customer-chatbot",
+  "parent_release_id": "asiep:chatbot-release-1.2.2",
+  "base_blueprint_id": "blueprint:chatbot-1.2.2",
+  "candidate_blueprint_id": "blueprint:chatbot-1.2.3",
+  "change_scope": "missing gate report negative fixture",
+  "import_policy": {
+    "content_mode": "ref_only",
+    "require_gate_report": true,
+    "require_candidate_diff": true,
+    "require_feedback": true,
+    "require_score": true,
+    "fail_on_sensitive_content": true
+  },
+  "redaction_policy": {
+    "mode": "ref_only",
+    "allow_raw_content": false,
+    "notes": "Negative fixture intentionally omits gate_report."
+  },
+  "created_at": "2026-05-05T04:00:20Z"
+}

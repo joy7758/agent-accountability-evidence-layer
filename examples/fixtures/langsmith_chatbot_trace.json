@@ -1,0 +1,102 @@
+{
+  "project_name": "aael-local-fixtures",
+  "trace_id": "trace:langsmith-chatbot-001",
+  "runs": [
+    {
+      "run_id": "run:root-001",
+      "parent_run_id": null,
+      "name": "chatbot_improvement_trace",
+      "run_type": "chain",
+      "start_time": "2026-05-05T03:00:00Z",
+      "end_time": "2026-05-05T03:00:08Z",
+      "inputs_ref": "fixture://redacted/langsmith/input/001",
+      "outputs_ref": "fixture://redacted/langsmith/output/001",
+      "error": null,
+      "tags": ["asiep", "local-fixture"],
+      "metadata": {
+        "agent_id": "agent:customer-chatbot",
+        "agent_version": "blueprint:chatbot-1.2.2",
+        "environment": "local-fixture"
+      },
+      "asiep_role": "trace"
+    },
+    {
+      "run_id": "run:score-001",
+      "parent_run_id": "run:root-001",
+      "name": "resolved_quality_score",
+      "run_type": "evaluator",
+      "start_time": "2026-05-05T03:00:09Z",
+      "end_time": "2026-05-05T03:00:10Z",
+      "inputs_ref": "fixture://redacted/langsmith/score-input/001",
+      "outputs_ref": "fixture://redacted/langsmith/score-output/001",
+      "error": null,
+      "tags": ["score"],
+      "metadata": {
+        "asiep.score.name": "resolved_quality",
+        "asiep.score.value": 0.9,
+        "asiep.score.threshold": 0.85
+      },
+      "asiep_role": "score"
+    },
+    {
+      "run_id": "run:candidate-diff-001",
+      "parent_run_id": "run:root-001",
+      "name": "candidate_diff_marker",
+      "run_type": "tool",
+      "start_time": "2026-05-05T03:00:11Z",
+      "end_time": "2026-05-05T03:00:12Z",
+      "inputs_ref": "fixture://redacted/langsmith/diff-input/001",
+      "outputs_ref": "fixture://redacted/langsmith/diff-output/001",
+      "error": null,
+      "tags": ["candidate_diff"],
+      "metadata": {
+        "asiep.candidate_diff": "diff --git a/escalation.md b/escalation.md\n@@\n- Use generic escalation text.\n+ Use urgency-aware escalation text with clear next step."
+      },
+      "asiep_role": "candidate_diff"
+    },
+    {
+      "run_id": "run:diagnosis-001",
+      "parent_run_id": "run:root-001",
+      "name": "safety_diagnosis",
+      "run_type": "evaluator",
+      "start_time": "2026-05-05T03:00:13Z",
+      "end_time": "2026-05-05T03:00:14Z",
+      "inputs_ref": "fixture://redacted/langsmith/diagnosis-input/001",
+      "outputs_ref": "fixture://redacted/langsmith/diagnosis-output/001",
+      "error": null,
+      "tags": ["diagnosis"],
+      "metadata": {
+        "asiep.diagnosis": "Synthetic fixture diagnosis: no safety regression in referenced trace and feedback."
+      },
+      "asiep_role": "diagnosis"
+    },
+    {
+      "run_id": "run:gate-report-001",
+      "parent_run_id": "run:root-001",
+      "name": "promotion_gate_report",
+      "run_type": "evaluator",
+      "start_time": "2026-05-05T03:00:15Z",
+      "end_time": "2026-05-05T03:00:16Z",
+      "inputs_ref": "fixture://redacted/langsmith/gate-input/001",
+      "outputs_ref": "fixture://redacted/langsmith/gate-output/001",
+      "error": null,
+      "tags": ["gate_report"],
+      "metadata": {
+        "asiep.gate.decision": "promote",
+        "asiep.gate.reason_ref": "fixture://redacted/langsmith/gate-reason/001"
+      },
+      "asiep_role": "gate_report"
+    }
+  ],
+  "feedback": [
+    {
+      "id": "feedback:helpfulness-001",
+      "run_id": "run:root-001",
+      "key": "helpfulness",
+      "score": 0.93,
+      "comment_ref": "fixture://redacted/langsmith/feedback/comment/001",
+      "source": "synthetic-local-evaluator",
+      "created_at": "2026-05-05T03:00:17Z"
+    }
+  ]
+}

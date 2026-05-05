@@ -1,0 +1,27 @@
+{
+  "import_id": "import:langsmith-chatbot-001",
+  "source_type": "langsmith",
+  "source_path": "../fixtures/langsmith_chatbot_trace.json",
+  "output_bundle_dir": "examples/generated_bundles/langsmith_chatbot_bundle",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "agent_id": "agent:customer-chatbot",
+  "parent_release_id": "asiep:chatbot-release-1.2.1",
+  "base_blueprint_id": "blueprint:chatbot-1.2.1",
+  "candidate_blueprint_id": "blueprint:chatbot-1.2.2",
+  "change_scope": "urgency-aware escalation copy from local LangSmith-like fixture",
+  "import_policy": {
+    "content_mode": "ref_only",
+    "require_gate_report": true,
+    "require_candidate_diff": true,
+    "require_feedback": true,
+    "require_score": true,
+    "fail_on_sensitive_content": true
+  },
+  "redaction_policy": {
+    "mode": "ref_only",
+    "allow_raw_content": false,
+    "notes": "Local LangSmith-like fixture stores refs, tags, and redacted metadata only."
+  },
+  "created_at": "2026-05-05T03:00:20Z"
+}

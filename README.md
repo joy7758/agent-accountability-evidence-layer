@@ -40,6 +40,8 @@ PYTHONPATH=src python scripts/repair_loop_demo.py
 PYTHONPATH=src python -m asiep_resolver examples/bundles/valid_chatbot_bundle/bundle.json --format json
 PYTHONPATH=src python -m asiep_validator examples/bundles/valid_chatbot_bundle/evidence.json --bundle-root examples/bundles/valid_chatbot_bundle --format json
 PYTHONPATH=src python scripts/resolve_bundle_demo.py
+PYTHONPATH=src python -m asiep_importer examples/import_requests/otel_chatbot_request.json --format json
+PYTHONPATH=src python scripts/import_trace_demo.py
 ```
 
 Expected CLI result for the valid example:
@@ -119,6 +121,48 @@ Current M3 limits:
 - no importer/exporter work
 - no automatic digest repair
 - no reading paths outside `bundle_root`
+
+## M4 Trace Importer
+
+M4 adds a local trace fixture importer. It converts OTel-like and LangSmith-like
+JSON fixtures into ASIEP evidence bundles, then runs resolver and validator
+checks over the generated bundle.
+
+Run an OTel-like fixture import:
+
+```bash
+PYTHONPATH=src python -m asiep_importer examples/import_requests/otel_chatbot_request.json --format json
+```
+
+Run a LangSmith-like fixture import:
+
+```bash
+PYTHONPATH=src python -m asiep_importer examples/import_requests/langsmith_chatbot_request.json --format json
+```
+
+Run all import fixtures:
+
+```bash
+PYTHONPATH=src python scripts/import_trace_demo.py
+```
+
+Generated bundles are written under `examples/generated_bundles/` and can be
+checked with:
+
+```bash
+PYTHONPATH=src python -m asiep_resolver examples/generated_bundles/otel_chatbot_bundle/bundle.json --format json
+PYTHONPATH=src python -m asiep_validator examples/generated_bundles/otel_chatbot_bundle/evidence.json --bundle-root examples/generated_bundles/otel_chatbot_bundle --format json
+```
+
+Current M4 limits:
+
+- local fixtures only
+- no LangSmith API calls
+- no OpenTelemetry collector
+- no remote URI fetching
+- default `ref_only`; raw prompt, input, output, messages, and completions are
+  blocked when requested by policy
+- missing gate reports or candidate diffs are not fabricated
 
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.

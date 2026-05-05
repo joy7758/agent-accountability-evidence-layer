@@ -17,14 +17,19 @@
         "repair_loop",
         "evidence_bundle",
         "bundle_resolver",
-        "digest_verification"
+        "digest_verification",
+        "trace_importer",
+        "local_fixture_import",
+        "import_result_json"
       ],
       "keywords": [
         "ASIEP",
         "agent evidence",
         "agent accountability",
         "self-improvement evidence",
-        "repair loop"
+        "repair loop",
+        "trace importer",
+        "local evidence bundle"
       ]
     }
   ]

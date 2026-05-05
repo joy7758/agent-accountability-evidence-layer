@@ -9,8 +9,8 @@ agent that needs to validate, repair, review, or package an evidence object.
 - `profiles/index.json` is the package-level discovery registry. Agents should
   start there when they do not already know the exact profile path.
 - `profiles/asiep/v0.1/profile.json` is the agent entrypoint. It tells an agent
-  where the schema, context, state machine, invariants, examples, validator, and
-  conformance matrix live.
+  where the schema, context, state machine, invariants, examples, validator,
+  repairer, resolver, importer, and conformance matrix live.
 - `schemas/asiep.schema.json` is the structural constraint layer.
 - `contexts/asiep.context.jsonld` is the semantic term layer.
 - `conformance/asiep_v0.1_matrix.yaml` is the rule index that maps invariants to
@@ -18,8 +18,13 @@ agent that needs to validate, repair, review, or package an evidence object.
 - `src/asiep_validator/validator.py` is the machine referee for the profile.
 - `src/asiep_resolver/resolver.py` is the local evidence binding layer. It
   resolves bundle artifacts and recomputes digests without network access.
+- `src/asiep_importer/importer.py` is the local trace-to-evidence bridge. It
+  imports OTel-like and LangSmith-like fixtures into evidence bundles, then
+  reuses the resolver and validator.
 - `src/asiep_validator/error_codes.py` is the agent repair interface. Stable
   codes and remediation hints let another agent patch an evidence object.
+- `profiles/asiep/v0.1/import_policy.json` is the importer boundary. It keeps
+  default imports in `ref_only` mode and blocks raw sensitive content.
 - `examples/` is the conformance corpus for positive and adversarial evidence.
 - `mappings/` is the cross-standard alignment layer for PROV, OpenTelemetry,
   FDO, and RO-Crate.
