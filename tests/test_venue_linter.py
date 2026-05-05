@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROFILE_PATH = ROOT / "profiles" / "asiep" / "v0.1" / "profile.json"
 ESC_POLICY = ROOT / "venues" / "escience2026" / "venue_policy.json"
 AIES_POLICY = ROOT / "venues" / "aies2026" / "venue_policy.json"
-ESC_PAPER = ROOT / "manuscript" / "paper_v0.3_escience.md"
+ESC_PAPER = ROOT / "manuscript" / "paper_v0.4_escience_human_editable.md"
 AIES_BRIEF = ROOT / "manuscript" / "paper_v0.3_aies_positioning_brief.md"
 M9_CODES = {
     "VENUE_POLICY_INVALID",
@@ -55,7 +55,7 @@ def test_venue_policy_schema_and_policies_are_valid() -> None:
     assert aies["ai_use_policy"]["ai_text_allowed"] is False
 
 
-def test_paper_v03_escience_required_sections_and_boundaries() -> None:
+def test_paper_v04_escience_required_sections_and_boundaries() -> None:
     policy = _load_json(ESC_POLICY)
     text = ESC_PAPER.read_text(encoding="utf-8")
     headings = {line.lstrip("#").strip().lower() for line in text.splitlines() if line.startswith("#")}
@@ -70,7 +70,7 @@ def test_paper_v03_escience_required_sections_and_boundaries() -> None:
     assert "minimal implementation" in lower_text
     assert "not external certification" in lower_text
     assert "ai-use disclosure" in lower_text
-    assert "draft for human authoring and verification" in lower_text
+    assert "ai-assisted planning" in lower_text
 
 
 def test_aies_brief_is_caution_only() -> None:

@@ -10,7 +10,7 @@
   "venue_policy_path": "venues/escience2026/venue_policy.json",
   "human_authoring_protocol_path": "submission/escience2026/human_authoring_protocol.json",
   "manuscript_path": "manuscript/paper_v0.4_escience_human_editable.md",
-  "latex_scaffold_path": "submission/escience2026/latex_scaffold/main.tex",
+  "latex_scaffold_path": "submission/escience2026/latex/main.tex",
   "ai_use_disclosure_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
   "artifact_availability_statement_path": "submission/escience2026/artifact_availability_statement.md",
   "final_human_checklist_path": "submission/escience2026/final_human_checklist.md",
@@ -47,7 +47,7 @@
       "required": true
     },
     {
-      "path": "submission/escience2026/latex_scaffold/main.tex",
+      "path": "submission/escience2026/latex/main.tex",
       "role": "ieee_latex_scaffold",
       "required": true
     },
@@ -68,9 +68,9 @@
     }
   ],
   "known_blockers": [
-    "AUTHOR_VERIFY markers remain by design for M10",
-    "Final LaTeX has not been human rewritten or compiled",
+    "Final LaTeX has been synced but not compiled",
     "CFP deadline ambiguity requires human verification",
+    "Final author approval is missing",
     "Repository link and anonymization decision requires human author review"
   ],
   "revalidation_commands": [

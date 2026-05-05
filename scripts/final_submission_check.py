@@ -27,6 +27,11 @@ def main() -> int:
     )
     ai_disclosure_exists = (ROOT / "submission" / "escience2026" / "author_ai_use_disclosure_draft.md").exists()
     artifact_statement_exists = (ROOT / "submission" / "escience2026" / "artifact_availability_statement.md").exists()
+    final_approval_exists = (ROOT / "submission" / "escience2026" / "author_final_approval.json").exists()
+    latex_compile_report_exists = (ROOT / "submission" / "escience2026" / "latex_compile_report.json").exists()
+    page_count_report_exists = (ROOT / "submission" / "escience2026" / "page_count_report.json").exists()
+    deadline_verification_exists = (ROOT / "submission" / "escience2026" / "deadline_verification.json").exists()
+    repository_decision_exists = (ROOT / "submission" / "escience2026" / "repository_anonymization_decision.json").exists()
     errors = []
     if remaining_author_verify:
         errors.append(
@@ -68,6 +73,24 @@ def main() -> int:
                 "repairability": "agent_fixable",
             }
         )
+    required_final_files = [
+        ("author_final_approval.json", final_approval_exists, "Final author approval is missing."),
+        ("latex_compile_report.json", latex_compile_report_exists, "LaTeX compile report is missing."),
+        ("page_count_report.json", page_count_report_exists, "Page count report is missing."),
+        ("deadline_verification.json", deadline_verification_exists, "Deadline ambiguity verification is missing."),
+        ("repository_anonymization_decision.json", repository_decision_exists, "Repository/anonymization decision is missing."),
+    ]
+    for filename, exists, message in required_final_files:
+        if not exists:
+            errors.append(
+                {
+                    "code": "SUBMISSION_LINTER_FAILED",
+                    "severity": "error",
+                    "message": message,
+                    "remediation_hint": f"Human authors must create submission/escience2026/{filename} after completing the corresponding final submission gate.",
+                    "repairability": "human_required",
+                }
+            )
 
     valid = (
         submission["valid"]
@@ -93,6 +116,11 @@ def main() -> int:
             "venue_linter_valid": venue["valid"],
             "ai_disclosure_exists": ai_disclosure_exists,
             "artifact_statement_exists": artifact_statement_exists,
+            "author_final_approval_exists": final_approval_exists,
+            "latex_compile_report_exists": latex_compile_report_exists,
+            "page_count_report_exists": page_count_report_exists,
+            "deadline_verification_exists": deadline_verification_exists,
+            "repository_decision_exists": repository_decision_exists,
         },
         "errors": combined_errors,
         "warnings": submission["warnings"] + venue["warnings"],

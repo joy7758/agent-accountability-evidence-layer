@@ -1,17 +1,17 @@
 {
   "ai_use_policy_checks": [
     {
-      "check_id": "disclosure:Draft for human authoring and verification",
+      "check_id": "disclosure:AI-assisted planning",
       "message": "present",
       "passed": true
     },
     {
-      "check_id": "disclosure:Human authors must verify and rewrite final prose",
+      "check_id": "disclosure:author reviewed, edited, and approved",
       "message": "present",
       "passed": true
     },
     {
-      "check_id": "disclosure:AI-use disclosure",
+      "check_id": "disclosure:AI systems were not used as authors",
       "message": "present",
       "passed": true
     },
@@ -421,8 +421,8 @@
     },
     {
       "check_id": "positioning:reproducible agent evidence pipeline",
-      "message": "present",
-      "passed": true
+      "message": "missing",
+      "passed": false
     },
     {
       "check_id": "positioning:provenance",
@@ -431,8 +431,8 @@
     },
     {
       "check_id": "positioning:scientific infrastructure",
-      "message": "present",
-      "passed": true
+      "message": "missing",
+      "passed": false
     },
     {
       "check_id": "positioning:local evidence package",
@@ -441,8 +441,8 @@
     },
     {
       "check_id": "positioning:reusable validator",
-      "message": "present",
-      "passed": true
+      "message": "missing",
+      "passed": false
     },
     {
       "check_id": "positioning:local fixture",
@@ -461,17 +461,17 @@
     }
   ],
   "page_budget_estimate": {
-    "estimated_pages": 2.45,
+    "estimated_pages": 10.08,
     "figure_count": 0,
-    "likely_over_budget": false,
+    "likely_over_budget": true,
     "method": "word_count/620 + table_rows/25 + 0.25 pages per markdown figure marker",
     "page_limit": 8,
-    "table_count": 0,
-    "word_count": 1522
+    "table_count": 34,
+    "word_count": 5408
   },
-  "paper_id": "paper_v0.3_escience",
-  "paper_version": "0.3.0",
-  "readiness_score": 95,
+  "paper_id": "paper_v0.4_escience_human_editable",
+  "paper_version": "0.4.0",
+  "readiness_score": 90,
   "recommended_human_actions": [
     "Human authors must verify the current venue CFP, deadline, template, and AI-use policy before submission.",
     "Rewrite final prose manually; treat M9 markdown as a structured draft and checklist.",
@@ -540,7 +540,7 @@
       "passed": true
     },
     {
-      "check_id": "section:Acknowledgements and AI-use disclosure draft",
+      "check_id": "section:Acknowledgements and AI-use Disclosure",
       "message": "present",
       "passed": true
     }
@@ -552,6 +552,13 @@
       "code": "VENUE_AI_POLICY_RISK",
       "message": "Human authors must verify venue policy and rewrite final prose.",
       "remediation_hint": "Treat Codex output as draft support only and require human rewrite, verification, and disclosure.",
+      "repairability": "human_required",
+      "severity": "warning"
+    },
+    {
+      "code": "VENUE_PAGE_BUDGET_RISK",
+      "message": "Rough page estimate exceeds the venue page limit.",
+      "remediation_hint": "Shorten prose, reduce tables or figures, or move material to appendix if allowed by the venue.",
       "repairability": "human_required",
       "severity": "warning"
     }

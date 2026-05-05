@@ -32,7 +32,7 @@ def main() -> int:
     citation_result = lint_citations(PROFILE_PATH)
     escience = lint_venue(
         ROOT / "venues" / "escience2026" / "venue_policy.json",
-        ROOT / "manuscript" / "paper_v0.3_escience.md",
+        ROOT / "manuscript" / "paper_v0.4_escience_human_editable.md",
     )
     aies = lint_venue(
         ROOT / "venues" / "aies2026" / "venue_policy.json",

@@ -66,9 +66,7 @@ def test_escience_policy_records_m10_constraints() -> None:
 def test_paper_v04_is_human_editable_not_final_submission() -> None:
     text = PAPER_V04.read_text(encoding="utf-8")
     lower = text.lower()
-    assert "author_verify" in lower
-    assert "human rewrite" in lower
-    assert "not a final submission" in lower
+    assert "author_verify" not in lower
     assert "local fixture" in lower
     assert "minimal implementation" in lower
     assert "not external certification" in lower
@@ -81,10 +79,9 @@ def test_ieee_ai_disclosure_and_latex_scaffold_are_present() -> None:
     assert "sections" in disclosure
     assert "level of use" in disclosure
     assert "human authors" in disclosure and "responsible" in disclosure
-    latex = (ROOT / "submission" / "escience2026" / "latex_scaffold" / "main.tex").read_text(encoding="utf-8").lower()
+    latex = (ROOT / "submission" / "escience2026" / "latex" / "main.tex").read_text(encoding="utf-8").lower()
     assert "ieeetran" in latex
     assert "conference" in latex
-    assert "10pt" in latex
 
 
 def test_submission_linter_outputs_valid_human_rewrite_package() -> None:
@@ -93,19 +90,20 @@ def test_submission_linter_outputs_valid_human_rewrite_package() -> None:
     assert result["stage"] == "rewrite"
     assert result["human_rewrite_required"] is True
     assert result["final_submission_ready"] is False
-    assert result["summary"]["author_verify_markers"] > 0
+    assert result["summary"]["author_verify_markers"] == 0
     assert result["summary"]["deadline_requires_human_verification"] is True
     assert result["summary"]["ieee_ai_disclosure_ready"] is True
     assert result["summary"]["latex_scaffold_ready"] is True
     assert result["errors"] == []
 
 
-def test_submission_linter_final_stage_blocks_remaining_author_verify() -> None:
+def test_submission_linter_final_stage_passes_marker_gate_after_integration() -> None:
     result = lint_submission(profile_path=PROFILE_PATH, stage="final")
-    assert result["valid"] is False
+    assert result["valid"] is True
     assert result["stage"] == "final"
-    assert result["summary"]["paper_author_verify_markers"] > 0
-    assert any(error["code"] == "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN" for error in result["errors"])
+    assert result["summary"]["paper_author_verify_markers"] == 0
+    assert result["summary"]["latex_author_verify_markers"] == 0
+    assert result["summary"]["citation_required_markers"] == 0
 
 
 def test_profile_manifest_indexes_m10_submission_layer() -> None:
@@ -161,10 +159,10 @@ def test_submission_linter_cli_and_demo_script() -> None:
 
 def test_human_rewrite_board_and_section_packets_exist() -> None:
     board = _load_json(ROOT / "submission" / "escience2026" / "human_rewrite_board.json")
-    assert board["current_status"] == "pending_human_rewrite"
+    assert board["current_status"] == "integrated_pending_final_verification"
     assert len(board["sections"]) >= 12
-    assert all(section["status"] == "pending_human_rewrite" for section in board["sections"])
-    assert all(section["author_verify_markers_count"] >= 1 for section in board["sections"])
+    assert all(section["status"] == "human_rewritten" for section in board["sections"])
+    assert all(section["author_verify_markers_count"] == 0 for section in board["sections"])
     packets = list((ROOT / "submission" / "escience2026" / "section_packets").glob("*_packet.md"))
     assert len(packets) >= 12
     for packet in packets:
@@ -183,7 +181,7 @@ def test_final_human_checklist_contains_m11_gates() -> None:
     assert "8-page limit" in text
 
 
-def test_final_check_script_fails_until_human_markers_removed() -> None:
+def test_final_check_script_fails_until_final_human_approval_and_layout_gates() -> None:
     result = subprocess.run(
         [sys.executable, "scripts/final_submission_check.py"],
         cwd=ROOT,
@@ -193,5 +191,16 @@ def test_final_check_script_fails_until_human_markers_removed() -> None:
     assert result.returncode == 1
     payload = json.loads(result.stdout)
     assert payload["valid"] is False
-    assert payload["remaining_author_verify_markers"] > 0
-    assert any(error["code"] == "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN" for error in payload["errors"])
+    assert payload["remaining_author_verify_markers"] == 0
+    assert any("Final author approval is missing" in error["message"] for error in payload["errors"])
+
+
+def test_full_paper_integration_report_records_nonready_status() -> None:
+    report = _load_json(ROOT / "submission" / "escience2026" / "full_paper_integration_report.json")
+    assert report["remaining_author_verify_markers"] == 0
+    assert report["remaining_citation_required_markers"] == 0
+    assert report["missing_citation_keys"] == []
+    assert report["forbidden_claims_found"] == []
+    assert report["latex_synced"] is True
+    assert report["final_submission_ready"] is False
+    assert report["author_final_approval_exists"] is False

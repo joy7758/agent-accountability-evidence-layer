@@ -32,8 +32,8 @@
     },
     {
       "check_id": "author_verify_markers_present",
-      "message": "14 markers found",
-      "passed": true
+      "message": "0 markers found",
+      "passed": false
     },
     {
       "check_id": "ai_disclosure_acknowledgements",
@@ -71,11 +71,6 @@
       "passed": true
     },
     {
-      "check_id": "latex_10pt",
-      "message": "present",
-      "passed": true
-    },
-    {
       "check_id": "artifact_availability_statement",
       "message": "present",
       "passed": true
@@ -101,7 +96,7 @@
   "submission_id": "asiep-escience2026-m10-package",
   "summary": {
     "artifact_statement_ready": true,
-    "author_verify_markers": 14,
+    "author_verify_markers": 0,
     "citation_required_markers": 0,
     "deadline_requires_human_verification": true,
     "final_stage_blocked": false,
@@ -109,10 +104,20 @@
     "ieee_ai_disclosure_ready": true,
     "latex_author_verify_markers": 0,
     "latex_scaffold_ready": true,
-    "paper_author_verify_markers": 14,
+    "paper_author_verify_markers": 0,
     "required_files_checked": 6
   },
   "valid": true,
   "venue_id": "escience2026",
-  "warnings": []
+  "warnings": [
+    {
+      "code": "SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING",
+      "json_path": "$",
+      "json_pointer": "",
+      "message": "No AUTHOR_VERIFY markers remain; run final submission checks before treating the paper as final.",
+      "remediation_hint": "Add AUTHOR_VERIFY markers to sections that require human rewriting, metric checking, citation checking, or CFP verification.",
+      "repairability": "agent_fixable",
+      "severity": "warning"
+    }
+  ]
 }

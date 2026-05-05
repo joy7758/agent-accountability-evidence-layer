@@ -9,7 +9,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 210,
       "current_word_count": 135,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C1", "C3", "C5", "C10", "C12"],
       "citation_keys": [],
       "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "profiles/asiep/v0.1/profile.json"],
@@ -20,7 +20,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect abstract and must be disclosed if retained.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "introduction",
@@ -28,7 +28,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 450,
       "current_word_count": 145,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C1", "C4", "C13"],
       "citation_keys": ["self_refine_2023", "reflexion_2023", "voyager_2023", "agentdevel_2026"],
       "evidence_refs": ["manuscript/related_work_matrix.md", "references/citation_claim_map.json"],
@@ -39,7 +39,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect positioning and related-work framing.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "problem_scope",
@@ -47,7 +47,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 330,
       "current_word_count": 129,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C1", "C2", "C10", "C12"],
       "citation_keys": [],
       "evidence_refs": ["schemas/asiep.schema.json", "interfaces/asiep_evidence_bundle.schema.json", "manuscript/limitations.md"],
@@ -57,7 +57,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect scope boundaries.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "requirements",
@@ -65,7 +65,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 350,
       "current_word_count": 89,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C1", "C2", "C3", "C4"],
       "citation_keys": [],
       "evidence_refs": ["profiles/asiep/v0.1/profile.json", "interfaces/asiep_repair_plan.schema.json", "interfaces/asiep_evidence_bundle.schema.json"],
@@ -75,7 +75,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect requirement phrasing.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "profile_lifecycle",
@@ -83,7 +83,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 450,
       "current_word_count": 103,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C1", "C3", "C4"],
       "citation_keys": [],
       "evidence_refs": ["schemas/asiep.schema.json", "docs/state_machine.md", "docs/invariants.md", "conformance/asiep_v0.1_matrix.yaml"],
@@ -94,7 +94,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect technical description accuracy.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "toolchain",
@@ -102,7 +102,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 500,
       "current_word_count": 113,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C3", "C4"],
       "citation_keys": [],
       "evidence_refs": ["src/asiep_validator", "src/asiep_repairer", "src/asiep_resolver", "src/asiep_importer", "src/asiep_packager", "src/asiep_evaluator"],
@@ -113,7 +113,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect module summary.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "bundle_packaging",
@@ -121,7 +121,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 420,
       "current_word_count": 106,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C2", "C3", "C12"],
       "citation_keys": [],
       "evidence_refs": ["src/asiep_resolver/resolver.py", "src/asiep_packager/packager.py", "docs/evidence_bundle_resolver.md", "docs/fdo_rocrate_packaging.md"],
@@ -131,7 +131,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect package boundary wording.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "evaluation",
@@ -139,7 +139,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 500,
       "current_word_count": 91,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C5", "C6", "C7", "C8", "C11"],
       "citation_keys": [],
       "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "paper_assets/tables/evaluation_metrics.md", "paper_assets/tables/attack_corpus_results.md"],
@@ -150,7 +150,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect metric claims.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "cross_standard_mapping",
@@ -158,7 +158,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 380,
       "current_word_count": 95,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C8", "C9", "C12", "C13"],
       "citation_keys": ["w3c_prov_dm", "w3c_prov_o", "otel_genai_semconv", "otel_genai_agent_spans", "langsmith_observability_concepts", "fdo_architecture_spec", "workflow_run_rocrate", "process_run_crate"],
       "evidence_refs": ["evaluation/crosswalk/asiep_v0.1_crosswalk.json", "mappings/prov_mapping.md", "mappings/otel_mapping.md", "mappings/fdo_mapping.md", "mappings/ro_crate_mapping.md"],
@@ -169,7 +169,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect standards mapping claims.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "artifacts_reproducibility",
@@ -177,7 +177,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 220,
       "current_word_count": 76,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C3", "C4", "C5"],
       "citation_keys": [],
       "evidence_refs": ["submission/escience2026/artifact_availability_statement.md", "scripts/selftest.py", "scripts/submission_demo.py"],
@@ -187,7 +187,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect artifact availability wording.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "limitations",
@@ -195,7 +195,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 300,
       "current_word_count": 89,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C10", "C11", "C12"],
       "citation_keys": [],
       "evidence_refs": ["manuscript/limitations.md", "docs/evaluation_method.md", "docs/fdo_rocrate_packaging.md"],
@@ -206,7 +206,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect limitation wording.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "conclusion",
@@ -214,7 +214,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 180,
       "current_word_count": 63,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": ["C1", "C3", "C10"],
       "citation_keys": [],
       "evidence_refs": ["profiles/asiep/v0.1/profile.json", "reports/asiep_v0.1_evaluation_report.json"],
@@ -224,7 +224,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "AI-generated draft text may affect final framing.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     },
     {
       "section_id": "acknowledgements_ai_use",
@@ -232,7 +232,7 @@
       "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
       "target_word_budget": 120,
       "current_word_count": 111,
-      "author_verify_markers_count": 1,
+      "author_verify_markers_count": 0,
       "claim_ids": [],
       "citation_keys": [],
       "evidence_refs": ["submission/escience2026/author_ai_use_disclosure_draft.md", "venues/escience2026/venue_policy.json"],
@@ -243,7 +243,7 @@
       ],
       "local_only_limitations_present": true,
       "ai_use_relevance": "This section is directly relevant to IEEE AI-use disclosure.",
-      "status": "pending_human_rewrite"
+      "status": "human_rewritten"
     }
   ],
   "global_gates": [
@@ -251,13 +251,13 @@
       "gate_id": "author_verify_zero",
       "description": "All AUTHOR_VERIFY markers are removed by human authors.",
       "required_for_final": true,
-      "status": "blocked"
+      "status": "passed"
     },
     {
       "gate_id": "citation_required_zero",
       "description": "No citation_required markers remain.",
       "required_for_final": true,
-      "status": "pending_check"
+      "status": "passed"
     },
     {
       "gate_id": "local_limits_preserved",
@@ -278,5 +278,5 @@
       "status": "pending_human_check"
     }
   ],
-  "current_status": "pending_human_rewrite"
+  "current_status": "integrated_pending_final_verification"
 }

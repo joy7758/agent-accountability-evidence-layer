@@ -1,0 +1,37 @@
+\section{ASIEP Profile and Lifecycle}
+
+ASIEP defines the evidence object for a single agent self-improvement cycle. Its unit of representation is not an individual message, tool call, trace span, or complete agent deployment, but the improvement event in which an agent system proposes, validates, gates, and records a reusable change. The changed artifact may be a prompt, policy, tool wrapper, memory snapshot, retrieval configuration, planner, evaluation script, or release candidate. This unit is intentionally narrow: it is small enough to validate through explicit invariants, yet broad enough to capture the evidence needed to determine whether a reusable change was justified, accepted or rejected, and recoverable.
+
+The profile is organized into field groups rather than as a flat log format. Each group corresponds to one accountability function in the improvement cycle.
+
+\begin{table}[t]
+\centering
+\caption{ASIEP field groups. AUTHOR\_LAYOUT\_CHECK\_REQUIRED}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Field group & Purpose \\
+\midrule
+profile & Declares the profile name, version, and extension model. \\
+record & Gives the cycle a stable identity and lifecycle state. \\
+lineage & Links the base blueprint, candidate blueprint, parent release, and change scope. \\
+trigger & Explains why the improvement cycle started. \\
+actors & Records provider, critic, evaluator, approver, and operator roles. \\
+runtime & Binds the model, tool registry, memory snapshot, and environment digests. \\
+evidence & References traces, feedback, scores, diagnosis, candidate diff, and gate report. \\
+evaluation & Captures datasets, metrics, flip counts, and safety checks. \\
+gate & Records policy version, thresholds, decision, and decision reason. \\
+integrity & Stores payload hash, previous record hash, signature, and timestamp metadata. \\
+compliance & Records retention, redaction, privacy, and legal-basis references. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This structure separates the core record from the artifacts it references. ASIEP does not require raw traces, prompts, user inputs, model outputs, or gate reports to be embedded directly in the evidence object. Instead, the record binds external artifacts through references, media types, roles, digests, and access policies. This keeps the profile compact and allows sensitive or large artifacts to remain in controlled storage while still supporting local verification through digest checks.
+
+The lifecycle state machine prevents the evidence object from becoming an unordered metadata container. The states are Draft, Observed, EvidenceLocked, CandidateFrozen, Gated, Promoted or Rejected, Deployed, Monitored, and RolledBack or Retired. These states do not attempt to model every release process used by every agent platform. They define the minimum sequence required for a third party, reviewer, or downstream agent to inspect the improvement event. Evidence must be observed before it can be locked. A candidate must be frozen before it can be gated. A promoted candidate must remain linked to deployment, monitoring, and rollback evidence. A rejected candidate remains useful because it records why a proposed improvement did not pass the gate.
+
+Lifecycle transitions are enforced by invariants rather than by documentation alone. Invariants are the bridge between the ASIEP profile and the validator. For example, a record cannot enter EvidenceLocked without resolvable and digest-bound evidence references. It cannot enter Gated before the candidate has reached CandidateFrozen. A Promoted decision requires a gate report. Promotion is blocked when the gate report indicates a safety regression or when pass-to-fail counts exceed the configured threshold. External evidence references must include a URI or bundle-relative path, media type, role, and digest. Rollback claims require incident or monitoring evidence.
+
+These invariants make ASIEP executable as a conformance profile rather than merely readable metadata. A human reviewer can inspect the evidence object, but another agent can also validate it, classify failure causes, request missing artifacts, and rerun checks. This matters because agent self-improvement may occur in environments where audit and repair tasks are themselves partially automated. ASIEP therefore treats the evidence object as both a human-readable research record and a machine-readable accountability artifact.
+
+The extension model is deliberately conservative. Implementations may add domain-specific fields for particular agent platforms, evaluation regimes, deployment environments, or policy requirements. However, extensions should not weaken lifecycle rules, remove required evidence bindings, or bypass gate invariants. ASIEP does not fully model all possible agent updates and does not provide complete governance. Its role is narrower: to define a minimal local profile that makes self-improvement evidence explicit, reference-bound, lifecycle-aware, and checkable.

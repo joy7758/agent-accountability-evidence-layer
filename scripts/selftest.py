@@ -100,10 +100,10 @@ def main() -> int:
         return 1
     venue_result = lint_venue(
         ROOT / "venues" / "escience2026" / "venue_policy.json",
-        ROOT / "manuscript" / "paper_v0.3_escience.md",
+        ROOT / "manuscript" / "paper_v0.4_escience_human_editable.md",
     )
     status = "PASS" if venue_result["valid"] and venue_result["readiness_score"] >= 80 else "FAIL"
-    print(f"{status} asiep_paper_v0.3_escience: readiness={venue_result['readiness_score']} errors={len(venue_result['errors'])}")
+    print(f"{status} asiep_paper_v0.4_escience: readiness={venue_result['readiness_score']} errors={len(venue_result['errors'])}")
     if status != "PASS":
         return 1
     demo = subprocess.run([sys.executable, str(ROOT / "scripts" / "venue_demo.py")], cwd=ROOT, capture_output=True, text=True)
