@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 import json
 from pathlib import Path
 
@@ -70,6 +71,18 @@ def main() -> int:
         errors.append(_issue("SUBMISSION_AI_DISCLOSURE_MISSING", "AI-use disclosure draft is missing."))
     if not artifact_statement_exists:
         errors.append(_issue("SUBMISSION_ARTIFACT_STATEMENT_MISSING", "Artifact availability statement is missing."))
+
+    editorial_rework_required = final_gate_status.get("editorial_rework_required") is True if final_gate_status else False
+    editorial_fix_completed = final_gate_status.get("editorial_fix_completed") is True if final_gate_status else False
+    final_gate_status_ready = final_gate_status.get("final_submission_ready") is True if final_gate_status else False
+    final_approval_after_editorial_fix = _approval_after_editorial_fix(final_approval, final_gate_status)
+
+    if editorial_rework_required:
+        errors.append(_issue("FINAL_APPROVAL_MISSING", "Editorial rework is required before final submission can proceed."))
+    if final_gate_status and not final_gate_status_ready:
+        errors.append(_issue("FINAL_APPROVAL_MISSING", "Final gate status is not final_submission_ready=true."))
+    if editorial_fix_completed and not final_approval_after_editorial_fix:
+        errors.append(_issue("FINAL_APPROVAL_MISSING", "Final author approval predates the latest editorial fix and must be re-confirmed."))
 
     if latex_compile_report:
         _extend_schema_errors(errors, latex_compile_report, ROOT / "interfaces" / "asiep_latex_compile_report.schema.json", "LATEX_COMPILE_POLICY_INVALID")
@@ -150,6 +163,8 @@ def main() -> int:
         required_human_actions.append("create deadline_verification.json after checking the official venue deadline")
     if not final_approval or final_approval.get("approved_by_human_author") is not True:
         required_human_actions.append("create author_final_approval.json only after human approval")
+    if editorial_fix_completed and not final_approval_after_editorial_fix:
+        required_human_actions.append("re-confirm final author approval after the latest editorial fix")
     if not valid:
         required_human_actions.append("complete submission/escience2026/final_human_checklist.md")
     if valid:
@@ -193,6 +208,10 @@ def main() -> int:
             "layout_review_exists": layout_review_exists,
             "layout_review_final_ready": layout_review.get("final_ready") is True if layout_review else False,
             "final_gate_recommendations_present": recommendations_present,
+            "final_gate_status_final_submission_ready": final_gate_status_ready,
+            "editorial_rework_required": editorial_rework_required,
+            "editorial_fix_completed": editorial_fix_completed,
+            "final_approval_after_editorial_fix": final_approval_after_editorial_fix,
         },
         "errors": combined_errors,
         "warnings": submission["warnings"] + venue["warnings"],
@@ -244,6 +263,29 @@ def _load_json_if_exists(path: Path) -> dict:
         return {}
     with path.open(encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def _approval_after_editorial_fix(final_approval: dict, final_gate_status: dict) -> bool:
+    if not final_approval or not final_gate_status:
+        return False
+    completed_at = final_gate_status.get("editorial_fix_completed_at")
+    approved_at = final_approval.get("approved_at")
+    if not completed_at:
+        return True
+    if not approved_at:
+        return False
+    completed_dt = _parse_datetime(completed_at)
+    approved_dt = _parse_datetime(approved_at)
+    if completed_dt is None or approved_dt is None:
+        return False
+    return approved_dt >= completed_dt
+
+
+def _parse_datetime(value: str) -> datetime | None:
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
 
 
 def _extend_schema_errors(errors: list[dict], payload: dict, schema_path: Path, code: str) -> None:

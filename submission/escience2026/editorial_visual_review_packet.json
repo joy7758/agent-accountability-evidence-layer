@@ -1,0 +1,44 @@
+{
+  "created_at": "2026-05-05T17:24:52.650006+00:00",
+  "final_ready": false,
+  "human_final_pdf_review_required": true,
+  "packet_id": "asiep-escience2026-editorial-visual-review-packet",
+  "pages_to_inspect": [
+    {
+      "check": "title, author block, abstract, index terms",
+      "page": 1,
+      "path": "submission/escience2026/editorial_review_shots/page-1.png"
+    },
+    {
+      "check": "Table I caption",
+      "page": 3,
+      "path": "submission/escience2026/editorial_review_shots/page-3.png"
+    },
+    {
+      "check": "Table II caption and metric labels",
+      "page": 6,
+      "path": "submission/escience2026/editorial_review_shots/page-6.png"
+    },
+    {
+      "check": "Table III caption and AI-use disclosure heading",
+      "page": 7,
+      "path": "submission/escience2026/editorial_review_shots/page-7.png"
+    },
+    {
+      "check": "references formatting",
+      "page": 8,
+      "path": "submission/escience2026/editorial_review_shots/page-8.png"
+    }
+  ],
+  "pdf_path": "submission/escience2026/latex/main.pdf",
+  "placeholder_check": {
+    "pdf_text_placeholders_present": false,
+    "source_placeholders_present": false
+  },
+  "screenshots_generated": true,
+  "source_checks": {
+    "acknowledgement_ai_use_disclosure_source_present": true,
+    "repository_statement_source_present": true,
+    "table_caption_placeholders_removed_from_source": true
+  }
+}

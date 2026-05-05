@@ -161,3 +161,17 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [x] Repository package marked `final_submission_ready=true`.
 - [ ] EasyChair upload completed.
 - [ ] EasyChair submission confirmation saved.
+
+## M14-EDITORIAL-FIX Editorial Reopen
+
+- [x] `AUTHOR LAYOUT CHECK REQUIRED` removed from source.
+- [x] `AUTHOR LAYOUT CHECK REQUIRED` absent from rebuilt PDF.
+- [x] PDF metadata populated.
+- [x] Artifact repository statement present.
+- [x] AI-use disclosure heading reviewed.
+- [x] Table captions cleaned.
+- [x] References capitalization checked.
+- [ ] Final PDF reviewed by human author.
+- [ ] Final approval re-confirmed.
+- [ ] `final_submission_check.py` passed after re-approval.
+- [ ] `final_submission_ready=true`.

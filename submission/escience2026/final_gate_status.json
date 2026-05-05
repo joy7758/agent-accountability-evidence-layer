@@ -1,4 +1,5 @@
 {
+  "acknowledgement_ai_use_disclosure_present": true,
   "ai_use_disclosure_status": {
     "disclosure_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
     "draft_present": true,
@@ -20,8 +21,13 @@
     "status": "signed_final_ready"
   },
   "author_identity_recommendation_present": true,
+  "author_layout_placeholders_present": false,
   "author_placeholders_present": false,
-  "blocking_items": [],
+  "blocking_items": [
+    "final author approval predates the latest editorial fix",
+    "final PDF must be reviewed after editorial fix",
+    "final gate promotion must be re-confirmed after editorial fix"
+  ],
   "deadline_verification_status": {
     "deadline_verified": true,
     "draft_path": "submission/escience2026/governance_drafts/deadline_verification.draft.json",
@@ -34,6 +40,12 @@
     "status": "final_verified_conservative_deadline",
     "verified_deadline": "2026-05-18T23:59:00-12:00"
   },
+  "editorial_fix_completed": true,
+  "editorial_fix_completed_at": "2026-05-05T17:25:40.058302+00:00",
+  "editorial_fix_report_path": "submission/escience2026/editorial_fix_report.json",
+  "editorial_rework_reason": "Visible AUTHOR LAYOUT CHECK REQUIRED placeholders in compiled PDF table captions.",
+  "editorial_rework_required": false,
+  "editorial_visual_review_packet_path": "submission/escience2026/editorial_visual_review_packet.json",
   "final_gate_files_missing": [],
   "final_gate_files_present": [
     "submission/escience2026/deadline_verification.json",
@@ -43,14 +55,17 @@
     "submission/escience2026/layout_review.json",
     "submission/escience2026/author_final_approval.json"
   ],
-  "final_gate_promoted_at": "2026-05-05T15:40:03.341937+00:00",
+  "final_gate_promoted_at": "2026-05-05T17:14:49.731328+00:00",
   "final_gate_promoted_by": "Zhang Bin",
   "final_gate_recommendations_path": "submission/escience2026/final_gate_recommendations",
   "final_gate_recommendations_present": true,
   "final_review_packet_path": "submission/escience2026/final_review_packet",
   "final_review_packet_present": true,
-  "final_submission_check_passed": true,
-  "final_submission_ready": true,
+  "final_submission_check_passed": false,
+  "final_submission_ready": false,
+  "final_submission_ready_after_reopen": false,
+  "final_submission_ready_before_editorial_fix": true,
+  "final_submission_ready_invalidated_at": "2026-05-05T17:24:52.650006+00:00",
   "governance_drafts_present": true,
   "latex_compile_status": {
     "compile_report_path": "submission/escience2026/latex_compile_report.json",
@@ -60,11 +75,13 @@
   "layout_review_status": {
     "author_placeholders_present": false,
     "final_file_present": true,
-    "final_ready": true,
-    "overfull_boxes_count": 4,
-    "overfull_boxes_status": "accepted_after_pdf_review",
+    "final_ready": false,
+    "overfull_boxes_count": 5,
+    "overfull_boxes_status": "requires_re-review_after_editorial_fix",
     "page_count": 8,
-    "pdf_reviewed": true
+    "pdf_reviewed": false,
+    "pdf_sha256": "c044d52bb18d4470aa4b07b4c971122fb16a82b43b3c0450a56020df2896ff1f",
+    "status": "stale_after_editorial_fix_pending_reapproval"
   },
   "license_status": {
     "artifact_license": "CC-BY-4.0",
@@ -91,9 +108,11 @@
     "references_excluded_page_count": 8,
     "within_page_limit": true
   },
+  "pdf_metadata_present": true,
   "promotion_dry_run_completed": true,
   "promotion_dry_run_supported": true,
   "promotion_required_for_final_submission": false,
+  "reapproval_required_after_editorial_fix": true,
   "recommended_ai_disclosure_status": "recommended_acceptable_pending_final_author_review",
   "recommended_decisions_count": 8,
   "recommended_layout_status": "provisionally_acceptable_pending_pdf_review",
@@ -102,11 +121,11 @@
   "recommended_repository_policy": "public_repo_allowed",
   "recommended_sensitive_scan_status": "expected_fixture_or_documentation_markers_pending_final_review",
   "remaining_human_actions": [
-    "Log in to EasyChair manually.",
-    "Re-check the live venue deadline before upload.",
-    "Upload submission/escience2026/latex/main.pdf manually.",
-    "Check title, author, abstract, keywords, AI-use disclosure, and repository-link policy in the submission system.",
-    "Click submit manually only after the EasyChair form preview is correct."
+    "Review the rebuilt PDF after editorial fixes.",
+    "Re-confirm final author approval after the editorial fix.",
+    "Run final gate promotion again only after re-approval.",
+    "Run final_submission_check.py after re-approval.",
+    "Upload to EasyChair manually only after final_submission_ready=true is restored."
   ],
   "repository_policy_status": {
     "draft_path": "submission/escience2026/governance_drafts/repository_policy_decision.draft.json",
@@ -119,6 +138,7 @@
     "repository_policy": "public_repo_allowed",
     "status": "final_public_repo_allowed"
   },
+  "repository_url_present": true,
   "sensitive_content_scan_status": {
     "final_ready": true,
     "findings_count": 7,

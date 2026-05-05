@@ -25,6 +25,25 @@ The design assumption is agent-to-agent accountability: future agents should be
 able to inspect, reject, replay, and improve evidence about their own changes
 without depending on one vendor runtime.
 
+## eScience 2026 Artifact
+
+This repository contains the source code, local fixture corpus, paper sources,
+generated tables, and submission materials for the eScience 2026 paper "A FAIR
+Evidence Object Layer for Auditable Agent Self-Improvement." It includes the
+ASIEP profile, validator, repair planner, resolver, importer, packager,
+evaluator, and the local evidence-package assets used to support the paper's
+bounded reproducibility claims.
+
+Public repository:
+https://github.com/joy7758/agent-accountability-evidence-layer
+
+## License Statement
+
+Code and executable tooling in this repository are released under the Apache
+License 2.0. Manuscript text, figures, tables, documentation, examples, and
+non-code artifact materials are released under the Creative Commons Attribution
+4.0 International License (CC BY 4.0), unless otherwise noted.
+
 ## Quickstart
 
 ```bash
