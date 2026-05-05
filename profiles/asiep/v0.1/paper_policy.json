@@ -1,0 +1,122 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "paper_policy_version": "0.1.0",
+  "paper_scope": "Paper v0.1 must bind ASIEP claims to local repository evidence and explicitly preserve M0-M6 limitations.",
+  "paper_draft_path": "manuscript/paper_v0.1.md",
+  "claim_registry_path": "manuscript/claims_registry.json",
+  "evidence_map_path": "manuscript/evidence_map.json",
+  "allowed_claim_types": [
+    "design_claim",
+    "implementation_claim",
+    "evaluation_claim",
+    "mapping_claim",
+    "limitation_claim",
+    "positioning_claim"
+  ],
+  "forbidden_claims": [
+    "claims_external_standard_adoption",
+    "claims_full_fdo_certification",
+    "claims_global_pid_registration",
+    "claims_full_rocrate_certification",
+    "claims_real_langsmith_integration",
+    "claims_real_otel_collector_integration",
+    "claims_production_ready_governance",
+    "claims_complete_privacy_protection",
+    "claims_general_solution_for_all_agents",
+    "claims_benchmark_sota"
+  ],
+  "forbidden_phrases": [
+    "certified",
+    "externally certified",
+    "standard-adopted",
+    "globally resolvable PID",
+    "production-ready",
+    "complete privacy protection",
+    "full OTel integration",
+    "full LangSmith integration",
+    "full RO-Crate certification",
+    "universal solution",
+    "benchmark SOTA"
+  ],
+  "required_evidence_for_claims": {
+    "evaluation_claim": ["reports/asiep_v0.1_evaluation_report.json"],
+    "implementation_claim": ["specific module, schema, policy, or test path"],
+    "mapping_claim": ["evaluation/crosswalk/asiep_v0.1_crosswalk.json", "mappings/"],
+    "limitation_claim": ["README.md", "docs/evaluation_method.md", "manuscript/limitations.md"],
+    "positioning_claim": ["manuscript/related_work_matrix.md", "docs/research_note_v0.1.md"]
+  },
+  "required_limitations": [
+    "local fixtures only",
+    "no real external API integration",
+    "no external FDO registry",
+    "no real PID registration",
+    "no full RO-Crate certification",
+    "no production privacy/DLP system",
+    "no cryptographic signature verification beyond current local digest mechanisms",
+    "no large-scale benchmark",
+    "no human-subject evaluation",
+    "no proof that ASIEP is complete for all agent systems"
+  ],
+  "required_paper_assets": {
+    "tables": [
+      "paper_assets/tables/crosswalk_matrix.md",
+      "paper_assets/tables/evaluation_metrics.md",
+      "paper_assets/tables/attack_corpus_results.md"
+    ],
+    "figures": [
+      "paper_assets/figures/pipeline_flow.mmd",
+      "paper_assets/figures/state_machine.mmd"
+    ],
+    "manuscript": [
+      "manuscript/paper_v0.1.md",
+      "manuscript/claims_registry.json",
+      "manuscript/evidence_map.json",
+      "manuscript/related_work_matrix.md",
+      "manuscript/reviewer_attack_defense_matrix.md",
+      "manuscript/limitations.md",
+      "manuscript/contribution_statement.md",
+      "manuscript/venue_positioning.md",
+      "manuscript/README.md"
+    ]
+  },
+  "required_sections": [
+    "Title",
+    "Abstract",
+    "Introduction",
+    "Problem Statement",
+    "Related Work",
+    "Design Goals",
+    "ASIEP Profile",
+    "Lifecycle State Machine and Invariants",
+    "Agent-native Toolchain",
+    "Evaluation",
+    "Attack Corpus and Robustness",
+    "Cross-standard Mapping",
+    "Discussion",
+    "Limitations",
+    "Standardization Path",
+    "Conclusion"
+  ],
+  "required_review_defense_items": [
+    "JSON schema objection",
+    "AgentDevel overlap",
+    "OpenTelemetry trace overlap",
+    "PROV overlap",
+    "RO-Crate and FDO overlap",
+    "local fixture evaluation",
+    "optimistic metrics",
+    "privacy compliance scope",
+    "missing real integrations",
+    "missing registry or PID",
+    "repair tampering risk",
+    "self-improvement scope"
+  ],
+  "output_rules": {
+    "paper_linter_must_be_valid": true,
+    "all_core_claims_must_have_repository_evidence": true,
+    "evaluation_claims_must_reference_metrics": true,
+    "external_urls_not_allowed_as_sole_evidence": true,
+    "forbidden_claim_phrases_block_paper": true
+  }
+}

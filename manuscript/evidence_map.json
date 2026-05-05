@@ -1,0 +1,172 @@
+{
+  "paper_id": "asiep-paper-v0.1",
+  "paper_version": "0.1.0",
+  "sections": [
+    {
+      "section_id": "S1",
+      "title": "Title",
+      "source_files": ["manuscript/paper_v0.1.md"],
+      "claim_ids": ["C1"],
+      "required_artifacts": []
+    },
+    {
+      "section_id": "S2",
+      "title": "Abstract",
+      "source_files": ["manuscript/paper_v0.1.md", "manuscript/claims_registry.json"],
+      "claim_ids": ["C1", "C2", "C3", "C5", "C8", "C10", "C11", "C12"],
+      "required_artifacts": ["reports/asiep_v0.1_evaluation_report.json"]
+    },
+    {
+      "section_id": "S3",
+      "title": "Introduction",
+      "source_files": ["manuscript/paper_v0.1.md", "README.md"],
+      "claim_ids": ["C1"],
+      "required_artifacts": []
+    },
+    {
+      "section_id": "S4",
+      "title": "Problem Statement",
+      "source_files": ["manuscript/paper_v0.1.md", "docs/research_note_v0.1.md"],
+      "claim_ids": ["C1", "C2"],
+      "required_artifacts": []
+    },
+    {
+      "section_id": "S5",
+      "title": "Related Work",
+      "source_files": ["manuscript/paper_v0.1.md", "manuscript/related_work_matrix.md"],
+      "claim_ids": ["C9", "C13"],
+      "required_artifacts": []
+    },
+    {
+      "section_id": "S6",
+      "title": "Design Goals",
+      "source_files": ["manuscript/paper_v0.1.md", "docs/agent_native_design.md"],
+      "claim_ids": ["C2", "C4"],
+      "required_artifacts": ["profiles/asiep/v0.1/profile.json"]
+    },
+    {
+      "section_id": "S7",
+      "title": "ASIEP Profile",
+      "source_files": ["manuscript/paper_v0.1.md", "schemas/asiep.schema.json", "profiles/asiep/v0.1/profile.json"],
+      "claim_ids": ["C1", "C4"],
+      "required_artifacts": ["interfaces/asiep_paper_claim_registry.schema.json"]
+    },
+    {
+      "section_id": "S8",
+      "title": "Lifecycle State Machine and Invariants",
+      "source_files": ["manuscript/paper_v0.1.md", "docs/state_machine.md", "docs/invariants.md", "conformance/asiep_v0.1_matrix.yaml"],
+      "claim_ids": ["C4"],
+      "required_artifacts": ["paper_assets/figures/state_machine.mmd"]
+    },
+    {
+      "section_id": "S9",
+      "title": "Agent-native Toolchain",
+      "source_files": ["manuscript/paper_v0.1.md", "src/asiep_validator", "src/asiep_repairer", "src/asiep_resolver", "src/asiep_importer", "src/asiep_packager", "src/asiep_evaluator"],
+      "claim_ids": ["C3", "C4"],
+      "required_artifacts": ["paper_assets/figures/pipeline_flow.mmd"]
+    },
+    {
+      "section_id": "S10",
+      "title": "Evaluation",
+      "source_files": ["manuscript/paper_v0.1.md", "reports/asiep_v0.1_evaluation_report.json", "evaluation/corpus/asiep_v0.1_corpus.json"],
+      "claim_ids": ["C5", "C7", "C8"],
+      "required_artifacts": ["paper_assets/tables/evaluation_metrics.md"]
+    },
+    {
+      "section_id": "S11",
+      "title": "Attack Corpus and Robustness",
+      "source_files": ["manuscript/paper_v0.1.md", "paper_assets/tables/attack_corpus_results.md", "evaluation/corpus/asiep_v0.1_corpus.json"],
+      "claim_ids": ["C6"],
+      "required_artifacts": ["paper_assets/tables/attack_corpus_results.md"]
+    },
+    {
+      "section_id": "S12",
+      "title": "Cross-standard Mapping",
+      "source_files": ["manuscript/paper_v0.1.md", "evaluation/crosswalk/asiep_v0.1_crosswalk.json", "mappings/prov_mapping.md", "mappings/otel_mapping.md", "mappings/fdo_mapping.md", "mappings/ro_crate_mapping.md"],
+      "claim_ids": ["C8", "C9"],
+      "required_artifacts": ["paper_assets/tables/crosswalk_matrix.md"]
+    },
+    {
+      "section_id": "S13",
+      "title": "Discussion",
+      "source_files": ["manuscript/paper_v0.1.md", "manuscript/reviewer_attack_defense_matrix.md"],
+      "claim_ids": ["C1", "C13"],
+      "required_artifacts": []
+    },
+    {
+      "section_id": "S14",
+      "title": "Limitations",
+      "source_files": ["manuscript/paper_v0.1.md", "manuscript/limitations.md"],
+      "claim_ids": ["C10", "C11", "C12"],
+      "required_artifacts": []
+    },
+    {
+      "section_id": "S15",
+      "title": "Standardization Path",
+      "source_files": ["manuscript/paper_v0.1.md", "manuscript/venue_positioning.md"],
+      "claim_ids": ["C8", "C13"],
+      "required_artifacts": []
+    },
+    {
+      "section_id": "S16",
+      "title": "Conclusion",
+      "source_files": ["manuscript/paper_v0.1.md", "manuscript/contribution_statement.md"],
+      "claim_ids": ["C1", "C3", "C4", "C5", "C8", "C10"],
+      "required_artifacts": []
+    }
+  ],
+  "tables": [
+    {
+      "table_id": "T1",
+      "title": "Crosswalk Matrix",
+      "source_files": ["evaluation/crosswalk/asiep_v0.1_crosswalk.json"],
+      "output_path": "paper_assets/tables/crosswalk_matrix.md",
+      "claim_ids": ["C8", "C9"]
+    },
+    {
+      "table_id": "T2",
+      "title": "Evaluation Metrics",
+      "source_files": ["reports/asiep_v0.1_evaluation_report.json"],
+      "output_path": "paper_assets/tables/evaluation_metrics.md",
+      "claim_ids": ["C5", "C6", "C7", "C8"]
+    },
+    {
+      "table_id": "T3",
+      "title": "Attack Corpus Results",
+      "source_files": ["evaluation/corpus/asiep_v0.1_corpus.json", "reports/asiep_v0.1_evaluation_report.json"],
+      "output_path": "paper_assets/tables/attack_corpus_results.md",
+      "claim_ids": ["C6"]
+    }
+  ],
+  "figures": [
+    {
+      "figure_id": "F1",
+      "title": "Pipeline Flow",
+      "source_files": ["paper_assets/figures/pipeline_flow.mmd"],
+      "output_path": "paper_assets/figures/pipeline_flow.mmd",
+      "claim_ids": ["C3", "C5"]
+    },
+    {
+      "figure_id": "F2",
+      "title": "State Machine",
+      "source_files": ["paper_assets/figures/state_machine.mmd", "docs/state_machine.md"],
+      "output_path": "paper_assets/figures/state_machine.mmd",
+      "claim_ids": ["C4"]
+    }
+  ],
+  "claims": [
+    { "claim_id": "C1", "section_ids": ["S2", "S3", "S4", "S7", "S13", "S16"], "evidence_refs": ["README.md", "schemas/asiep.schema.json"] },
+    { "claim_id": "C2", "section_ids": ["S2", "S4", "S6"], "evidence_refs": ["interfaces/asiep_evidence_bundle.schema.json", "src/asiep_resolver/resolver.py"] },
+    { "claim_id": "C3", "section_ids": ["S2", "S9", "S16"], "evidence_refs": ["src/asiep_validator", "src/asiep_repairer", "src/asiep_resolver", "src/asiep_importer", "src/asiep_packager", "src/asiep_evaluator"] },
+    { "claim_id": "C4", "section_ids": ["S6", "S7", "S8", "S9", "S16"], "evidence_refs": ["profiles/asiep/v0.1/profile.json", "profiles/index.json"] },
+    { "claim_id": "C5", "section_ids": ["S2", "S10", "S16"], "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "src/asiep_evaluator/evaluator.py"] },
+    { "claim_id": "C6", "section_ids": ["S11"], "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "paper_assets/tables/attack_corpus_results.md"] },
+    { "claim_id": "C7", "section_ids": ["S10"], "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "paper_assets/tables/evaluation_metrics.md"] },
+    { "claim_id": "C8", "section_ids": ["S2", "S10", "S12", "S15", "S16"], "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "evaluation/crosswalk/asiep_v0.1_crosswalk.json"] },
+    { "claim_id": "C9", "section_ids": ["S5", "S12"], "evidence_refs": ["evaluation/crosswalk/asiep_v0.1_crosswalk.json", "mappings/prov_mapping.md"] },
+    { "claim_id": "C10", "section_ids": ["S2", "S14", "S16"], "evidence_refs": ["docs/evaluation_method.md", "manuscript/limitations.md"] },
+    { "claim_id": "C11", "section_ids": ["S2", "S14"], "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "manuscript/limitations.md"] },
+    { "claim_id": "C12", "section_ids": ["S2", "S14"], "evidence_refs": ["docs/fdo_rocrate_packaging.md", "manuscript/limitations.md"] },
+    { "claim_id": "C13", "section_ids": ["S5", "S13", "S15"], "evidence_refs": ["manuscript/related_work_matrix.md", "docs/research_note_v0.1.md"] }
+  ]
+}

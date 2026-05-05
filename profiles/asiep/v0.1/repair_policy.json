@@ -486,6 +486,114 @@
       "default_strategy": "Use only local reproducible M0-M5 artifacts for evaluation.",
       "remediation_hint": "Keep evaluation local and do not use networks, external APIs, hidden failures, or fabricated success.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_POLICY_VIOLATION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["revise paper artifacts to follow paper_policy.json"],
+      "forbidden_actions": ["ignore paper policy", "publish unsupported overclaims"],
+      "default_strategy": "Keep paper claims scoped to local M0-M7 repository evidence.",
+      "remediation_hint": "Revise the paper artifact to follow profiles/asiep/v0.1/paper_policy.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_CLAIM_WITHOUT_EVIDENCE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["attach local repository evidence", "weaken the claim", "remove the claim"],
+      "forbidden_actions": ["use external URL as sole evidence", "invent evidence files"],
+      "default_strategy": "Bind every non-limitation claim to an existing repository artifact.",
+      "remediation_hint": "Attach repository evidence to the claim or weaken/remove the claim.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_EVALUATION_CLAIM_WITHOUT_METRIC",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add metric_refs from the M6 evaluation report"],
+      "forbidden_actions": ["invent metrics", "cite metric values not present in reports/asiep_v0.1_evaluation_report.json"],
+      "default_strategy": "Link evaluation claims to observed M6 metric IDs.",
+      "remediation_hint": "Add metric_refs pointing to metric_results in reports/asiep_v0.1_evaluation_report.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_STRONG_CLAIM_UNDERSUPPORTED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add a second independent evidence reference", "reduce claim_strength"],
+      "forbidden_actions": ["inflate claim strength without more evidence"],
+      "default_strategy": "Keep strong claims rare and independently supported.",
+      "remediation_hint": "Add another independent repository evidence reference or reduce claim_strength.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_FORBIDDEN_CLAIM",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["remove forbidden phrase", "replace overclaim with explicit limitation"],
+      "forbidden_actions": ["claim external adoption", "claim certification", "claim production readiness"],
+      "default_strategy": "Make the paper draft conservative and evidence-bounded.",
+      "remediation_hint": "Remove or rephrase the forbidden claim and state the local M0-M7 limitation explicitly.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_ORPHAN_CLAIM",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["map the claim to a section/table/figure", "remove stale claim references"],
+      "forbidden_actions": ["leave claims disconnected from the evidence map"],
+      "default_strategy": "Keep claim registry and evidence map in sync.",
+      "remediation_hint": "Add the claim to manuscript/evidence_map.json or remove the stale claim reference.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_MISSING_SECTION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add the required paper section", "map section evidence"],
+      "forbidden_actions": ["hide required limitations or evaluation sections"],
+      "default_strategy": "Keep paper_v0.1.md structurally complete for review.",
+      "remediation_hint": "Add the required section to manuscript/paper_v0.1.md and map it in manuscript/evidence_map.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_MISSING_TABLE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["generate required table", "reference existing table in evidence map"],
+      "forbidden_actions": ["omit table while preserving claims that depend on it"],
+      "default_strategy": "Keep paper-ready tables visible and traceable.",
+      "remediation_hint": "Generate or reference the required table under paper_assets/tables/.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_MISSING_FIGURE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["generate required figure", "reference existing figure in evidence map"],
+      "forbidden_actions": ["omit figure while preserving claims that depend on it"],
+      "default_strategy": "Keep paper-ready figures visible and traceable.",
+      "remediation_hint": "Generate or reference the required figure under paper_assets/figures/.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_EVIDENCE_REF_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["correct repository path", "add missing local evidence artifact"],
+      "forbidden_actions": ["replace missing local evidence with external URL only"],
+      "default_strategy": "Resolve every claim evidence path inside the repository.",
+      "remediation_hint": "Correct the repository path or add the missing evidence artifact.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_ASSET_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["create required manuscript or paper asset", "update policy and map consistently"],
+      "forbidden_actions": ["silently skip required paper asset"],
+      "default_strategy": "Keep the manuscript and generated assets complete before paper review.",
+      "remediation_hint": "Create the required local paper asset or update the paper policy and evidence map consistently.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PAPER_LINTER_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair claim registry schema", "repair evidence map schema"],
+      "forbidden_actions": ["ignore linter schema failures"],
+      "default_strategy": "Make paper accountability artifacts schema-valid before review.",
+      "remediation_hint": "Inspect the linter JSON output and repair the schema-invalid paper artifact.",
+      "requires_external_evidence": false
     }
   ]
 }

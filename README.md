@@ -262,6 +262,44 @@ Current M6 limits:
 - generated paper assets are tables, figures, an outline, and an abstract draft,
   not a full paper
 
+## M7 Paper Claim Accountability
+
+M7 adds Paper v0.1 and a claim-to-evidence accountability layer. The manuscript
+is under `manuscript/`, but the agent-readable review surface is
+`manuscript/claims_registry.json`, `manuscript/evidence_map.json`, and
+`profiles/asiep/v0.1/paper_policy.json`.
+
+View the draft:
+
+```bash
+sed -n '1,220p' manuscript/paper_v0.1.md
+```
+
+Run the paper linter:
+
+```bash
+PYTHONPATH=src python -m asiep_paper_linter --profile profiles/asiep/v0.1/profile.json --format json
+```
+
+Run the paper demo:
+
+```bash
+PYTHONPATH=src python scripts/paper_demo.py
+```
+
+The claim registry records each core paper claim, its claim type, strength,
+repository evidence, metric references, limitations, and reviewer risks. The
+evidence map connects claims to paper sections, tables, figures, and source
+files so another agent can find unsupported or orphan claims.
+
+Current M7 limits:
+
+- paper v0.1 is a draft, not a final submission
+- external references are not verified until M8
+- no new runtime modules or external integrations are added
+- the linter checks local evidence binding and high-risk wording, not academic
+  correctness of future citations
+
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.
 

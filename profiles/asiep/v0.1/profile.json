@@ -15,6 +15,8 @@
       "import local trace fixture into ASIEP evidence bundle",
       "package ASIEP evidence bundle into local FDO-like and RO-Crate-like package",
       "evaluate local corpus and generate paper-ready evidence assets",
+      "inspect paper claims and evidence bindings",
+      "lint paper overclaims",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -33,6 +35,9 @@
       "evaluation",
       "crosswalk",
       "paper assets",
+      "paper linter",
+      "claim registry",
+      "evidence map",
       "repair plan",
       "conformance"
     ]
@@ -58,18 +63,23 @@
   "evaluation_report_schema_path": "interfaces/asiep_evaluation_report.schema.json",
   "crosswalk_matrix_schema_path": "interfaces/asiep_crosswalk_matrix.schema.json",
   "corpus_manifest_schema_path": "interfaces/asiep_corpus_manifest.schema.json",
+  "paper_claim_registry_schema_path": "interfaces/asiep_paper_claim_registry.schema.json",
+  "paper_evidence_map_schema_path": "interfaces/asiep_paper_evidence_map.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
   "package_policy_path": "profiles/asiep/v0.1/package_policy.json",
   "evaluation_policy_path": "profiles/asiep/v0.1/evaluation_policy.json",
+  "paper_policy_path": "profiles/asiep/v0.1/paper_policy.json",
   "crosswalk_matrix_path": "evaluation/crosswalk/asiep_v0.1_crosswalk.json",
   "corpus_manifest_path": "evaluation/corpus/asiep_v0.1_corpus.json",
   "paper_assets_path": "paper_assets",
+  "manuscript_path": "manuscript",
   "repair_loop_supported": true,
   "bundle_resolver_supported": true,
   "importer_supported": true,
   "packager_supported": true,
   "evaluator_supported": true,
+  "paper_linter_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
@@ -126,6 +136,13 @@
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_evaluator --profile profiles/asiep/v0.1/profile.json --format json"
+  },
+  "paper_linter_entrypoint": {
+    "module": "asiep_paper_linter",
+    "cli": "python -m asiep_paper_linter",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_paper_linter --profile profiles/asiep/v0.1/profile.json --format json"
   },
   "examples": {
     "valid_examples": [
@@ -223,7 +240,19 @@
     "EVAL_REPORT_INVALID",
     "EVAL_EXPECTED_RESULT_MISMATCH",
     "EVAL_PAPER_ASSET_WRITE_FAILED",
-    "EVAL_POLICY_VIOLATION"
+    "EVAL_POLICY_VIOLATION",
+    "PAPER_POLICY_VIOLATION",
+    "PAPER_CLAIM_WITHOUT_EVIDENCE",
+    "PAPER_EVALUATION_CLAIM_WITHOUT_METRIC",
+    "PAPER_STRONG_CLAIM_UNDERSUPPORTED",
+    "PAPER_FORBIDDEN_CLAIM",
+    "PAPER_ORPHAN_CLAIM",
+    "PAPER_MISSING_SECTION",
+    "PAPER_MISSING_TABLE",
+    "PAPER_MISSING_FIGURE",
+    "PAPER_EVIDENCE_REF_MISSING",
+    "PAPER_ASSET_MISSING",
+    "PAPER_LINTER_FAILED"
   ],
   "supported_output_formats": [
     {
@@ -253,6 +282,10 @@
     {
       "format": "evaluation-report-json",
       "consumer": "agent reproducibility, crosswalk, and paper evidence loops"
+    },
+    {
+      "format": "paper-lint-json",
+      "consumer": "agent paper claim accountability and overclaim review loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"
