@@ -3,7 +3,7 @@
   "profile_version": "0.1.0",
   "profile_uri": "https://w3id.org/asiep/v0.1",
   "discovery": {
-    "package_role": "agent-readable profile conformance, repair, bundle resolution, and trace import package",
+    "package_role": "agent-readable profile conformance, repair, bundle resolution, trace import, and packaging package",
     "registry_path": "profiles/index.json",
     "primary_entrypoint": "profiles/asiep/v0.1/profile.json",
     "agent_tasks": [
@@ -13,6 +13,7 @@
       "resolve local evidence bundle",
       "verify local artifact digests",
       "import local trace fixture into ASIEP evidence bundle",
+      "package ASIEP evidence bundle into local FDO-like and RO-Crate-like package",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -24,6 +25,10 @@
       "validator",
       "importer",
       "trace fixture",
+      "packager",
+      "FDO",
+      "RO-Crate",
+      "PROV",
       "repair plan",
       "conformance"
     ]
@@ -40,11 +45,19 @@
   "import_result_schema_path": "interfaces/asiep_import_result.schema.json",
   "otel_genai_trace_fixture_schema_path": "interfaces/otel_genai_trace_fixture.schema.json",
   "langsmith_trace_fixture_schema_path": "interfaces/langsmith_trace_fixture.schema.json",
+  "package_request_schema_path": "interfaces/asiep_package_request.schema.json",
+  "package_result_schema_path": "interfaces/asiep_package_result.schema.json",
+  "package_manifest_schema_path": "interfaces/asiep_package_manifest.schema.json",
+  "fdo_record_schema_path": "interfaces/asiep_fdo_record.schema.json",
+  "rocrate_metadata_schema_path": "interfaces/asiep_rocrate_metadata.schema.json",
+  "prov_jsonld_schema_path": "interfaces/asiep_prov_jsonld.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
+  "package_policy_path": "profiles/asiep/v0.1/package_policy.json",
   "repair_loop_supported": true,
   "bundle_resolver_supported": true,
   "importer_supported": true,
+  "packager_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
@@ -54,6 +67,11 @@
     "otel_genai",
     "langsmith",
     "generic_agent_trace"
+  ],
+  "supported_package_types": [
+    "fdo_rocrate_local",
+    "rocrate_local",
+    "fdo_local"
   ],
   "validator_entrypoint": {
     "module": "asiep_validator",
@@ -82,6 +100,13 @@
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_importer {import_request_path} --format json"
+  },
+  "packager_entrypoint": {
+    "module": "asiep_packager",
+    "cli": "python -m asiep_packager",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_packager {package_request_path} --format json"
   },
   "examples": {
     "valid_examples": [
@@ -157,7 +182,20 @@
     "IMPORT_ARTIFACT_WRITE_FAILED",
     "IMPORT_BUNDLE_VALIDATION_FAILED",
     "IMPORT_VALIDATOR_FAILED",
-    "IMPORT_POLICY_VIOLATION"
+    "IMPORT_POLICY_VIOLATION",
+    "PACKAGE_SCHEMA",
+    "PACKAGE_INPUT_BUNDLE_MISSING",
+    "PACKAGE_RESOLVER_FAILED",
+    "PACKAGE_VALIDATOR_FAILED",
+    "PACKAGE_POLICY_VIOLATION",
+    "PACKAGE_ARTIFACT_COPY_FAILED",
+    "PACKAGE_DIGEST_MISMATCH",
+    "PACKAGE_MANIFEST_INVALID",
+    "PACKAGE_FDO_RECORD_INVALID",
+    "PACKAGE_ROCRATE_INVALID",
+    "PACKAGE_PROV_INVALID",
+    "PACKAGE_WRITE_FAILED",
+    "PACKAGE_PID_CLAIM_FORBIDDEN"
   ],
   "supported_output_formats": [
     {
@@ -179,6 +217,10 @@
     {
       "format": "import-result-json",
       "consumer": "agent trace-to-evidence import and revalidation loops"
+    },
+    {
+      "format": "package-result-json",
+      "consumer": "agent package exchange and cross-standard inspection loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"

@@ -21,10 +21,16 @@ agent that needs to validate, repair, review, or package an evidence object.
 - `src/asiep_importer/importer.py` is the local trace-to-evidence bridge. It
   imports OTel-like and LangSmith-like fixtures into evidence bundles, then
   reuses the resolver and validator.
+- `src/asiep_packager/packager.py` is the local exchange packaging layer. It
+  wraps validated bundles as package manifests, FDO-like records,
+  RO-Crate-like metadata, and PROV JSON-LD without claiming registry submission.
 - `src/asiep_validator/error_codes.py` is the agent repair interface. Stable
   codes and remediation hints let another agent patch an evidence object.
 - `profiles/asiep/v0.1/import_policy.json` is the importer boundary. It keeps
   default imports in `ref_only` mode and blocks raw sensitive content.
+- `profiles/asiep/v0.1/package_policy.json` is the packaging boundary. It keeps
+  M5 local-only and forbids remote fetches, global PID claims, and sensitive
+  inline metadata.
 - `examples/` is the conformance corpus for positive and adversarial evidence.
 - `mappings/` is the cross-standard alignment layer for PROV, OpenTelemetry,
   FDO, and RO-Crate.

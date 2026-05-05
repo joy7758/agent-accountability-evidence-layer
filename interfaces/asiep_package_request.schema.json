@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_package_request.schema.json",
+  "title": "ASIEP Package Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_id",
+    "package_type",
+    "profile",
+    "profile_version",
+    "input_bundle_manifest_path",
+    "input_bundle_root",
+    "output_package_dir",
+    "package_policy",
+    "created_at"
+  ],
+  "properties": {
+    "package_id": { "type": "string", "pattern": "^package:[A-Za-z0-9._:-]+$" },
+    "package_type": { "enum": ["fdo_rocrate_local", "rocrate_local", "fdo_local"] },
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "input_bundle_manifest_path": { "type": "string", "minLength": 1 },
+    "input_bundle_root": { "type": "string", "minLength": 1 },
+    "output_package_dir": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "package_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "require_resolver_valid",
+        "require_validator_valid",
+        "include_prov_jsonld",
+        "include_fdo_record",
+        "include_rocrate_metadata",
+        "copy_artifacts",
+        "content_mode",
+        "forbid_remote_fetch",
+        "forbid_fake_pid",
+        "forbid_inline_sensitive_content"
+      ],
+      "properties": {
+        "require_resolver_valid": { "type": "boolean", "default": true },
+        "require_validator_valid": { "type": "boolean", "default": true },
+        "include_prov_jsonld": { "type": "boolean", "default": true },
+        "include_fdo_record": { "type": "boolean", "default": true },
+        "include_rocrate_metadata": { "type": "boolean", "default": true },
+        "copy_artifacts": { "type": "boolean", "default": true },
+        "content_mode": { "enum": ["ref_only", "copy_bundle_artifacts"], "default": "copy_bundle_artifacts" },
+        "forbid_remote_fetch": { "type": "boolean", "default": true },
+        "forbid_fake_pid": { "type": "boolean", "default": true },
+        "forbid_inline_sensitive_content": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

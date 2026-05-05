@@ -20,7 +20,11 @@
         "digest_verification",
         "trace_importer",
         "local_fixture_import",
-        "import_result_json"
+        "import_result_json",
+        "local_packager",
+        "fdo_like_record",
+        "rocrate_like_metadata",
+        "prov_jsonld"
       ],
       "keywords": [
         "ASIEP",
@@ -29,7 +33,10 @@
         "self-improvement evidence",
         "repair loop",
         "trace importer",
-        "local evidence bundle"
+        "local evidence bundle",
+        "FDO",
+        "RO-Crate",
+        "PROV"
       ]
     }
   ]

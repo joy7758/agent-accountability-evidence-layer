@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_package_manifest.schema.json",
+  "title": "ASIEP Package Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_id",
+    "package_type",
+    "profile",
+    "profile_version",
+    "package_version",
+    "created_at",
+    "local_pid",
+    "source_bundle",
+    "evidence_record",
+    "fdo_record",
+    "rocrate_metadata",
+    "prov_jsonld",
+    "artifacts",
+    "validation",
+    "integrity",
+    "access_policy",
+    "redaction_policy"
+  ],
+  "properties": {
+    "package_id": { "type": "string", "pattern": "^package:[A-Za-z0-9._:-]+$" },
+    "package_type": { "enum": ["fdo_rocrate_local", "rocrate_local", "fdo_local"] },
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "package_version": { "const": "0.1.0" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "local_pid": { "type": "string", "pattern": "^urn:asiep:package:.+$" },
+    "source_bundle": { "$ref": "#/$defs/file_ref" },
+    "evidence_record": { "$ref": "#/$defs/file_ref" },
+    "fdo_record": { "$ref": "#/$defs/file_ref" },
+    "rocrate_metadata": { "$ref": "#/$defs/file_ref" },
+    "prov_jsonld": { "$ref": "#/$defs/file_ref" },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resolver_valid", "validator_valid", "resolver_error_codes", "validator_error_codes"],
+      "properties": {
+        "resolver_valid": { "type": "boolean" },
+        "validator_valid": { "type": "boolean" },
+        "resolver_error_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "validator_error_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package_manifest_hash", "hash_algorithm", "source_bundle_hash", "evidence_record_hash"],
+      "properties": {
+        "package_manifest_hash": { "$ref": "#/$defs/digest" },
+        "hash_algorithm": { "const": "sha256" },
+        "source_bundle_hash": { "$ref": "#/$defs/digest" },
+        "evidence_record_hash": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "access_policy": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["classification", "network_access", "registry_submission"],
+      "properties": {
+        "classification": { "type": "string", "minLength": 1 },
+        "network_access": { "const": false },
+        "registry_submission": { "const": false }
+      }
+    },
+    "redaction_policy": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["contains_redactions", "inline_sensitive_content"],
+      "properties": {
+        "contains_redactions": { "type": "boolean" },
+        "inline_sensitive_content": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+    "file_ref": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["path", "digest"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "role", "path", "media_type", "digest", "copied_from", "required"],
+      "properties": {
+        "artifact_id": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "media_type": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" },
+        "copied_from": { "type": "string", "minLength": 1 },
+        "required": { "type": "boolean" }
+      }
+    }
+  }
+}

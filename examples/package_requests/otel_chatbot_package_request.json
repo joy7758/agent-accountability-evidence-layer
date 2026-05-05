@@ -1,0 +1,22 @@
+{
+  "package_id": "package:otel-chatbot-001",
+  "package_type": "fdo_rocrate_local",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "input_bundle_manifest_path": "examples/generated_bundles/otel_chatbot_bundle/bundle.json",
+  "input_bundle_root": "examples/generated_bundles/otel_chatbot_bundle",
+  "output_package_dir": "examples/generated_packages/otel_chatbot_package",
+  "package_policy": {
+    "require_resolver_valid": true,
+    "require_validator_valid": true,
+    "include_prov_jsonld": true,
+    "include_fdo_record": true,
+    "include_rocrate_metadata": true,
+    "copy_artifacts": true,
+    "content_mode": "copy_bundle_artifacts",
+    "forbid_remote_fetch": true,
+    "forbid_fake_pid": true,
+    "forbid_inline_sensitive_content": true
+  },
+  "created_at": "2026-05-05T06:00:00Z"
+}
