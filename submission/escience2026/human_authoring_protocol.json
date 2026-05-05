@@ -1,0 +1,107 @@
+{
+  "protocol_id": "asiep-escience2026-human-authoring-protocol",
+  "protocol_version": "0.1.0",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "paper_version": "0.4.0",
+  "created_at": "2026-05-05T00:00:00Z",
+  "human_rewrite_required": true,
+  "final_submission_ready": false,
+  "author_verify_marker": "AUTHOR_VERIFY",
+  "ai_systems_used": [
+    {
+      "system_name": "Codex / OpenAI language-model tools",
+      "use_locations": [
+        "code scaffolding",
+        "test support",
+        "paper draft preparation",
+        "submission support files"
+      ],
+      "use_level": "structural drafting, code generation assistance, repository summarization, and editorial organization",
+      "human_verification_required": true
+    }
+  ],
+  "ieee_ai_disclosure_requirements": {
+    "acknowledgements_disclosure_required": true,
+    "identify_ai_system": true,
+    "identify_sections": true,
+    "describe_level_of_use": true,
+    "state_author_responsibility": true
+  },
+  "section_rewrite_plan": [
+    {
+      "section_id": "abstract",
+      "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
+      "required_action": "rewrite in human-authored prose and verify metric language",
+      "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json"],
+      "author_verify_required": true
+    },
+    {
+      "section_id": "introduction",
+      "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
+      "required_action": "rewrite motivation and verify related-work citations",
+      "evidence_refs": ["references/source_registry.json", "references/citation_claim_map.json"],
+      "author_verify_required": true
+    },
+    {
+      "section_id": "evaluation",
+      "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
+      "required_action": "pull exact values from the regenerated evaluation report",
+      "evidence_refs": ["reports/asiep_v0.1_evaluation_report.json", "paper_assets/tables/evaluation_metrics.md"],
+      "author_verify_required": true
+    },
+    {
+      "section_id": "limitations",
+      "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
+      "required_action": "preserve local-only and no-external-certification boundaries",
+      "evidence_refs": ["manuscript/limitations.md", "submission/escience2026/final_human_checklist.md"],
+      "author_verify_required": true
+    },
+    {
+      "section_id": "acknowledgements_ai_use",
+      "source_path": "manuscript/paper_v0.4_escience_human_editable.md",
+      "required_action": "adapt the IEEE AI-use disclosure to the final submitted manuscript",
+      "evidence_refs": ["submission/escience2026/author_ai_use_disclosure_draft.md"],
+      "author_verify_required": true
+    }
+  ],
+  "required_author_actions": [
+    "rewrite all AUTHOR_VERIFY sections in human-authored prose",
+    "verify the eScience CFP deadline ambiguity before submission",
+    "format the paper using the current IEEE conference template",
+    "compile the LaTeX manuscript and confirm the 8-page limit excluding references",
+    "confirm whether repository links are acceptable under single-blind review",
+    "check all citation keys against references/asiep_references.bib",
+    "update the AI-use disclosure in acknowledgements",
+    "remove or resolve every AUTHOR_VERIFY marker before M11 submission execution"
+  ],
+  "forbidden_actions": [
+    "submit Codex-generated prose without human rewrite",
+    "hide AI-generated content use",
+    "claim external certification",
+    "claim real FDO registry registration",
+    "claim real OpenTelemetry or LangSmith integration",
+    "drop local fixture limitations",
+    "invent citations or metric values"
+  ],
+  "completion_criteria": [
+    "paper contains no AUTHOR_VERIFY markers",
+    "human author confirms all metric values against reports/asiep_v0.1_evaluation_report.json",
+    "LaTeX compiles in IEEE conference format",
+    "main text fits within 8 pages excluding references",
+    "AI-use disclosure is present in acknowledgements",
+    "final author checklist is fully completed"
+  ],
+  "verification_sources": [
+    {
+      "source_id": "escience2026_cfp",
+      "url": "https://www.escience-conference.org/2026/call-for-papers",
+      "human_verification_required": true
+    },
+    {
+      "source_id": "ieee_author_submission_policies",
+      "url": "https://conferences.ieeeauthorcenter.ieee.org/author-ethics/guidelines-and-policies/submission-policies/",
+      "human_verification_required": true
+    }
+  ]
+}

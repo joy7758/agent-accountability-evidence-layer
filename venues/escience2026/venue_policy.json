@@ -6,14 +6,24 @@
   "submission_type": "full_paper",
   "page_limit": 8,
   "reference_exclusion_policy": "references_excluded",
-  "deadline": "2026-05-18 AoE",
-  "review_mode": "conference peer review; human authors must verify current CFP details before submission",
+  "deadline": "2026-05-18/2026-05-19 AoE ambiguity",
+  "paper_submission_deadline_raw": "Monday, May 18, 2026 / Tuesday, May 19, 2026 11:59 PM AoE as shown on CFP",
+  "requires_human_deadline_verification": true,
+  "format": "IEEE 8.5x11 double-column, single-spaced 10-point font",
+  "proceedings_policy": "Accepted full papers are published in IEEE conference proceedings.",
+  "source_constraints": {
+    "cfp_url": "https://www.escience-conference.org/2026/call-for-papers",
+    "ieee_author_policy_url": "https://conferences.ieeeauthorcenter.ieee.org/author-ethics/guidelines-and-policies/submission-policies/",
+    "last_checked": "2026-05-05",
+    "requires_human_policy_verification": true
+  },
+  "review_mode": "single-blind",
   "ai_use_policy": {
     "ai_text_allowed": true,
     "ai_editing_allowed": true,
     "disclosure_required": true,
     "human_final_authoring_required": true,
-    "policy_notes": "M9 records the user-provided CFP brief and requires human verification of final IEEE eScience 2026 policy before submission."
+    "policy_notes": "IEEE eScience 2026 CFP requires AI-generated content disclosure in acknowledgements, identification of the AI system and affected sections, a brief level-of-use explanation, and author responsibility for submitted content."
   },
   "required_sections": [
     "Title",
@@ -86,6 +96,8 @@
     "claim_registry_has_evidence",
     "citation_claim_map_ready",
     "page_budget_estimated",
-    "human_final_authoring_required"
+    "human_final_authoring_required",
+    "deadline_human_verification_required",
+    "ieee_ai_disclosure_fields_present"
   ]
 }

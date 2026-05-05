@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_submission_lint_report.schema.json",
+  "title": "ASIEP Submission Lint Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "profile_version",
+    "valid",
+    "submission_id",
+    "venue_id",
+    "paper_id",
+    "human_rewrite_required",
+    "final_submission_ready",
+    "checks",
+    "errors",
+    "warnings",
+    "summary"
+  ],
+  "properties": {
+    "profile": { "type": "string", "minLength": 1 },
+    "profile_version": { "type": "string", "minLength": 1 },
+    "valid": { "type": "boolean" },
+    "submission_id": { "type": "string", "minLength": 1 },
+    "venue_id": { "type": "string", "minLength": 1 },
+    "paper_id": { "type": "string", "minLength": 1 },
+    "human_rewrite_required": { "type": "boolean" },
+    "final_submission_ready": { "type": "boolean" },
+    "checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "errors": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "warnings": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_files_checked",
+        "author_verify_markers",
+        "deadline_requires_human_verification",
+        "ieee_ai_disclosure_ready",
+        "latex_scaffold_ready",
+        "artifact_statement_ready",
+        "human_checklist_ready"
+      ],
+      "properties": {
+        "required_files_checked": { "type": "integer", "minimum": 0 },
+        "author_verify_markers": { "type": "integer", "minimum": 0 },
+        "deadline_requires_human_verification": { "type": "boolean" },
+        "ieee_ai_disclosure_ready": { "type": "boolean" },
+        "latex_scaffold_ready": { "type": "boolean" },
+        "artifact_statement_ready": { "type": "boolean" },
+        "human_checklist_ready": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check_id", "passed", "message"],
+      "properties": {
+        "check_id": { "type": "string", "minLength": 1 },
+        "passed": { "type": "boolean" },
+        "message": { "type": "string" }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "json_path",
+        "json_pointer",
+        "remediation_hint",
+        "repairability"
+      ],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "type": "string", "enum": ["error", "warning"] },
+        "message": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string" },
+        "json_pointer": { "type": "string" },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": {
+          "type": "string",
+          "enum": [
+            "auto_fixable",
+            "agent_fixable",
+            "external_evidence_required",
+            "human_required",
+            "not_fixable"
+          ]
+        }
+      }
+    }
+  }
+}

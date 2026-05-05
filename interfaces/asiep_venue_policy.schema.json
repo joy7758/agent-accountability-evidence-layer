@@ -33,6 +33,20 @@
     "page_limit": { "type": "integer", "minimum": 1 },
     "reference_exclusion_policy": { "type": "string", "minLength": 1 },
     "deadline": { "type": "string", "minLength": 1 },
+    "paper_submission_deadline_raw": { "type": "string", "minLength": 1 },
+    "requires_human_deadline_verification": { "type": "boolean" },
+    "format": { "type": "string", "minLength": 1 },
+    "proceedings_policy": { "type": "string", "minLength": 1 },
+    "source_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cfp_url": { "type": "string", "minLength": 1 },
+        "ieee_author_policy_url": { "type": "string", "minLength": 1 },
+        "last_checked": { "type": "string", "minLength": 1 },
+        "requires_human_policy_verification": { "type": "boolean" }
+      }
+    },
     "review_mode": { "type": "string", "minLength": 1 },
     "ai_use_policy": {
       "type": "object",

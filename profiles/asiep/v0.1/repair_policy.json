@@ -801,6 +801,105 @@
       "default_strategy": "Block venue readiness until linter inputs are readable and consistent.",
       "remediation_hint": "Inspect the linter JSON output and repair the venue policy, paper draft, or required supporting artifacts.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_MANIFEST_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair submission manifest schema", "add missing asset paths"],
+      "forbidden_actions": ["hide missing submission assets"],
+      "default_strategy": "Keep the M10 submission package discoverable from submission_manifest.json.",
+      "remediation_hint": "Repair submission/escience2026/submission_manifest.json so another agent can discover all M10 submission assets.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_HUMAN_PROTOCOL_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair human authoring protocol", "mark human rewrite required"],
+      "forbidden_actions": ["mark M10 as final submission ready"],
+      "default_strategy": "Keep human rewrite gates machine-readable before M11.",
+      "remediation_hint": "Repair submission/escience2026/human_authoring_protocol.json and keep human_rewrite_required=true.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_MANUSCRIPT_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["create missing manuscript asset", "correct manifest path"],
+      "forbidden_actions": ["lint a different paper silently"],
+      "default_strategy": "Require explicit M10 manuscript and support files.",
+      "remediation_hint": "Create the required file or correct its path in submission_manifest.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add AUTHOR_VERIFY markers", "mark sections for human rewrite"],
+      "forbidden_actions": ["pretend AI draft prose is ready for submission"],
+      "default_strategy": "M10 should preserve explicit human verification gates.",
+      "remediation_hint": "Add AUTHOR_VERIFY markers to sections that require human rewriting, metric checking, citation checking, or CFP verification.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_LATEX_SCAFFOLD_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["create IEEEtran scaffold", "correct latex scaffold path"],
+      "forbidden_actions": ["claim final formatting without compilation"],
+      "default_strategy": "Provide an IEEE-style scaffold while leaving final compilation to M11.",
+      "remediation_hint": "Create submission/escience2026/latex_scaffold/main.tex using IEEEtran conference 10pt structure.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_AI_DISCLOSURE_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add IEEE-style AI-use disclosure draft"],
+      "forbidden_actions": ["hide AI-generated content use", "list AI tools as authors"],
+      "default_strategy": "Make disclosure explicit before human rewrite and final formatting.",
+      "remediation_hint": "Add acknowledgements disclosure text identifying the AI system, affected sections, level of use, and human author responsibility.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_ARTIFACT_STATEMENT_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add artifact availability statement draft"],
+      "forbidden_actions": ["claim artifacts are archived without a real archive"],
+      "default_strategy": "Keep artifact availability wording honest and human-verifiable.",
+      "remediation_hint": "Create submission/escience2026/artifact_availability_statement.md and mark repository/anonymization decisions for human review.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_DEADLINE_VERIFICATION_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["record raw CFP deadline string", "set human verification flag"],
+      "forbidden_actions": ["hide CFP date ambiguity"],
+      "default_strategy": "Expose deadline ambiguity to human authors before submission.",
+      "remediation_hint": "Record the raw CFP deadline string and set requires_human_deadline_verification=true in venue_policy.json and submission_manifest.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_PAGE_BUDGET_RISK",
+      "repairability": "human_required",
+      "allowed_actions": ["human shorten prose", "compile LaTeX", "reduce figures or tables"],
+      "forbidden_actions": ["claim page compliance without compiling"],
+      "default_strategy": "Treat page-budget warnings as M11 human rewrite work.",
+      "remediation_hint": "Use M11 human rewrite and LaTeX compilation to reduce the paper to 8 pages excluding references.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_FINAL_CHECKLIST_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add final human checklist", "link checklist from manifest"],
+      "forbidden_actions": ["skip human deadline, disclosure, and formatting checks"],
+      "default_strategy": "Require a human checklist before moving to M11.",
+      "remediation_hint": "Create submission/escience2026/final_human_checklist.md with CFP, rewrite, AI-use disclosure, and formatting checks.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "SUBMISSION_LINTER_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair manifest", "repair protocol", "repair support files"],
+      "forbidden_actions": ["ignore M10 linter failures"],
+      "default_strategy": "Keep submission engineering machine-readable before M11.",
+      "remediation_hint": "Inspect the submission linter JSON output and repair the submission manifest, protocol, manuscript, or support files.",
+      "requires_external_evidence": false
     }
   ]
 }

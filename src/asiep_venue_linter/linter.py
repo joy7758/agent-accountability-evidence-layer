@@ -184,6 +184,8 @@ def _recommended_actions(policy: dict[str, Any], errors: list[dict[str, Any]], w
 
 
 def _paper_version(path: Path) -> str:
+    if "v0.4" in path.name:
+        return "0.4.0"
     if "v0.3" in path.name:
         return "0.3.0"
     if "v0.2" in path.name:

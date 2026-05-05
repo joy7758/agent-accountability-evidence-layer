@@ -415,6 +415,63 @@ Current M9 limits:
   certification is claimed
 - no ASIEP runtime functionality is added in M9
 
+## M10 eScience Human Rewrite Package
+
+M10 does not add ASIEP functionality. It prepares the eScience 2026 human
+rewrite and submission-support package. The key draft is
+`manuscript/paper_v0.4_escience_human_editable.md`; it intentionally contains
+`AUTHOR_VERIFY` markers and is not a final submission.
+
+Run the submission linter:
+
+```bash
+PYTHONPATH=src python -m asiep_submission_linter --manifest submission/escience2026/submission_manifest.json --format json
+```
+
+Run the submission demo:
+
+```bash
+PYTHONPATH=src python scripts/submission_demo.py
+```
+
+M10 submission assets:
+
+```text
+submission/escience2026/
+|-- human_authoring_protocol.json
+|-- submission_manifest.json
+|-- author_ai_use_disclosure_draft.md
+|-- artifact_availability_statement.md
+|-- final_human_checklist.md
+|-- submission_lint_report.json
+`-- latex_scaffold/
+    |-- README.md
+    `-- main.tex
+```
+
+The eScience policy records the M10 constraints: 8 pages excluding references,
+IEEE 8.5x11 double-column single-spaced 10-point format, single-blind review,
+AI-generated content disclosure in acknowledgements, and IEEE conference
+proceedings for accepted full papers. The CFP date line is stored with its raw
+ambiguity:
+
+```text
+Monday, May 18, 2026 / Tuesday, May 19, 2026 11:59 PM AoE as shown on CFP
+```
+
+`requires_human_deadline_verification` is true. Human authors must resolve that
+before M11.
+
+Current M10 limits:
+
+- paper v0.4 is human-editable, not final
+- the LaTeX file is a scaffold, not a compiled paper
+- final 8-page compliance requires human rewrite and compilation
+- AI-use disclosure is a draft and must be adapted in acknowledgements
+- AIES remains a manual-rewrite-only backup route
+- no runtime functionality, external integration, registry call, or submission
+  action is added
+
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.
 

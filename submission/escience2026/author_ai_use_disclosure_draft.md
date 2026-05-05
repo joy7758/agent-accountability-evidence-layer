@@ -1,11 +1,24 @@
 # Author AI-use Disclosure Draft
 
-Codex and other AI tools were used for project scaffolding, code generation,
-testing support, citation-infrastructure checks, and draft preparation.
+AUTHOR_VERIFY: Adapt this wording to the final submitted IEEE eScience
+manuscript. If AI-generated content remains in submitted content, the
+disclosure must appear in the acknowledgements.
 
-Human authors must verify all venue requirements, references, claims, metrics,
-and final prose. Human authors remain responsible for all submitted content.
-AI tools should not be listed as authors.
+Draft IEEE-style disclosure:
 
-This disclosure draft must be adapted to the final IEEE eScience 2026 author
-instructions before submission.
+```text
+Codex / OpenAI language-model tools were used for project scaffolding, code
+generation assistance, testing support, evidence-map drafting, citation
+infrastructure drafting, and preparation of early manuscript drafts. The
+sections affected by AI-generated draft content include the abstract,
+introduction, toolchain summary, evaluation summary, limitation wording, and
+submission-support materials. The level of use was structural drafting,
+repository summarization, code scaffolding, and editorial organization. Human
+authors verified and rewrote the final manuscript and are responsible for all
+submitted content. AI tools are not authors.
+```
+
+This draft follows the IEEE disclosure pattern recorded for M10: disclose AI
+content in acknowledgements, identify the AI system used, identify the
+sections where AI-generated content was used, briefly describe the level of
+use, and state that human authors are responsible for submitted content.

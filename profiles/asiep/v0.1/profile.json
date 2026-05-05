@@ -20,6 +20,8 @@
       "inspect external source registry",
       "lint paper citations",
       "check venue readiness",
+      "check eScience human rewrite package",
+      "lint submission package",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -49,6 +51,10 @@
       "venue readiness",
       "eScience 2026",
       "AIES 2026",
+      "submission linter",
+      "human rewrite",
+      "IEEE LaTeX scaffold",
+      "AI-use disclosure",
       "repair plan",
       "conformance"
     ]
@@ -80,6 +86,9 @@
   "citation_claim_map_schema_path": "interfaces/asiep_citation_claim_map.schema.json",
   "venue_policy_schema_path": "interfaces/asiep_venue_policy.schema.json",
   "venue_readiness_report_schema_path": "interfaces/asiep_venue_readiness_report.schema.json",
+  "human_authoring_protocol_schema_path": "interfaces/asiep_human_authoring_protocol.schema.json",
+  "submission_manifest_schema_path": "interfaces/asiep_submission_manifest.schema.json",
+  "submission_lint_report_schema_path": "interfaces/asiep_submission_lint_report.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
   "package_policy_path": "profiles/asiep/v0.1/package_policy.json",
@@ -96,11 +105,21 @@
   "manuscript_v02_path": "manuscript/paper_v0.2.md",
   "manuscript_v03_escience_path": "manuscript/paper_v0.3_escience.md",
   "manuscript_v03_aies_brief_path": "manuscript/paper_v0.3_aies_positioning_brief.md",
+  "manuscript_v04_escience_path": "manuscript/paper_v0.4_escience_human_editable.md",
+  "human_authoring_protocol_path": "submission/escience2026/human_authoring_protocol.json",
+  "submission_manifest_path": "submission/escience2026/submission_manifest.json",
+  "latex_scaffold_path": "submission/escience2026/latex_scaffold",
+  "artifact_availability_statement_path": "submission/escience2026/artifact_availability_statement.md",
+  "final_human_checklist_path": "submission/escience2026/final_human_checklist.md",
+  "ai_use_disclosure_draft_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
   "target_venue_assets": {
     "escience2026": {
       "venue_policy_path": "venues/escience2026/venue_policy.json",
       "readiness_report_path": "submission/escience2026/readiness_report.json",
-      "submission_assets_path": "submission/escience2026"
+      "submission_assets_path": "submission/escience2026",
+      "human_authoring_protocol_path": "submission/escience2026/human_authoring_protocol.json",
+      "submission_manifest_path": "submission/escience2026/submission_manifest.json",
+      "latex_scaffold_path": "submission/escience2026/latex_scaffold"
     },
     "aies2026": {
       "venue_policy_path": "venues/aies2026/venue_policy.json",
@@ -115,6 +134,7 @@
   "paper_linter_supported": true,
   "citation_linter_supported": true,
   "venue_linter_supported": true,
+  "submission_linter_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
@@ -192,6 +212,13 @@
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_venue_linter --venue {venue_policy_path} --paper {paper_path} --format json"
+  },
+  "submission_linter_entrypoint": {
+    "module": "asiep_submission_linter",
+    "cli": "python -m asiep_submission_linter",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_submission_linter --manifest submission/escience2026/submission_manifest.json --format json"
   },
   "examples": {
     "valid_examples": [
@@ -324,7 +351,18 @@
     "VENUE_AI_POLICY_RISK",
     "VENUE_PAGE_BUDGET_RISK",
     "VENUE_READINESS_REPORT_INVALID",
-    "VENUE_LINTER_FAILED"
+    "VENUE_LINTER_FAILED",
+    "SUBMISSION_MANIFEST_INVALID",
+    "SUBMISSION_HUMAN_PROTOCOL_INVALID",
+    "SUBMISSION_MANUSCRIPT_MISSING",
+    "SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING",
+    "SUBMISSION_LATEX_SCAFFOLD_MISSING",
+    "SUBMISSION_AI_DISCLOSURE_MISSING",
+    "SUBMISSION_ARTIFACT_STATEMENT_MISSING",
+    "SUBMISSION_DEADLINE_VERIFICATION_MISSING",
+    "SUBMISSION_PAGE_BUDGET_RISK",
+    "SUBMISSION_FINAL_CHECKLIST_MISSING",
+    "SUBMISSION_LINTER_FAILED"
   ],
   "supported_output_formats": [
     {
@@ -366,6 +404,10 @@
     {
       "format": "venue-readiness-json",
       "consumer": "agent venue targeting, page-budget, disclosure, and readiness review loops"
+    },
+    {
+      "format": "submission-lint-json",
+      "consumer": "agent eScience human-rewrite package, IEEE scaffold, and final human checklist review loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"
