@@ -1,0 +1,29 @@
+{
+  "final_pdf_approved": false,
+  "generated_pdf_path": "submission/escience2026/latex/main.pdf",
+  "overfull_boxes": [
+    "Overfull \\hbox (14.5pt too wide) in paragraph at lines 11--12",
+    "Overfull \\hbox (43.2399pt too wide) in paragraph at lines 11--12",
+    "Overfull \\hbox (12.72385pt too wide) in paragraph at lines 11--11",
+    "Overfull \\hbox (18.71118pt too wide) in paragraph at lines 4--19"
+  ],
+  "overfull_boxes_count": 4,
+  "pdf_generated": true,
+  "references_excluded": true,
+  "references_excluded_page_count": 8,
+  "required_human_pdf_checks": [
+    "visually inspect title/authors if present",
+    "inspect overfull boxes",
+    "inspect tables",
+    "inspect crosswalk table",
+    "inspect evaluation metrics table",
+    "inspect acknowledgement / AI-use disclosure",
+    "inspect page count",
+    "inspect references section"
+  ],
+  "source_report": "submission/escience2026/latex_compile_report.json",
+  "total_page_count": 8,
+  "unresolved_citations": [],
+  "unresolved_references": [],
+  "within_8_page_limit": true
+}

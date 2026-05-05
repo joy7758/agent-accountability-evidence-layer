@@ -1,0 +1,53 @@
+{
+  "final_ready": false,
+  "findings_count": 7,
+  "finding_summary": [
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 118,
+      "path": "manuscript/paper_v0.3_escience.md",
+      "rule_id": "raw_prompt_marker"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 414,
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "rule_id": "raw_prompt_marker"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 590,
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "rule_id": "raw_prompt_marker"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 829,
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "rule_id": "raw_prompt_marker"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 12,
+      "path": "paper_assets/tables/attack_corpus_results.md",
+      "rule_id": "raw_prompt_marker"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 17,
+      "path": "examples/fixtures/invalid_sensitive_content_trace.json",
+      "rule_id": "raw_prompt_marker"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 24,
+      "path": "examples/import_requests/invalid_sensitive_content_request.json",
+      "rule_id": "raw_prompt_marker"
+    }
+  ],
+  "human_review_required": true,
+  "instruction": "Final sensitive_content_review.json may be created only after human review.",
+  "recommended_classification": "expected_fixture_or_documentation_markers",
+  "source_recommendation": "submission/escience2026/final_gate_recommendations/sensitive_content_review.recommended.json",
+  "source_report": "submission/escience2026/sensitive_content_scan_report.json"
+}
