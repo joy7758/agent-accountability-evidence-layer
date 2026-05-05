@@ -42,6 +42,8 @@ PYTHONPATH=src python -m asiep_validator examples/bundles/valid_chatbot_bundle/e
 PYTHONPATH=src python scripts/resolve_bundle_demo.py
 PYTHONPATH=src python -m asiep_importer examples/import_requests/otel_chatbot_request.json --format json
 PYTHONPATH=src python scripts/import_trace_demo.py
+PYTHONPATH=src python -m asiep_packager examples/package_requests/otel_chatbot_package_request.json --format json
+PYTHONPATH=src python scripts/package_demo.py
 ```
 
 Expected CLI result for the valid example:
@@ -163,6 +165,53 @@ Current M4 limits:
 - default `ref_only`; raw prompt, input, output, messages, and completions are
   blocked when requested by policy
 - missing gate reports or candidate diffs are not fabricated
+
+## M5 FAIR/FDO and RO-Crate Packaging
+
+M5 adds a local package layer for resolver-valid and validator-valid ASIEP
+bundles. It creates a package manifest, a local FDO-like record, RO-Crate-like
+metadata, PROV JSON-LD, and package-local copies of evidence, bundle, and
+artifacts.
+
+Prepare generated bundles:
+
+```bash
+PYTHONPATH=src python scripts/import_trace_demo.py
+```
+
+Package an OTel-generated bundle:
+
+```bash
+PYTHONPATH=src python -m asiep_packager examples/package_requests/otel_chatbot_package_request.json --format json
+```
+
+Run all package fixtures:
+
+```bash
+PYTHONPATH=src python scripts/package_demo.py
+```
+
+Package output structure:
+
+```text
+examples/generated_packages/otel_chatbot_package/
+|-- package_manifest.json
+|-- fdo_record.json
+|-- ro-crate-metadata.json
+|-- prov.jsonld
+|-- evidence/
+|-- bundle/
+`-- artifacts/
+```
+
+Current M5 limits:
+
+- local FDO-like record only
+- no real FDO registry call
+- no real PID application or global PID claim
+- RO-Crate-like JSON-LD only; no full community certification
+- no remote artifact fetch
+- no raw prompt, input, output, messages, or completions in package metadata
 
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.

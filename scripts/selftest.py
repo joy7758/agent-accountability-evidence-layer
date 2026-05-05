@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from asiep_importer import import_trace
+from asiep_packager import package_bundle
 from asiep_resolver import resolve_bundle
 from asiep_validator import validate_file
 
@@ -32,6 +33,12 @@ IMPORT_CASES = [
     ("invalid_sensitive_content_request.json", False, ["IMPORT_SENSITIVE_CONTENT_BLOCKED"]),
 ]
 
+PACKAGE_CASES = [
+    ("otel_chatbot_package_request.json", True, []),
+    ("langsmith_chatbot_package_request.json", True, []),
+    ("invalid_unvalidated_bundle_package_request.json", False, ["PACKAGE_RESOLVER_FAILED"]),
+]
+
 
 def main() -> int:
     for filename, expected in CASES:
@@ -52,6 +59,15 @@ def main() -> int:
             return 1
     for filename, expected_valid, expected_codes in IMPORT_CASES:
         result = import_trace(ROOT / "examples" / "import_requests" / filename)
+        codes = [error["code"] for error in result["errors"]]
+        valid_matches = result["valid"] is expected_valid
+        codes_match = codes == expected_codes
+        status = "PASS" if valid_matches and codes_match else "FAIL"
+        print(f"{status} {filename}: {codes if codes else ['VALID']}")
+        if not valid_matches or not codes_match:
+            return 1
+    for filename, expected_valid, expected_codes in PACKAGE_CASES:
+        result = package_bundle(ROOT / "examples" / "package_requests" / filename)
         codes = [error["code"] for error in result["errors"]]
         valid_matches = result["valid"] is expected_valid
         codes_match = codes == expected_codes

@@ -288,6 +288,123 @@
       "default_strategy": "Align the request with the machine-readable import policy.",
       "remediation_hint": "Change the request or source fixture to comply with profiles/asiep/v0.1/import_policy.json.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_SCHEMA",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair the package request or generated metadata to match its interface schema"],
+      "forbidden_actions": ["drop required package integrity fields", "bypass schema validation"],
+      "default_strategy": "Make package inputs and generated package metadata schema-valid before exchange.",
+      "remediation_hint": "Repair the package request or generated metadata so it conforms to the relevant package interface schema.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_INPUT_BUNDLE_MISSING",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["provide the real local bundle manifest", "correct input_bundle_manifest_path or input_bundle_root"],
+      "forbidden_actions": ["fabricate an evidence bundle", "fetch remote artifacts"],
+      "default_strategy": "Require a real local ASIEP bundle before packaging.",
+      "remediation_hint": "Provide the local ASIEP bundle or correct input_bundle_manifest_path and input_bundle_root.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "PACKAGE_RESOLVER_FAILED",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["repair the source bundle according to resolver errors", "provide missing real artifacts"],
+      "forbidden_actions": ["package an unresolved bundle", "modify digest to match actual without review", "fetch remote artifacts"],
+      "default_strategy": "Stop packaging until resolver valid=true.",
+      "remediation_hint": "Resolve bundle errors before packaging; do not package an unvalidated evidence bundle.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "PACKAGE_VALIDATOR_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair evidence object using validator errors", "rerun validator --bundle-root"],
+      "forbidden_actions": ["modify evidence record only to force packaging", "forge gate reports or digests"],
+      "default_strategy": "Stop packaging until validator valid=true.",
+      "remediation_hint": "Repair the evidence object and rerun validator --bundle-root before packaging.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_POLICY_VIOLATION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["change package request to comply with package_policy"],
+      "forbidden_actions": ["fetch remote artifacts", "fabricate PID registration", "inline sensitive prompt/input/output"],
+      "default_strategy": "Align the request with profiles/asiep/v0.1/package_policy.json.",
+      "remediation_hint": "Change the package request to comply with profiles/asiep/v0.1/package_policy.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_ARTIFACT_COPY_FAILED",
+      "repairability": "human_required",
+      "allowed_actions": ["fix local filesystem permissions", "rerun from a resolver-valid local bundle"],
+      "forbidden_actions": ["drop required artifacts silently", "replace artifacts with placeholders"],
+      "default_strategy": "Fix local package output writes before packaging.",
+      "remediation_hint": "Check local file permissions and ensure every source artifact remains inside the input bundle.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_DIGEST_MISMATCH",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["regenerate package from a valid source bundle", "verify copied artifact versions"],
+      "forbidden_actions": ["edit digests by hand", "treat mismatched copied artifacts as valid"],
+      "default_strategy": "Regenerate the package and preserve source artifact digests.",
+      "remediation_hint": "Regenerate the package from a resolver-valid bundle; do not edit digests by hand.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "PACKAGE_MANIFEST_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["fix package manifest generation"],
+      "forbidden_actions": ["remove validation or integrity fields to silence schema errors"],
+      "default_strategy": "Make package_manifest.json schema-valid and agent-readable.",
+      "remediation_hint": "Fix packager metadata generation so package_manifest.json conforms to the schema.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_FDO_RECORD_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["fix local FDO-like record generation"],
+      "forbidden_actions": ["claim global PID registration", "rename local_pid to global_pid"],
+      "default_strategy": "Use a local FDO-like record with urn:asiep:fdo local_pid only.",
+      "remediation_hint": "Fix fdo_record.json generation without claiming a global PID or registry registration.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_ROCRATE_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["fix RO-Crate-like JSON-LD graph generation"],
+      "forbidden_actions": ["claim full RO-Crate certification"],
+      "default_strategy": "Represent package files, artifacts, profile, and packaging action as machine-readable graph nodes.",
+      "remediation_hint": "Fix ro-crate-metadata.json so agents can discover the package graph.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_PROV_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["fix PROV JSON-LD generation"],
+      "forbidden_actions": ["invent provenance entities not present in the bundle or package"],
+      "default_strategy": "Represent ASIEP activity, agent, evidence entities, and packaging activity in PROV JSON-LD.",
+      "remediation_hint": "Fix prov.jsonld so it expresses ASIEP activities, agents, entities, and package generation.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_WRITE_FAILED",
+      "repairability": "human_required",
+      "allowed_actions": ["fix output_package_dir permissions", "choose a writable package directory"],
+      "forbidden_actions": ["skip required package files"],
+      "default_strategy": "Fix local output writes and rerun packaging.",
+      "remediation_hint": "Check output_package_dir permissions and rerun the local packager.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "PACKAGE_PID_CLAIM_FORBIDDEN",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["use local_pid only", "remove registry submission claims"],
+      "forbidden_actions": ["fabricate_pid_registration", "claim global PID", "claim registry resolution"],
+      "default_strategy": "Keep M5 packaging local and explicitly non-registered.",
+      "remediation_hint": "Use only local_pid values such as urn:asiep:fdo:<package_id>; do not claim global PID registration.",
+      "requires_external_evidence": false
     }
   ]
 }

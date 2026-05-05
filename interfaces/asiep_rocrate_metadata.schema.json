@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_rocrate_metadata.schema.json",
+  "title": "ASIEP RO-Crate-like Metadata",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["@context", "@graph"],
+  "properties": {
+    "@context": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "array" }
+      ]
+    },
+    "@graph": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["@id", "@type"],
+        "properties": {
+          "@id": { "type": "string", "minLength": 1 },
+          "@type": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

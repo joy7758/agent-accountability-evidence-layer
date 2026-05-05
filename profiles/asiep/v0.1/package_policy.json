@@ -1,0 +1,65 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "package_policy_version": "0.1.0",
+  "supported_package_types": [
+    "fdo_rocrate_local",
+    "rocrate_local",
+    "fdo_local"
+  ],
+  "required_preconditions": [
+    "resolver_valid",
+    "validator_valid"
+  ],
+  "generated_outputs": [
+    "package_manifest.json",
+    "fdo_record.json",
+    "ro-crate-metadata.json",
+    "prov.jsonld",
+    "evidence/evidence.json",
+    "bundle/bundle.json",
+    "artifacts/*"
+  ],
+  "forbidden_actions": [
+    "fetch_remote_artifacts",
+    "fabricate_pid_registration",
+    "inline_sensitive_prompt",
+    "inline_sensitive_user_input",
+    "inline_sensitive_model_output",
+    "package_unvalidated_bundle",
+    "modify_evidence_record_to_pass",
+    "modify_digest_to_match_actual_without_review"
+  ],
+  "default_content_mode": "copy_bundle_artifacts",
+  "digest_rules": {
+    "hash_algorithm": "sha256",
+    "compute_package_file_digests": true,
+    "preserve_source_bundle_digest": true,
+    "forbid_digest_rewrite_without_review": true
+  },
+  "pid_rules": {
+    "local_pid_allowed": true,
+    "local_pid_scheme": "urn:asiep",
+    "global_pid_claim_allowed": false,
+    "registry_submission_allowed": false
+  },
+  "privacy_rules": {
+    "inline_sensitive_content_allowed": false,
+    "metadata_content_mode": "refs_and_digests",
+    "blocked_inline_fields": [
+      "raw_prompt",
+      "raw_user_input",
+      "raw_model_output",
+      "messages",
+      "completion"
+    ]
+  },
+  "validation_rules": {
+    "run_resolver_before_packaging": true,
+    "run_validator_before_packaging": true,
+    "validate_generated_manifest": true,
+    "validate_generated_fdo_record": true,
+    "validate_generated_rocrate_metadata": true,
+    "validate_generated_prov_jsonld": true
+  }
+}

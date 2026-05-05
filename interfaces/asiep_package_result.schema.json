@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_package_result.schema.json",
+  "title": "ASIEP Package Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "profile_version",
+    "package_id",
+    "package_type",
+    "valid",
+    "output_package_dir",
+    "input_bundle_manifest_path",
+    "generated_files",
+    "copied_artifacts",
+    "resolver_result_summary",
+    "validator_result_summary",
+    "fdo_record_path",
+    "rocrate_metadata_path",
+    "prov_jsonld_path",
+    "package_manifest_path",
+    "errors",
+    "warnings",
+    "revalidation_commands"
+  ],
+  "properties": {
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "package_id": { "type": "string" },
+    "package_type": { "type": "string" },
+    "valid": { "type": "boolean" },
+    "output_package_dir": { "type": "string" },
+    "input_bundle_manifest_path": { "type": "string" },
+    "generated_files": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/generated_file" }
+    },
+    "copied_artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/copied_artifact" }
+    },
+    "resolver_result_summary": { "$ref": "#/$defs/check_summary" },
+    "validator_result_summary": { "$ref": "#/$defs/check_summary" },
+    "fdo_record_path": { "type": "string" },
+    "rocrate_metadata_path": { "type": "string" },
+    "prov_jsonld_path": { "type": "string" },
+    "package_manifest_path": { "type": "string" },
+    "errors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/error" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/warning" }
+    },
+    "revalidation_commands": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+    "repairability": {
+      "type": "string",
+      "enum": ["auto_fixable", "agent_fixable", "external_evidence_required", "human_required", "not_fixable"]
+    },
+    "generated_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "media_type", "digest", "role"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "media_type": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" },
+        "role": { "type": "string", "minLength": 1 }
+      }
+    },
+    "copied_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "role", "source_path", "target_path", "digest"],
+      "properties": {
+        "artifact_id": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "source_path": { "type": "string", "minLength": 1 },
+        "target_path": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "check_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valid", "error_codes", "warning_codes"],
+      "properties": {
+        "valid": { "type": "boolean" },
+        "error_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "warning_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "severity", "message", "json_path", "json_pointer", "remediation_hint", "repairability"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "message": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "json_pointer": { "type": "string" },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": { "$ref": "#/$defs/repairability" }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "severity", "message", "json_path", "json_pointer", "remediation_hint", "repairability"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["warning", "info"] },
+        "message": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "json_pointer": { "type": "string" },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": { "$ref": "#/$defs/repairability" }
+      }
+    }
+  }
+}

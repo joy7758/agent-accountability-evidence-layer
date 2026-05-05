@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_fdo_record.schema.json",
+  "title": "ASIEP Local FDO-like Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "local_pid",
+    "object_type",
+    "profile",
+    "profile_version",
+    "record_version",
+    "created_at",
+    "refers_to",
+    "metadata",
+    "operations",
+    "integrity",
+    "access_policy"
+  ],
+  "properties": {
+    "local_pid": { "type": "string", "pattern": "^urn:asiep:fdo:.+$" },
+    "object_type": { "const": "local_fdo_like_asiep_package" },
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "record_version": { "const": "0.1.0" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "refers_to": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package_manifest", "evidence_record", "bundle_manifest"],
+      "properties": {
+        "package_manifest": { "type": "string", "minLength": 1 },
+        "evidence_record": { "type": "string", "minLength": 1 },
+        "bundle_manifest": { "type": "string", "minLength": 1 }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_record_id",
+        "agent_id",
+        "cycle_id",
+        "state",
+        "package_id",
+        "content_type",
+        "conforms_to",
+        "mappings"
+      ],
+      "properties": {
+        "evidence_record_id": { "type": "string", "minLength": 1 },
+        "agent_id": { "type": "string", "minLength": 1 },
+        "cycle_id": { "type": "string", "minLength": 1 },
+        "state": { "type": "string", "minLength": 1 },
+        "package_id": { "type": "string", "minLength": 1 },
+        "content_type": { "const": "application/asiep-package+json" },
+        "conforms_to": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "mappings": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["validate", "resolve_bundle", "inspect_prov", "inspect_rocrate"],
+      "properties": {
+        "validate": { "$ref": "#/$defs/operation" },
+        "resolve_bundle": { "$ref": "#/$defs/operation" },
+        "inspect_prov": { "$ref": "#/$defs/operation" },
+        "inspect_rocrate": { "$ref": "#/$defs/operation" }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hash_algorithm", "source_bundle_hash", "evidence_record_hash"],
+      "properties": {
+        "hash_algorithm": { "const": "sha256" },
+        "source_bundle_hash": { "$ref": "#/$defs/digest" },
+        "evidence_record_hash": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "access_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "network_access", "registry_submission", "global_resolution_claim"],
+      "properties": {
+        "scope": { "const": "local" },
+        "network_access": { "const": false },
+        "registry_submission": { "const": false },
+        "global_resolution_claim": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "target_path", "description"],
+      "properties": {
+        "command": { "type": "string", "minLength": 1 },
+        "target_path": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

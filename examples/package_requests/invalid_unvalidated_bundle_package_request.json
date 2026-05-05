@@ -1,0 +1,22 @@
+{
+  "package_id": "package:invalid-unvalidated-bundle-001",
+  "package_type": "fdo_rocrate_local",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "input_bundle_manifest_path": "examples/bundles/invalid_digest_mismatch_bundle/bundle.json",
+  "input_bundle_root": "examples/bundles/invalid_digest_mismatch_bundle",
+  "output_package_dir": "examples/generated_packages/invalid_unvalidated_bundle_package",
+  "package_policy": {
+    "require_resolver_valid": true,
+    "require_validator_valid": true,
+    "include_prov_jsonld": true,
+    "include_fdo_record": true,
+    "include_rocrate_metadata": true,
+    "copy_artifacts": true,
+    "content_mode": "copy_bundle_artifacts",
+    "forbid_remote_fetch": true,
+    "forbid_fake_pid": true,
+    "forbid_inline_sensitive_content": true
+  },
+  "created_at": "2026-05-05T06:10:00Z"
+}
