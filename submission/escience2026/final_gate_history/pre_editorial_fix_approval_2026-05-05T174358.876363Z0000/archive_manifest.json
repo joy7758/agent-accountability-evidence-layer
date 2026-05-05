@@ -1,0 +1,37 @@
+{
+  "archive_id": "pre_editorial_fix_approval_2026-05-05T174358.876363Z0000",
+  "archived_files": [
+    {
+      "archived_to": "submission/escience2026/final_gate_history/pre_editorial_fix_approval_2026-05-05T174358.876363Z0000/deadline_verification.json",
+      "gate": "deadline",
+      "source": "submission/escience2026/deadline_verification.json"
+    },
+    {
+      "archived_to": "submission/escience2026/final_gate_history/pre_editorial_fix_approval_2026-05-05T174358.876363Z0000/repository_policy_decision.json",
+      "gate": "repository",
+      "source": "submission/escience2026/repository_policy_decision.json"
+    },
+    {
+      "archived_to": "submission/escience2026/final_gate_history/pre_editorial_fix_approval_2026-05-05T174358.876363Z0000/license_decision.json",
+      "gate": "license",
+      "source": "submission/escience2026/license_decision.json"
+    },
+    {
+      "archived_to": "submission/escience2026/final_gate_history/pre_editorial_fix_approval_2026-05-05T174358.876363Z0000/sensitive_content_review.json",
+      "gate": "sensitive",
+      "source": "submission/escience2026/sensitive_content_review.json"
+    },
+    {
+      "archived_to": "submission/escience2026/final_gate_history/pre_editorial_fix_approval_2026-05-05T174358.876363Z0000/layout_review.json",
+      "gate": "layout",
+      "source": "submission/escience2026/layout_review.json"
+    },
+    {
+      "archived_to": "submission/escience2026/final_gate_history/pre_editorial_fix_approval_2026-05-05T174358.876363Z0000/author_final_approval.json",
+      "gate": "approval",
+      "source": "submission/escience2026/author_final_approval.json"
+    }
+  ],
+  "created_at": "2026-05-05T17:43:58.876363+00:00",
+  "reason": "Preserve final gate files that predate the M14 editorial PDF fix."
+}

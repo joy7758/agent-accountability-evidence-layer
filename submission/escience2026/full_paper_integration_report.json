@@ -80,10 +80,10 @@
       "value": 1.0
     }
   ],
-  "final_author_approval_required": true,
+  "final_author_approval_required": false,
   "final_deadline_verified": true,
   "final_repository_policy_decided": true,
-  "final_submission_ready": false,
+  "final_submission_ready": true,
   "forbidden_claims_found": [],
   "integrated_sections_count": 13,
   "latex_compile_attempted": true,
@@ -109,7 +109,7 @@
   "latex_page_count_checked": true,
   "latex_page_count_total": 8,
   "latex_pdf_path": "submission/escience2026/latex/main.pdf",
-  "latex_pdf_sha256": "c044d52bb18d4470aa4b07b4c971122fb16a82b43b3c0450a56020df2896ff1f",
+  "latex_pdf_sha256": "cc7bb463132865be3095de32baf191689470d24932c66c2216b1506193944324",
   "latex_references_excluded_page_count": 8,
   "latex_root": "submission/escience2026/latex",
   "latex_synced": true,
@@ -120,7 +120,7 @@
   "missing_citation_keys": [],
   "page_count_checked": true,
   "paper_id": "asiep-paper-v0.4-escience-human-editable",
-  "reapproval_required_after_editorial_fix": true,
+  "reapproval_required_after_editorial_fix": false,
   "remaining_author_verify_markers": 0,
   "remaining_citation_required_markers": 0,
   "remaining_human_actions": [
