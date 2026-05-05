@@ -170,8 +170,9 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [x] Artifact repository statement present.
 - [x] AI-use disclosure heading reviewed.
 - [x] Table captions cleaned.
+- [x] Table II metric labels tightened.
 - [x] References capitalization checked.
-- [ ] Final PDF reviewed by human author.
-- [ ] Final approval re-confirmed.
-- [ ] `final_submission_check.py` passed after re-approval.
-- [ ] `final_submission_ready=true`.
+- [x] Final PDF reviewed after editorial fix.
+- [x] Author final approval re-confirmed after editorial fix.
+- [x] `final_submission_check.py` passed after editorial fix.
+- [x] `final_submission_ready=true`.

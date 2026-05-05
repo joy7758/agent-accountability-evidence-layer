@@ -17,8 +17,8 @@
     "approved_by": "Zhang Bin",
     "approved_by_human_author": true
   },
-  "final_submission_check_passed": false,
-  "final_submission_ready": false,
+  "final_submission_check_passed": true,
+  "final_submission_ready": true,
   "latex_root": "submission/escience2026/latex",
   "license_choice": {
     "artifact_license": "CC-BY-4.0",
@@ -31,8 +31,9 @@
   "page_limit": 8,
   "paper_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
   "pdf_path": "submission/escience2026/latex/main.pdf",
-  "pdf_sha256": "c044d52bb18d4470aa4b07b4c971122fb16a82b43b3c0450a56020df2896ff1f",
-  "reapproval_required_after_editorial_fix": true,
+  "pdf_sha256": "cc7bb463132865be3095de32baf191689470d24932c66c2216b1506193944324",
+  "post_editorial_final_summary_path": "submission/escience2026/final_submission_packet/post_editorial_final_summary.json",
+  "reapproval_required_after_editorial_fix": false,
   "references_excluded": true,
   "repository_policy": "public_repo_allowed",
   "target_venue": "IEEE eScience 2026",

@@ -43,6 +43,8 @@
     "sensitive_content_scan_checked": { "type": "boolean" },
     "final_pdf_reviewed": { "type": "boolean" },
     "final_submission_ready": { "type": "boolean" },
+    "editorial_fix_reviewed": { "type": "boolean" },
+    "editorial_fix_report_path": { "type": "string", "minLength": 1 },
     "notes": { "type": "array", "items": { "type": "string" } }
   }
 }

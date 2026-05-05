@@ -1,0 +1,27 @@
+{
+  "actual_easychair_submission_completed": false,
+  "ai_use_disclosure_included": true,
+  "author_layout_placeholders_present": false,
+  "created_at": "2026-05-05T17:43:58.876363+00:00",
+  "deadline": "2026-05-18T23:59:00-12:00",
+  "final_submission_ready": true,
+  "license_choice": {
+    "artifact_license": "CC-BY-4.0",
+    "code_license": "Apache-2.0",
+    "manuscript_license": "CC-BY-4.0"
+  },
+  "packet_id": "asiep-escience2026-post-editorial-final-summary",
+  "page_count": 8,
+  "page_limit": 8,
+  "paper_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
+  "pdf_metadata_present": true,
+  "pdf_path": "submission/escience2026/latex/main.pdf",
+  "pdf_sha256": "cc7bb463132865be3095de32baf191689470d24932c66c2216b1506193944324",
+  "repository_policy": "public_repo_allowed",
+  "repository_url_present": true,
+  "target_venue": "IEEE eScience 2026",
+  "unresolved_citations": [],
+  "unresolved_references": [],
+  "venue_id": "escience2026",
+  "within_page_limit": true
+}

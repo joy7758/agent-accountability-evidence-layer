@@ -8,7 +8,7 @@
 - Repository URL present: `true`
 - AI-use disclosure heading/content present: `false`
 - PDF path: `submission/escience2026/latex/main.pdf`
-- PDF SHA-256: `c044d52bb18d4470aa4b07b4c971122fb16a82b43b3c0450a56020df2896ff1f`
+- PDF SHA-256: `cc7bb463132865be3095de32baf191689470d24932c66c2216b1506193944324`
 - Page count: `8`
 - Overfull boxes in latest log: `5`
 
