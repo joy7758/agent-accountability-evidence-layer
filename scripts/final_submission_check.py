@@ -36,7 +36,10 @@ def main() -> int:
     repository_decision_path = ROOT / "submission" / "escience2026" / "repository_policy_decision.json"
     license_decision_path = ROOT / "submission" / "escience2026" / "license_decision.json"
     sensitive_scan_report_path = ROOT / "submission" / "escience2026" / "sensitive_content_scan_report.json"
+    sensitive_review_path = ROOT / "submission" / "escience2026" / "sensitive_content_review.json"
+    layout_review_path = ROOT / "submission" / "escience2026" / "layout_review.json"
     governance_drafts_dir = ROOT / "submission" / "escience2026" / "governance_drafts"
+    recommendations_dir = ROOT / "submission" / "escience2026" / "final_gate_recommendations"
     final_gate_status = _load_json_if_exists(ROOT / "submission" / "escience2026" / "final_gate_status.json")
     final_approval = _load_json_if_exists(final_approval_path)
     latex_compile_report = _load_json_if_exists(latex_compile_report_path)
@@ -44,14 +47,20 @@ def main() -> int:
     repository_decision = _load_json_if_exists(repository_decision_path)
     license_decision = _load_json_if_exists(license_decision_path)
     sensitive_scan_report = _load_json_if_exists(sensitive_scan_report_path)
+    sensitive_review = _load_json_if_exists(sensitive_review_path)
+    layout_review = _load_json_if_exists(layout_review_path)
     final_approval_exists = bool(final_approval)
     latex_compile_report_exists = bool(latex_compile_report)
     deadline_verification_exists = bool(deadline_verification)
     repository_decision_exists = bool(repository_decision)
     license_decision_exists = bool(license_decision)
     sensitive_scan_report_exists = bool(sensitive_scan_report)
+    sensitive_review_exists = bool(sensitive_review)
+    layout_review_exists = bool(layout_review)
     governance_draft_files = sorted(str(path.relative_to(ROOT)) for path in governance_drafts_dir.glob("*.draft.json")) if governance_drafts_dir.exists() else []
     governance_drafts_present = bool(governance_draft_files)
+    recommendation_files = sorted(str(path.relative_to(ROOT)) for path in recommendations_dir.glob("*.json")) if recommendations_dir.exists() else []
+    recommendations_present = bool(recommendation_files)
     errors = []
     if remaining_author_verify:
         errors.append(_issue("SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN", f"{remaining_author_verify} AUTHOR_VERIFY markers remain in {PAPER_PATH.relative_to(ROOT)}."))
@@ -90,8 +99,12 @@ def main() -> int:
         errors.append(_issue("SUBMISSION_LINTER_FAILED", "License decision is missing or not final-ready."))
     if not sensitive_scan_report:
         errors.append(_issue("SUBMISSION_LINTER_FAILED", "Sensitive content scan report is missing."))
-    elif sensitive_scan_report.get("scan_completed") is not True or sensitive_scan_report.get("final_ready") is not True:
-        errors.append(_issue("SUBMISSION_LINTER_FAILED", "Sensitive content scan is missing human review or not final-ready."))
+    elif sensitive_scan_report.get("scan_completed") is not True:
+        errors.append(_issue("SUBMISSION_LINTER_FAILED", "Sensitive content scan report exists but scan_completed is not true."))
+    if not sensitive_review or sensitive_review.get("final_ready") is not True:
+        errors.append(_issue("SUBMISSION_LINTER_FAILED", "Sensitive content review is missing or not final-ready."))
+    if not layout_review or layout_review.get("final_ready") is not True:
+        errors.append(_issue("SUBMISSION_LINTER_FAILED", "Layout review is missing or not final-ready."))
 
     valid = (
         submission["valid"]
@@ -110,10 +123,19 @@ def main() -> int:
                 "draft files must not be used as final approval records",
             ]
         )
+    if recommendations_present and not (sensitive_review_exists and layout_review_exists and final_approval_exists and deadline_verification_exists and repository_decision_exists and license_decision_exists):
+        blocking_items = _dedupe_strings(
+            blocking_items
+            + [
+                "recommended final gate records are present but have not been promoted",
+                "promotion required before final submission",
+            ]
+        )
     required_human_actions = [
         "verify citation keys and metric values",
         "create license_decision.json after human license decision",
-        "review sensitive_content_scan_report.json and mark final-ready only after human review",
+        "review sensitive_content_scan_report.json and create sensitive_content_review.json only after human review",
+        "review the compiled PDF and create layout_review.json only after human review",
         "create repository_policy_decision.json after human repository/anonymization decision",
         "create deadline_verification.json after checking the official venue deadline",
         "create author_final_approval.json only after human approval",
@@ -153,11 +175,16 @@ def main() -> int:
             "license_decision_final_ready": license_decision.get("final_ready") is True if license_decision else False,
             "sensitive_content_scan_report_exists": sensitive_scan_report_exists,
             "sensitive_content_scan_completed": sensitive_scan_report.get("scan_completed") is True if sensitive_scan_report else False,
-            "sensitive_content_scan_final_ready": sensitive_scan_report.get("final_ready") is True if sensitive_scan_report else False,
+            "sensitive_content_review_exists": sensitive_review_exists,
+            "sensitive_content_review_final_ready": sensitive_review.get("final_ready") is True if sensitive_review else False,
+            "layout_review_exists": layout_review_exists,
+            "layout_review_final_ready": layout_review.get("final_ready") is True if layout_review else False,
+            "final_gate_recommendations_present": recommendations_present,
         },
         "errors": combined_errors,
         "warnings": submission["warnings"] + venue["warnings"],
         "governance_draft_files": governance_draft_files,
+        "recommendation_files": recommendation_files,
         "blocking_items": blocking_items,
         "required_human_actions": required_human_actions,
     }

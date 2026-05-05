@@ -106,3 +106,22 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [ ] `submission/escience2026/repository_policy_decision.json` created.
 - [ ] `submission/escience2026/author_final_approval.json` created.
 - [ ] `final_submission_ready=true`.
+
+## M12-L2R Recommended Final Gate Decisions
+
+- [x] Recommended license decision prepared.
+- [x] Recommended repository policy prepared.
+- [x] Recommended conservative deadline planning prepared.
+- [x] Recommended layout review prepared.
+- [x] Recommended sensitive scan classification prepared.
+- [x] Recommended AI-use disclosure review prepared.
+- [x] Recommended author approval plan prepared.
+- [ ] Human reviewed recommended decisions.
+- [ ] Human promoted recommended decisions to final gate files.
+- [ ] `deadline_verification.json` created.
+- [ ] `repository_policy_decision.json` created.
+- [ ] `license_decision.json` created.
+- [ ] `sensitive_content_review.json` created.
+- [ ] `layout_review.json` created.
+- [ ] `author_final_approval.json` created.
+- [ ] `final_submission_ready=true`.

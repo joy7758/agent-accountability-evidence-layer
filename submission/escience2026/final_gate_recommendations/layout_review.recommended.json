@@ -1,0 +1,26 @@
+{
+  "review_id": "asiep-escience2026-layout-review-recommendation-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "recommendation_type": "layout_review",
+  "source_report": "submission/escience2026/latex_compile_report.json",
+  "compile_success": true,
+  "pdf_generated": true,
+  "generated_pdf_path": "submission/escience2026/latex/main.pdf",
+  "page_count_total": 8,
+  "within_page_limit": true,
+  "unresolved_citations": 0,
+  "unresolved_references": 0,
+  "overfull_boxes_count": 4,
+  "layout_status": "provisionally_acceptable_pending_pdf_review",
+  "final_ready": false,
+  "pending_final_human_review": true,
+  "rationale": [
+    "LaTeX compiled and generated a PDF.",
+    "The page count is 8, with unresolved citations and references at 0.",
+    "Four overfull boxes require visual PDF inspection.",
+    "If overfull boxes do not obscure text or tables, the layout can be accepted by the human author."
+  ],
+  "must_not_be_used_as_final_gate_file": true,
+  "final_gate_file_path": "submission/escience2026/layout_review.json"
+}

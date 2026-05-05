@@ -1,0 +1,24 @@
+{
+  "approval_plan_id": "asiep-escience2026-author-final-approval-plan-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "recommendation_type": "author_final_approval_plan",
+  "approved_by_human_author": false,
+  "final_submission_ready": false,
+  "pending_final_human_review": true,
+  "recommended_final_author_checks": {
+    "citations_checked": "true after final author check",
+    "claims_checked": "true after final author check",
+    "evaluation_numbers_checked": "true after final author check",
+    "ai_disclosure_checked": "true after final author check",
+    "page_count_checked": "true after final author check",
+    "latex_compiled": "true after final author check",
+    "repository_policy_checked": "true after final author check",
+    "deadline_checked": "true after final author check",
+    "license_checked": "true after final author check",
+    "sensitive_content_scan_checked": "true after final author check",
+    "final_pdf_reviewed": "true after final author check"
+  },
+  "must_not_be_used_as_final_gate_file": true,
+  "final_gate_file_path": "submission/escience2026/author_final_approval.json"
+}
