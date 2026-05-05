@@ -1,0 +1,27 @@
+{
+  "import_id": "import:otel-chatbot-001",
+  "source_type": "otel_genai",
+  "source_path": "../fixtures/otel_genai_chatbot_trace.json",
+  "output_bundle_dir": "examples/generated_bundles/otel_chatbot_bundle",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "agent_id": "agent:customer-chatbot",
+  "parent_release_id": "asiep:chatbot-release-1.2.0",
+  "base_blueprint_id": "blueprint:chatbot-1.2.0",
+  "candidate_blueprint_id": "blueprint:chatbot-1.2.1",
+  "change_scope": "urgency-aware escalation wording",
+  "import_policy": {
+    "content_mode": "ref_only",
+    "require_gate_report": true,
+    "require_candidate_diff": true,
+    "require_feedback": true,
+    "require_score": true,
+    "fail_on_sensitive_content": true
+  },
+  "redaction_policy": {
+    "mode": "ref_only",
+    "allow_raw_content": false,
+    "notes": "Synthetic fixture stores content refs and role summaries only."
+  },
+  "created_at": "2026-05-05T02:00:20Z"
+}

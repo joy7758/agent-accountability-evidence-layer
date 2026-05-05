@@ -1,0 +1,124 @@
+{
+  "trace_id": "trace:otel-chatbot-001",
+  "spans": [
+    {
+      "span_id": "span:invoke-agent-001",
+      "parent_span_id": null,
+      "name": "invoke_agent",
+      "kind": "CLIENT",
+      "start_time": "2026-05-05T02:00:00Z",
+      "end_time": "2026-05-05T02:00:04Z",
+      "attributes": {
+        "gen_ai.operation.name": "invoke_agent",
+        "gen_ai.agent.id": "agent:customer-chatbot",
+        "gen_ai.agent.name": "Customer Chatbot",
+        "gen_ai.agent.version": "blueprint:chatbot-1.2.1",
+        "gen_ai.conversation.id": "conversation:redacted-001",
+        "gen_ai.request.model": "fixture-model",
+        "gen_ai.response.model": "fixture-model",
+        "asiep.role": "trace"
+      },
+      "events": [
+        {
+          "name": "request_ref_captured",
+          "time": "2026-05-05T02:00:01Z",
+          "attributes": {
+            "content_ref": "fixture://redacted/chatbot/request/001"
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "span:execute-tool-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "execute_tool:knowledge_lookup",
+      "kind": "CLIENT",
+      "start_time": "2026-05-05T02:00:01Z",
+      "end_time": "2026-05-05T02:00:02Z",
+      "attributes": {
+        "gen_ai.operation.name": "execute_tool",
+        "gen_ai.tool.name": "knowledge_lookup",
+        "gen_ai.data_source.id": "fixture-kb-redacted"
+      },
+      "events": [
+        {
+          "name": "tool_result_ref_captured",
+          "time": "2026-05-05T02:00:02Z",
+          "attributes": {
+            "content_ref": "fixture://redacted/tool/result/001"
+          }
+        }
+      ]
+    },
+    {
+      "span_id": "span:feedback-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "feedback:chatbot_escalation",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T02:00:05Z",
+      "end_time": "2026-05-05T02:00:06Z",
+      "attributes": {
+        "asiep.role": "feedback",
+        "asiep.feedback.key": "escalation_helpfulness",
+        "asiep.feedback.score": 0.92,
+        "asiep.feedback.comment_ref": "fixture://redacted/feedback/comment/001"
+      },
+      "events": []
+    },
+    {
+      "span_id": "span:score-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "evaluator:score",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T02:00:07Z",
+      "end_time": "2026-05-05T02:00:08Z",
+      "attributes": {
+        "asiep.role": "score",
+        "asiep.score.name": "resolved_quality",
+        "asiep.score.value": 0.91,
+        "asiep.score.threshold": 0.85
+      },
+      "events": []
+    },
+    {
+      "span_id": "span:candidate-diff-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "candidate_diff:prompt_policy",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T02:00:09Z",
+      "end_time": "2026-05-05T02:00:10Z",
+      "attributes": {
+        "asiep.role": "candidate_diff",
+        "asiep.candidate_diff": "diff --git a/policy.md b/policy.md\n@@\n- Escalate only after repeated failures.\n+ Escalate immediately when the user indicates urgency."
+      },
+      "events": []
+    },
+    {
+      "span_id": "span:diagnosis-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "diagnosis:safety_regression",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T02:00:11Z",
+      "end_time": "2026-05-05T02:00:12Z",
+      "attributes": {
+        "asiep.role": "diagnosis",
+        "asiep.diagnosis": "Synthetic fixture diagnosis: no safety regression was observed in redacted trace refs."
+      },
+      "events": []
+    },
+    {
+      "span_id": "span:gate-report-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "gate_report:promotion",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T02:00:13Z",
+      "end_time": "2026-05-05T02:00:14Z",
+      "attributes": {
+        "asiep.role": "gate_report",
+        "asiep.gate.decision": "promote",
+        "asiep.gate.reason_ref": "fixture://redacted/gate/reason/001"
+      },
+      "events": []
+    }
+  ]
+}

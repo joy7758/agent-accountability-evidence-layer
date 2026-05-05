@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from asiep_importer import import_trace
 from asiep_resolver import resolve_bundle
 from asiep_validator import validate_file
 
@@ -24,6 +25,13 @@ BUNDLE_CASES = [
     ("invalid_path_escape_bundle", False, ["BUNDLE_PATH_ESCAPE"]),
 ]
 
+IMPORT_CASES = [
+    ("otel_chatbot_request.json", True, []),
+    ("langsmith_chatbot_request.json", True, []),
+    ("invalid_missing_gate_report_request.json", False, ["IMPORT_REQUIRED_ROLE_MISSING"]),
+    ("invalid_sensitive_content_request.json", False, ["IMPORT_SENSITIVE_CONTENT_BLOCKED"]),
+]
+
 
 def main() -> int:
     for filename, expected in CASES:
@@ -40,6 +48,15 @@ def main() -> int:
         codes_match = codes == expected_codes
         status = "PASS" if valid_matches and codes_match else "FAIL"
         print(f"{status} {dirname}/bundle.json: {codes if codes else ['VALID']}")
+        if not valid_matches or not codes_match:
+            return 1
+    for filename, expected_valid, expected_codes in IMPORT_CASES:
+        result = import_trace(ROOT / "examples" / "import_requests" / filename)
+        codes = [error["code"] for error in result["errors"]]
+        valid_matches = result["valid"] is expected_valid
+        codes_match = codes == expected_codes
+        status = "PASS" if valid_matches and codes_match else "FAIL"
+        print(f"{status} {filename}: {codes if codes else ['VALID']}")
         if not valid_matches or not codes_match:
             return 1
     return 0

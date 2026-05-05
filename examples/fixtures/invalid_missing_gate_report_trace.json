@@ -1,0 +1,62 @@
+{
+  "trace_id": "trace:invalid-missing-gate-001",
+  "spans": [
+    {
+      "span_id": "span:invoke-agent-001",
+      "parent_span_id": null,
+      "name": "invoke_agent",
+      "kind": "CLIENT",
+      "start_time": "2026-05-05T04:00:00Z",
+      "end_time": "2026-05-05T04:00:03Z",
+      "attributes": {
+        "gen_ai.operation.name": "invoke_agent",
+        "gen_ai.agent.id": "agent:customer-chatbot",
+        "gen_ai.agent.name": "Customer Chatbot",
+        "gen_ai.agent.version": "blueprint:chatbot-1.2.3",
+        "gen_ai.conversation.id": "conversation:redacted-002",
+        "asiep.role": "trace"
+      },
+      "events": []
+    },
+    {
+      "span_id": "span:feedback-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "feedback:chatbot_escalation",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T04:00:04Z",
+      "end_time": "2026-05-05T04:00:05Z",
+      "attributes": {
+        "asiep.role": "feedback",
+        "asiep.feedback.comment_ref": "fixture://redacted/feedback/comment/002"
+      },
+      "events": []
+    },
+    {
+      "span_id": "span:score-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "evaluator:score",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T04:00:06Z",
+      "end_time": "2026-05-05T04:00:07Z",
+      "attributes": {
+        "asiep.role": "score",
+        "asiep.score.name": "resolved_quality",
+        "asiep.score.value": 0.9
+      },
+      "events": []
+    },
+    {
+      "span_id": "span:candidate-diff-001",
+      "parent_span_id": "span:invoke-agent-001",
+      "name": "candidate_diff:prompt_policy",
+      "kind": "INTERNAL",
+      "start_time": "2026-05-05T04:00:08Z",
+      "end_time": "2026-05-05T04:00:09Z",
+      "attributes": {
+        "asiep.role": "candidate_diff",
+        "asiep.candidate_diff": "diff --git a/policy.md b/policy.md\n@@\n- Old escalation text.\n+ Candidate escalation text."
+      },
+      "events": []
+    }
+  ]
+}

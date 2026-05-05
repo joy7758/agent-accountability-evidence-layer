@@ -3,7 +3,7 @@
   "profile_version": "0.1.0",
   "profile_uri": "https://w3id.org/asiep/v0.1",
   "discovery": {
-    "package_role": "agent-readable profile conformance and repair package",
+    "package_role": "agent-readable profile conformance, repair, bundle resolution, and trace import package",
     "registry_path": "profiles/index.json",
     "primary_entrypoint": "profiles/asiep/v0.1/profile.json",
     "agent_tasks": [
@@ -12,6 +12,7 @@
       "generate evidence-preserving repair plan",
       "resolve local evidence bundle",
       "verify local artifact digests",
+      "import local trace fixture into ASIEP evidence bundle",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -21,6 +22,8 @@
       "agent accountability",
       "evidence profile",
       "validator",
+      "importer",
+      "trace fixture",
       "repair plan",
       "conformance"
     ]
@@ -33,13 +36,24 @@
   "repair_plan_schema_path": "interfaces/asiep_repair_plan.schema.json",
   "evidence_bundle_schema_path": "interfaces/asiep_evidence_bundle.schema.json",
   "bundle_resolution_schema_path": "interfaces/asiep_bundle_resolution.schema.json",
+  "import_request_schema_path": "interfaces/asiep_import_request.schema.json",
+  "import_result_schema_path": "interfaces/asiep_import_result.schema.json",
+  "otel_genai_trace_fixture_schema_path": "interfaces/otel_genai_trace_fixture.schema.json",
+  "langsmith_trace_fixture_schema_path": "interfaces/langsmith_trace_fixture.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
+  "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
   "repair_loop_supported": true,
   "bundle_resolver_supported": true,
+  "importer_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
     "repo-relative"
+  ],
+  "supported_import_sources": [
+    "otel_genai",
+    "langsmith",
+    "generic_agent_trace"
   ],
   "validator_entrypoint": {
     "module": "asiep_validator",
@@ -61,6 +75,13 @@
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_resolver {bundle_path} --format json"
+  },
+  "importer_entrypoint": {
+    "module": "asiep_importer",
+    "cli": "python -m asiep_importer",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_importer {import_request_path} --format json"
   },
   "examples": {
     "valid_examples": [
@@ -117,8 +138,7 @@
     "INV_FLIP_THRESHOLD",
     "INV_ROLLBACK_EVIDENCE",
     "ROLLBACK_EVIDENCE",
-    "HASH_CHAIN_BROKEN"
-    ,
+    "HASH_CHAIN_BROKEN",
     "BUNDLE_SCHEMA",
     "BUNDLE_ARTIFACT_MISSING",
     "BUNDLE_DIGEST_MISMATCH",
@@ -127,7 +147,17 @@
     "BUNDLE_RECORD_MISSING",
     "BUNDLE_REF_UNDECLARED",
     "BUNDLE_REF_UNUSED",
-    "BUNDLE_MANIFEST_HASH_MISMATCH"
+    "BUNDLE_MANIFEST_HASH_MISMATCH",
+    "IMPORT_SCHEMA",
+    "IMPORT_SOURCE_UNSUPPORTED",
+    "IMPORT_SOURCE_MISSING",
+    "IMPORT_REQUIRED_ROLE_MISSING",
+    "IMPORT_SENSITIVE_CONTENT_BLOCKED",
+    "IMPORT_MAPPING_INCOMPLETE",
+    "IMPORT_ARTIFACT_WRITE_FAILED",
+    "IMPORT_BUNDLE_VALIDATION_FAILED",
+    "IMPORT_VALIDATOR_FAILED",
+    "IMPORT_POLICY_VIOLATION"
   ],
   "supported_output_formats": [
     {
@@ -145,6 +175,10 @@
     {
       "format": "bundle-resolution-json",
       "consumer": "agent local evidence binding and digest verification loops"
+    },
+    {
+      "format": "import-result-json",
+      "consumer": "agent trace-to-evidence import and revalidation loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"
