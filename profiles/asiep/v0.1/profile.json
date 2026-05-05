@@ -19,6 +19,7 @@
       "lint paper overclaims",
       "inspect external source registry",
       "lint paper citations",
+      "check venue readiness",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -44,6 +45,10 @@
       "citation map",
       "citation linter",
       "BibTeX",
+      "venue linter",
+      "venue readiness",
+      "eScience 2026",
+      "AIES 2026",
       "repair plan",
       "conformance"
     ]
@@ -73,6 +78,8 @@
   "paper_evidence_map_schema_path": "interfaces/asiep_paper_evidence_map.schema.json",
   "source_registry_schema_path": "interfaces/asiep_source_registry.schema.json",
   "citation_claim_map_schema_path": "interfaces/asiep_citation_claim_map.schema.json",
+  "venue_policy_schema_path": "interfaces/asiep_venue_policy.schema.json",
+  "venue_readiness_report_schema_path": "interfaces/asiep_venue_readiness_report.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
   "package_policy_path": "profiles/asiep/v0.1/package_policy.json",
@@ -87,6 +94,19 @@
   "paper_assets_path": "paper_assets",
   "manuscript_path": "manuscript",
   "manuscript_v02_path": "manuscript/paper_v0.2.md",
+  "manuscript_v03_escience_path": "manuscript/paper_v0.3_escience.md",
+  "manuscript_v03_aies_brief_path": "manuscript/paper_v0.3_aies_positioning_brief.md",
+  "target_venue_assets": {
+    "escience2026": {
+      "venue_policy_path": "venues/escience2026/venue_policy.json",
+      "readiness_report_path": "submission/escience2026/readiness_report.json",
+      "submission_assets_path": "submission/escience2026"
+    },
+    "aies2026": {
+      "venue_policy_path": "venues/aies2026/venue_policy.json",
+      "submission_assets_path": "submission/aies2026"
+    }
+  },
   "repair_loop_supported": true,
   "bundle_resolver_supported": true,
   "importer_supported": true,
@@ -94,6 +114,7 @@
   "evaluator_supported": true,
   "paper_linter_supported": true,
   "citation_linter_supported": true,
+  "venue_linter_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
@@ -164,6 +185,13 @@
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_citation_linter --profile profiles/asiep/v0.1/profile.json --format json"
+  },
+  "venue_linter_entrypoint": {
+    "module": "asiep_venue_linter",
+    "cli": "python -m asiep_venue_linter",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_venue_linter --venue {venue_policy_path} --paper {paper_path} --format json"
   },
   "examples": {
     "valid_examples": [
@@ -284,7 +312,19 @@
     "CITATION_BIBTEX_MISSING",
     "CITATION_FORBIDDEN_PRACTICE",
     "CITATION_LINTER_FAILED",
-    "CITATION_REQUIRED_MARKER_REMAINS"
+    "CITATION_REQUIRED_MARKER_REMAINS",
+    "VENUE_POLICY_INVALID",
+    "VENUE_PAPER_MISSING",
+    "VENUE_REQUIRED_SECTION_MISSING",
+    "VENUE_FORBIDDEN_CLAIM",
+    "VENUE_CITATION_GAP",
+    "VENUE_EVIDENCE_GAP",
+    "VENUE_LIMITATION_MISSING",
+    "VENUE_AI_USE_DISCLOSURE_MISSING",
+    "VENUE_AI_POLICY_RISK",
+    "VENUE_PAGE_BUDGET_RISK",
+    "VENUE_READINESS_REPORT_INVALID",
+    "VENUE_LINTER_FAILED"
   ],
   "supported_output_formats": [
     {
@@ -322,6 +362,10 @@
     {
       "format": "citation-lint-json",
       "consumer": "agent external source verification and claim-to-citation review loops"
+    },
+    {
+      "format": "venue-readiness-json",
+      "consumer": "agent venue targeting, page-budget, disclosure, and readiness review loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"

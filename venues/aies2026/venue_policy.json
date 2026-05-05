@@ -1,0 +1,72 @@
+{
+  "venue_id": "aies2026",
+  "venue_name": "AAAI/ACM AIES 2026",
+  "venue_version": "2026-cfp-brief",
+  "target_track": "accountability, governance, institutional risk, agent-to-agent systems, and evidence-by-design",
+  "submission_type": "main_track_candidate_positioning_brief",
+  "page_limit": 10,
+  "reference_exclusion_policy": "venue_policy_requires_human_verification",
+  "deadline": "2026-05-21 AoE",
+  "review_mode": "conference peer review; human authors must verify current AIES AI-use and submission policy before submission",
+  "ai_use_policy": {
+    "ai_text_allowed": false,
+    "ai_editing_allowed": true,
+    "disclosure_required": true,
+    "human_final_authoring_required": true,
+    "policy_notes": "The M9 AIES artifact is a positioning brief only. Codex-generated draft prose must not be submitted as final AIES text."
+  },
+  "required_sections": [
+    "Title",
+    "Purpose",
+    "Governance Reframing",
+    "Reusable Material",
+    "Manual Rewrite Required",
+    "AI-use Policy Risk",
+    "Additional Sociotechnical Work Needed",
+    "Current Recommendation"
+  ],
+  "recommended_sections": [
+    "Institutional Accountability",
+    "Responsibility Allocation",
+    "Power and Control"
+  ],
+  "forbidden_claims": [
+    "ready for AIES submission",
+    "directly submit this draft",
+    "production-ready governance",
+    "provides complete privacy protection",
+    "general solution for all agents",
+    "achieves benchmark SOTA"
+  ],
+  "required_disclosures": [
+    "manual rewrite required",
+    "Codex-generated draft should not be submitted directly",
+    "human-authored prose"
+  ],
+  "required_positioning": [
+    "accountability",
+    "governance",
+    "institutional risk",
+    "agent-to-agent systems",
+    "evidence-by-design",
+    "manual rewrite required"
+  ],
+  "output_requirements": [
+    "positioning_notes.md",
+    "ai_use_policy_risk.md",
+    "manual_rewrite_required.md",
+    "governance_reframing.md"
+  ],
+  "citation_requirements": [
+    "keep M8 citation infrastructure",
+    "add sociotechnical sources before a real AIES submission",
+    "do not use Codex-generated prose as final submission text"
+  ],
+  "readiness_checks": [
+    "required_sections_present",
+    "forbidden_claims_absent",
+    "manual_rewrite_warning_present",
+    "ai_policy_risk_warning_present",
+    "sociotechnical_gap_acknowledged"
+  ]
+}

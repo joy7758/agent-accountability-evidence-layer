@@ -1,0 +1,559 @@
+{
+  "ai_use_policy_checks": [
+    {
+      "check_id": "disclosure:Draft for human authoring and verification",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "disclosure:Human authors must verify and rewrite final prose",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "disclosure:AI-use disclosure",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "human_final_authoring_required",
+      "message": "human final authoring is required by policy",
+      "passed": true
+    }
+  ],
+  "citation_checks": [
+    {
+      "check_id": "citation:C1",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C2",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C3",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C4",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C5",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C6",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C7",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C8",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C9",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C10",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C11",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C12",
+      "message": "ready",
+      "passed": true
+    },
+    {
+      "check_id": "citation:C13",
+      "message": "ready",
+      "passed": true
+    }
+  ],
+  "claim_checks": [
+    {
+      "check_id": "claim:C1",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C2",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C3",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C4",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C5",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C6",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C7",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C8",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C9",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C10",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C11",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C12",
+      "message": "evidence mapped",
+      "passed": true
+    },
+    {
+      "check_id": "claim:C13",
+      "message": "evidence mapped",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "evidence_checks": [
+    {
+      "check_id": "evidence:C1:README.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C1:schemas/asiep.schema.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C1:docs/research_note_v0.1.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C2:interfaces/asiep_evidence_bundle.schema.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C2:src/asiep_resolver/resolver.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C2:docs/evidence_bundle_resolver.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:src/asiep_validator",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:src/asiep_repairer",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:src/asiep_resolver",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:src/asiep_importer",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:src/asiep_packager",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:src/asiep_evaluator",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:tests/test_validator.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:tests/test_repair_loop.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:tests/test_resolver.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:tests/test_importer.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:tests/test_packager.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C3:tests/test_evaluator.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C4:profiles/asiep/v0.1/profile.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C4:profiles/index.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C4:docs/agent_native_design.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C5:reports/asiep_v0.1_evaluation_report.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C5:src/asiep_evaluator/evaluator.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C5:paper_assets/tables/evaluation_metrics.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C6:reports/asiep_v0.1_evaluation_report.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C6:paper_assets/tables/attack_corpus_results.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C6:evaluation/corpus/asiep_v0.1_corpus.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C7:reports/asiep_v0.1_evaluation_report.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C7:paper_assets/tables/evaluation_metrics.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C7:evaluation/corpus/asiep_v0.1_corpus.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C8:reports/asiep_v0.1_evaluation_report.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C8:evaluation/crosswalk/asiep_v0.1_crosswalk.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C8:paper_assets/tables/crosswalk_matrix.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C9:evaluation/crosswalk/asiep_v0.1_crosswalk.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C9:mappings/prov_mapping.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C9:mappings/otel_mapping.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C9:mappings/fdo_mapping.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C9:mappings/ro_crate_mapping.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C10:docs/evaluation_method.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C10:manuscript/limitations.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C10:README.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C11:reports/asiep_v0.1_evaluation_report.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C11:manuscript/limitations.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C11:src/asiep_evaluator/evaluator.py",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C12:docs/fdo_rocrate_packaging.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C12:manuscript/limitations.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C12:interfaces/asiep_fdo_record.schema.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C12:interfaces/asiep_rocrate_metadata.schema.json",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C13:manuscript/related_work_matrix.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C13:docs/research_note_v0.1.md",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "evidence:C13:manuscript/venue_positioning.md",
+      "message": "exists",
+      "passed": true
+    }
+  ],
+  "limitation_checks": [
+    {
+      "check_id": "positioning:FAIR evidence object",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:reproducible agent evidence pipeline",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:provenance",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:scientific infrastructure",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:local evidence package",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:reusable validator",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:local fixture",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:minimal implementation",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "positioning:not external certification",
+      "message": "present",
+      "passed": true
+    }
+  ],
+  "page_budget_estimate": {
+    "estimated_pages": 2.45,
+    "figure_count": 0,
+    "likely_over_budget": false,
+    "method": "word_count/620 + table_rows/25 + 0.25 pages per markdown figure marker",
+    "page_limit": 8,
+    "table_count": 0,
+    "word_count": 1522
+  },
+  "paper_id": "paper_v0.3_escience",
+  "paper_version": "0.3.0",
+  "readiness_score": 95,
+  "recommended_human_actions": [
+    "Human authors must verify the current venue CFP, deadline, template, and AI-use policy before submission.",
+    "Rewrite final prose manually; treat M9 markdown as a structured draft and checklist.",
+    "Keep local fixture, minimal implementation, and no external certification limitations visible.",
+    "Review venue linter warnings, especially AI-use and page-budget risks."
+  ],
+  "section_checks": [
+    {
+      "check_id": "section:Title",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Abstract",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Introduction",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Problem and Scope",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Requirements for Agent Self-Improvement Evidence",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:ASIEP Profile and Lifecycle",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Agent-native Toolchain",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Evidence Bundle and Local Packaging",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Evaluation",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Cross-standard Mapping",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Limitations",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Conclusion",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "section:Acknowledgements and AI-use disclosure draft",
+      "message": "present",
+      "passed": true
+    }
+  ],
+  "valid": true,
+  "venue_id": "escience2026",
+  "warnings": [
+    {
+      "code": "VENUE_AI_POLICY_RISK",
+      "message": "Human authors must verify venue policy and rewrite final prose.",
+      "remediation_hint": "Treat Codex output as draft support only and require human rewrite, verification, and disclosure.",
+      "repairability": "human_required",
+      "severity": "warning"
+    }
+  ]
+}

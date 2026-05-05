@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_venue_readiness_report.schema.json",
+  "title": "ASIEP Venue Readiness Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "venue_id",
+    "paper_id",
+    "paper_version",
+    "valid",
+    "readiness_score",
+    "section_checks",
+    "claim_checks",
+    "citation_checks",
+    "evidence_checks",
+    "limitation_checks",
+    "ai_use_policy_checks",
+    "page_budget_estimate",
+    "errors",
+    "warnings",
+    "recommended_human_actions"
+  ],
+  "properties": {
+    "venue_id": { "type": "string", "minLength": 1 },
+    "paper_id": { "type": "string", "minLength": 1 },
+    "paper_version": { "type": "string", "minLength": 1 },
+    "valid": { "type": "boolean" },
+    "readiness_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "section_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "claim_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "citation_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "evidence_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "limitation_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "ai_use_policy_checks": { "type": "array", "items": { "$ref": "#/$defs/check" } },
+    "page_budget_estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "word_count",
+        "table_count",
+        "figure_count",
+        "estimated_pages",
+        "page_limit",
+        "likely_over_budget",
+        "method"
+      ],
+      "properties": {
+        "word_count": { "type": "integer", "minimum": 0 },
+        "table_count": { "type": "integer", "minimum": 0 },
+        "figure_count": { "type": "integer", "minimum": 0 },
+        "estimated_pages": { "type": "number", "minimum": 0 },
+        "page_limit": { "type": "integer", "minimum": 1 },
+        "likely_over_budget": { "type": "boolean" },
+        "method": { "type": "string", "minLength": 1 }
+      }
+    },
+    "errors": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "warnings": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "recommended_human_actions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check_id", "passed", "message"],
+      "properties": {
+        "check_id": { "type": "string", "minLength": 1 },
+        "passed": { "type": "boolean" },
+        "message": { "type": "string" }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "severity", "message", "remediation_hint", "repairability"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "type": "string", "enum": ["error", "warning"] },
+        "message": { "type": "string", "minLength": 1 },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": {
+          "type": "string",
+          "enum": [
+            "auto_fixable",
+            "agent_fixable",
+            "external_evidence_required",
+            "human_required",
+            "not_fixable"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -693,6 +693,114 @@
       "default_strategy": "Do not ship paper_v0.2 with unresolved citation markers.",
       "remediation_hint": "Replace citation_required with a verified citation key, or move the unverified claim to references/verification_gaps.md.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_POLICY_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair venue policy schema", "add missing policy fields"],
+      "forbidden_actions": ["invent venue requirements without marking human verification needed"],
+      "default_strategy": "Keep venue requirements machine-readable and explicitly bounded by human verification.",
+      "remediation_hint": "Repair the venue policy so it conforms to interfaces/asiep_venue_policy.schema.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_PAPER_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["create target draft", "correct paper path"],
+      "forbidden_actions": ["lint a different paper silently"],
+      "default_strategy": "Require an explicit venue-targeted draft or brief.",
+      "remediation_hint": "Create the target manuscript file or pass the correct --paper path.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_REQUIRED_SECTION_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add missing required section heading"],
+      "forbidden_actions": ["hide required limitation, evaluation, or disclosure sections"],
+      "default_strategy": "Make the venue draft structurally complete before human rewrite.",
+      "remediation_hint": "Add the missing section heading and keep it scoped to the target venue draft.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_FORBIDDEN_CLAIM",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["remove forbidden phrase", "replace with local-only limitation"],
+      "forbidden_actions": ["claim adopted standard", "claim certification", "claim real integration", "claim production readiness"],
+      "default_strategy": "Keep venue-facing claims conservative and evidence-bounded.",
+      "remediation_hint": "Remove the phrase or replace it with local-only, draft, or limitation language.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_CITATION_GAP",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["map claim to verified source", "remove unsupported external claim"],
+      "forbidden_actions": ["cite unverified source as ready", "use search snippets as primary sources"],
+      "default_strategy": "Reuse the M8 citation map and BibTeX before venue rewrite.",
+      "remediation_hint": "Add verified citation keys through references/citation_claim_map.json or remove the external claim.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_EVIDENCE_GAP",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["attach repository evidence", "weaken claim"],
+      "forbidden_actions": ["substitute external citation for missing repository evidence"],
+      "default_strategy": "Every implementation and evaluation claim must keep repository evidence.",
+      "remediation_hint": "Attach existing repository evidence or weaken the venue claim.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_LIMITATION_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add local fixture limitation", "add minimal implementation limitation", "add not external certification boundary"],
+      "forbidden_actions": ["remove local-only boundaries for venue fit"],
+      "default_strategy": "Venue targeting must not erase M0-M8 limitations.",
+      "remediation_hint": "Add explicit local fixture, minimal implementation, and not external certification language.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_AI_USE_DISCLOSURE_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add AI-use disclosure draft", "state human final authoring required"],
+      "forbidden_actions": ["hide Codex or AI tool use", "imply AI is an author"],
+      "default_strategy": "Make AI-use disclosure visible before human authoring.",
+      "remediation_hint": "Add an AI-use disclosure section stating human final authoring and author responsibility.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_AI_POLICY_RISK",
+      "repairability": "human_required",
+      "allowed_actions": ["human rewrite", "human policy verification", "explicit disclosure"],
+      "forbidden_actions": ["submit Codex-generated text as final AIES prose", "ignore venue AI-use policy"],
+      "default_strategy": "Treat venue-targeted output as planning material until human authors rewrite and verify policy.",
+      "remediation_hint": "Treat Codex output as draft support only and require human rewrite, verification, and disclosure.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_PAGE_BUDGET_RISK",
+      "repairability": "human_required",
+      "allowed_actions": ["shorten draft", "reduce figures or tables", "move material if venue allows"],
+      "forbidden_actions": ["ignore page risk before final formatting"],
+      "default_strategy": "Use rough page budget as a warning, not final formatting proof.",
+      "remediation_hint": "Shorten prose, reduce tables or figures, or move material to appendix if allowed by the venue.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_READINESS_REPORT_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair readiness report output", "update schema mapping"],
+      "forbidden_actions": ["ship schema-invalid readiness report"],
+      "default_strategy": "Keep venue readiness machine-readable for another agent.",
+      "remediation_hint": "Repair venue linter output so it conforms to interfaces/asiep_venue_readiness_report.schema.json.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "VENUE_LINTER_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair venue policy", "repair paper draft", "repair supporting artifacts"],
+      "forbidden_actions": ["ignore venue readiness failures"],
+      "default_strategy": "Block venue readiness until linter inputs are readable and consistent.",
+      "remediation_hint": "Inspect the linter JSON output and repair the venue policy, paper draft, or required supporting artifacts.",
+      "requires_external_evidence": false
     }
   ]
 }

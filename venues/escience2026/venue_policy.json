@@ -1,0 +1,91 @@
+{
+  "venue_id": "escience2026",
+  "venue_name": "IEEE eScience 2026",
+  "venue_version": "2026-cfp-brief",
+  "target_track": "FAIR, provenance, reproducible eScience, scientific workflows, research cyberinfrastructure, and AI/ML/LLMs in science",
+  "submission_type": "full_paper",
+  "page_limit": 8,
+  "reference_exclusion_policy": "references_excluded",
+  "deadline": "2026-05-18 AoE",
+  "review_mode": "conference peer review; human authors must verify current CFP details before submission",
+  "ai_use_policy": {
+    "ai_text_allowed": true,
+    "ai_editing_allowed": true,
+    "disclosure_required": true,
+    "human_final_authoring_required": true,
+    "policy_notes": "M9 records the user-provided CFP brief and requires human verification of final IEEE eScience 2026 policy before submission."
+  },
+  "required_sections": [
+    "Title",
+    "Abstract",
+    "Introduction",
+    "Problem and Scope",
+    "Requirements for Agent Self-Improvement Evidence",
+    "ASIEP Profile and Lifecycle",
+    "Agent-native Toolchain",
+    "Evidence Bundle and Local Packaging",
+    "Evaluation",
+    "Cross-standard Mapping",
+    "Limitations",
+    "Conclusion",
+    "Acknowledgements and AI-use disclosure draft"
+  ],
+  "recommended_sections": [
+    "Artifacts and Reproducibility",
+    "Threats to Validity"
+  ],
+  "forbidden_claims": [
+    "adopted standard",
+    "has external certification",
+    "globally resolvable PID",
+    "production-ready governance",
+    "provides complete privacy protection",
+    "full OTel integration",
+    "full LangSmith integration",
+    "has full RO-Crate certification",
+    "achieves benchmark SOTA",
+    "legal compliance solution"
+  ],
+  "required_disclosures": [
+    "Draft for human authoring and verification",
+    "Human authors must verify and rewrite final prose",
+    "AI-use disclosure"
+  ],
+  "required_positioning": [
+    "FAIR evidence object",
+    "reproducible agent evidence pipeline",
+    "provenance",
+    "scientific infrastructure",
+    "local evidence package",
+    "reusable validator",
+    "local fixture",
+    "minimal implementation",
+    "not external certification"
+  ],
+  "output_requirements": [
+    "paper_v0.3_escience draft",
+    "readiness_report.json",
+    "submission_checklist.md",
+    "author_ai_use_disclosure_draft.md",
+    "abstract_200words.md",
+    "contribution_box.md",
+    "limitations_box.md",
+    "reviewer_response_seed.md",
+    "page_budget_notes.md"
+  ],
+  "citation_requirements": [
+    "reuse M8 citation keys",
+    "no citation_required markers",
+    "local metrics must cite repository report rather than external benchmark claims"
+  ],
+  "readiness_checks": [
+    "required_sections_present",
+    "forbidden_claims_absent",
+    "local_only_limitations_present",
+    "ai_use_disclosure_present",
+    "claim_registry_has_evidence",
+    "citation_claim_map_ready",
+    "page_budget_estimated",
+    "human_final_authoring_required"
+  ]
+}
