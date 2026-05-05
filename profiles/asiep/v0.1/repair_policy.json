@@ -405,6 +405,87 @@
       "default_strategy": "Keep M5 packaging local and explicitly non-registered.",
       "remediation_hint": "Use only local_pid values such as urn:asiep:fdo:<package_id>; do not claim global PID registration.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_SCHEMA",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair evaluation JSON artifacts to match their schemas"],
+      "forbidden_actions": ["drop required metric or corpus fields to silence schema errors"],
+      "default_strategy": "Keep M6 reports and matrices machine-readable and schema-valid.",
+      "remediation_hint": "Repair the evaluation artifact so it conforms to the relevant M6 interface schema.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_CORPUS_MISSING",
+      "repairability": "external_evidence_required",
+      "allowed_actions": ["restore the local corpus manifest", "restore referenced examples or requests"],
+      "forbidden_actions": ["fabricate missing attack results", "silently skip missing corpus items"],
+      "default_strategy": "Require the complete local corpus before computing metrics.",
+      "remediation_hint": "Provide the corpus manifest and referenced local examples before running evaluation.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "EVAL_CROSSWALK_INCOMPLETE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add honest partial mappings", "mark lossiness explicitly"],
+      "forbidden_actions": ["claim complete external standard compliance without implementation evidence"],
+      "default_strategy": "Cover every ASIEP core field group and invariants I1-I10 honestly.",
+      "remediation_hint": "Add mappings for every ASIEP core field group and ensure invariants I1-I10 are represented.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_PIPELINE_STEP_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["rerun the failed local step", "record failure in the report"],
+      "forbidden_actions": ["fabricate_success", "ignore_failed_validator", "ignore_failed_resolver", "ignore_failed_packager"],
+      "default_strategy": "Expose pipeline failures and keep metrics reproducible.",
+      "remediation_hint": "Inspect the pipeline result and rerun the failed local command; do not fabricate success.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_METRIC_COMPUTATION_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair metric inputs", "add missing corpus links"],
+      "forbidden_actions": ["invent metric numerator or denominator"],
+      "default_strategy": "Compute metrics from observed local pipeline results only.",
+      "remediation_hint": "Check metric inputs, corpus coverage, and generated package availability.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_REPORT_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["fix evaluator report generation"],
+      "forbidden_actions": ["publish invalid report JSON as paper evidence"],
+      "default_strategy": "Make reports/asiep_v0.1_evaluation_report.json schema-valid.",
+      "remediation_hint": "Fix evaluator report generation so reports/asiep_v0.1_evaluation_report.json is schema-valid.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_EXPECTED_RESULT_MISMATCH",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["investigate tool output", "update expectation only with evidence"],
+      "forbidden_actions": ["hide_attack_failures", "modify_input_examples_to_pass"],
+      "default_strategy": "Keep mismatches visible until the tool or corpus expectation is corrected.",
+      "remediation_hint": "Investigate the local tool output or update the corpus expectation only with evidence.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_PAPER_ASSET_WRITE_FAILED",
+      "repairability": "human_required",
+      "allowed_actions": ["fix local file permissions", "rerun evaluator"],
+      "forbidden_actions": ["silently omit paper-ready tables"],
+      "default_strategy": "Ensure reports and paper_assets are written before claiming M6 completion.",
+      "remediation_hint": "Check local reports/ and paper_assets/ write permissions and rerun evaluator.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "EVAL_POLICY_VIOLATION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["keep evaluation local", "remove forbidden external actions"],
+      "forbidden_actions": ["use_network", "call_external_api", "inline_sensitive_content"],
+      "default_strategy": "Use only local reproducible M0-M5 artifacts for evaluation.",
+      "remediation_hint": "Keep evaluation local and do not use networks, external APIs, hidden failures, or fabricated success.",
+      "requires_external_evidence": false
     }
   ]
 }

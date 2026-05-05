@@ -1,0 +1,3 @@
+# Abstract Draft
+
+We present ASIEP v0.1, a minimal Agent Self-Improvement Evidence Profile for agent-to-agent accountability. Rather than implementing a self-improving agent, ASIEP defines a machine-readable evidence object, validator, repair planning interface, local bundle resolver, trace-fixture importer, and local FAIR/FDO-like and RO-Crate-like package layer. A local evaluation corpus exercises valid and adversarial examples across schema, state, reference, digest, gate, import, and package checks. The M6 evaluation report provides reproducible metrics and a cross-standard matrix without claiming external registry integration or full standards certification.

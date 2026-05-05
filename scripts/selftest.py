@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from asiep_evaluator import evaluate_profile
 from asiep_importer import import_trace
 from asiep_packager import package_bundle
 from asiep_resolver import resolve_bundle
@@ -75,6 +76,12 @@ def main() -> int:
         print(f"{status} {filename}: {codes if codes else ['VALID']}")
         if not valid_matches or not codes_match:
             return 1
+    report = evaluate_profile(ROOT / "profiles" / "asiep" / "v0.1" / "profile.json")
+    metrics = {metric["metric_id"]: metric["value"] for metric in report["metric_results"]}
+    status = "PASS" if metrics["false_positive_rate"] == 0 and metrics["privacy_policy_compliance"] == 1 else "FAIL"
+    print(f"{status} asiep_v0.1_evaluation: false_positive_rate={metrics['false_positive_rate']} privacy_policy_compliance={metrics['privacy_policy_compliance']}")
+    if status != "PASS":
+        return 1
     return 0
 
 

@@ -24,7 +24,9 @@
         "local_packager",
         "fdo_like_record",
         "rocrate_like_metadata",
-        "prov_jsonld"
+        "prov_jsonld",
+        "crosswalk_evaluation",
+        "paper_assets"
       ],
       "keywords": [
         "ASIEP",
@@ -36,7 +38,9 @@
         "local evidence bundle",
         "FDO",
         "RO-Crate",
-        "PROV"
+        "PROV",
+        "evaluation",
+        "crosswalk"
       ]
     }
   ]

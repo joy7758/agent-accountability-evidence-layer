@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_corpus_manifest.schema.json",
+  "title": "ASIEP Evaluation Corpus Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "corpus_id",
+    "corpus_version",
+    "profile",
+    "profile_version",
+    "examples",
+    "bundles",
+    "import_requests",
+    "package_requests",
+    "expected_results"
+  ],
+  "properties": {
+    "corpus_id": { "type": "string", "minLength": 1 },
+    "corpus_version": { "const": "0.1.0" },
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "examples": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "bundles": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "import_requests": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "package_requests": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "expected_results": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/expected_result" }
+    }
+  },
+  "$defs": {
+    "target_type": {
+      "enum": [
+        "evidence_example",
+        "bundle",
+        "import_request",
+        "package_request",
+        "repair_case",
+        "generated_package"
+      ]
+    },
+    "expected_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_path",
+        "target_type",
+        "command",
+        "expected_valid",
+        "expected_error_codes",
+        "purpose",
+        "related_invariant_ids",
+        "related_metric_ids"
+      ],
+      "properties": {
+        "target_path": { "type": "string", "minLength": 1 },
+        "target_type": { "$ref": "#/$defs/target_type" },
+        "command": { "type": "string", "minLength": 1 },
+        "expected_valid": { "type": "boolean" },
+        "expected_error_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "purpose": { "type": "string", "minLength": 1 },
+        "related_invariant_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "related_metric_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

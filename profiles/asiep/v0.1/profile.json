@@ -14,6 +14,7 @@
       "verify local artifact digests",
       "import local trace fixture into ASIEP evidence bundle",
       "package ASIEP evidence bundle into local FDO-like and RO-Crate-like package",
+      "evaluate local corpus and generate paper-ready evidence assets",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -29,6 +30,9 @@
       "FDO",
       "RO-Crate",
       "PROV",
+      "evaluation",
+      "crosswalk",
+      "paper assets",
       "repair plan",
       "conformance"
     ]
@@ -51,13 +55,21 @@
   "fdo_record_schema_path": "interfaces/asiep_fdo_record.schema.json",
   "rocrate_metadata_schema_path": "interfaces/asiep_rocrate_metadata.schema.json",
   "prov_jsonld_schema_path": "interfaces/asiep_prov_jsonld.schema.json",
+  "evaluation_report_schema_path": "interfaces/asiep_evaluation_report.schema.json",
+  "crosswalk_matrix_schema_path": "interfaces/asiep_crosswalk_matrix.schema.json",
+  "corpus_manifest_schema_path": "interfaces/asiep_corpus_manifest.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
   "package_policy_path": "profiles/asiep/v0.1/package_policy.json",
+  "evaluation_policy_path": "profiles/asiep/v0.1/evaluation_policy.json",
+  "crosswalk_matrix_path": "evaluation/crosswalk/asiep_v0.1_crosswalk.json",
+  "corpus_manifest_path": "evaluation/corpus/asiep_v0.1_corpus.json",
+  "paper_assets_path": "paper_assets",
   "repair_loop_supported": true,
   "bundle_resolver_supported": true,
   "importer_supported": true,
   "packager_supported": true,
+  "evaluator_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
@@ -107,6 +119,13 @@
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_packager {package_request_path} --format json"
+  },
+  "evaluator_entrypoint": {
+    "module": "asiep_evaluator",
+    "cli": "python -m asiep_evaluator",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_evaluator --profile profiles/asiep/v0.1/profile.json --format json"
   },
   "examples": {
     "valid_examples": [
@@ -195,7 +214,16 @@
     "PACKAGE_ROCRATE_INVALID",
     "PACKAGE_PROV_INVALID",
     "PACKAGE_WRITE_FAILED",
-    "PACKAGE_PID_CLAIM_FORBIDDEN"
+    "PACKAGE_PID_CLAIM_FORBIDDEN",
+    "EVAL_SCHEMA",
+    "EVAL_CORPUS_MISSING",
+    "EVAL_CROSSWALK_INCOMPLETE",
+    "EVAL_PIPELINE_STEP_FAILED",
+    "EVAL_METRIC_COMPUTATION_FAILED",
+    "EVAL_REPORT_INVALID",
+    "EVAL_EXPECTED_RESULT_MISMATCH",
+    "EVAL_PAPER_ASSET_WRITE_FAILED",
+    "EVAL_POLICY_VIOLATION"
   ],
   "supported_output_formats": [
     {
@@ -221,6 +249,10 @@
     {
       "format": "package-result-json",
       "consumer": "agent package exchange and cross-standard inspection loops"
+    },
+    {
+      "format": "evaluation-report-json",
+      "consumer": "agent reproducibility, crosswalk, and paper evidence loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"

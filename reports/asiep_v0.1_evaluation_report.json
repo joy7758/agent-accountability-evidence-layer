@@ -1,0 +1,930 @@
+{
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "evaluation_id": "evaluation:asiep-v0.1-m6",
+  "evaluation_version": "0.1.0",
+  "created_at": "2026-05-05T07:00:00Z",
+  "repository": {
+    "name": "agent-accountability-evidence-layer",
+    "root": ".",
+    "commit": "local-reproducible-run"
+  },
+  "evaluated_components": [
+    {
+      "component_id": "profile_manifest",
+      "path": "profiles/asiep/v0.1/profile.json",
+      "status": "present"
+    },
+    {
+      "component_id": "schema",
+      "path": "schemas/asiep.schema.json",
+      "status": "present"
+    },
+    {
+      "component_id": "jsonld_context",
+      "path": "contexts/asiep.context.jsonld",
+      "status": "present"
+    },
+    {
+      "component_id": "conformance_matrix",
+      "path": "conformance/asiep_v0.1_matrix.yaml",
+      "status": "present"
+    },
+    {
+      "component_id": "validator",
+      "path": "src/asiep_validator/validator.py",
+      "status": "present"
+    },
+    {
+      "component_id": "repairer",
+      "path": "src/asiep_repairer/repairer.py",
+      "status": "present"
+    },
+    {
+      "component_id": "resolver",
+      "path": "src/asiep_resolver/resolver.py",
+      "status": "present"
+    },
+    {
+      "component_id": "importer",
+      "path": "src/asiep_importer/importer.py",
+      "status": "present"
+    },
+    {
+      "component_id": "packager",
+      "path": "src/asiep_packager/packager.py",
+      "status": "present"
+    },
+    {
+      "component_id": "examples",
+      "path": "examples",
+      "status": "present"
+    },
+    {
+      "component_id": "attack_corpus",
+      "path": "attack_corpus",
+      "status": "present"
+    },
+    {
+      "component_id": "generated_packages",
+      "path": "examples/generated_packages",
+      "status": "present"
+    }
+  ],
+  "corpus_summary": {
+    "total_expected_results": 21,
+    "valid_targets": 10,
+    "invalid_targets": 11,
+    "target_types": {
+      "bundle": 4,
+      "evidence_example": 6,
+      "generated_package": 2,
+      "import_request": 4,
+      "package_request": 3,
+      "repair_case": 2
+    }
+  },
+  "pipeline_results": [
+    {
+      "target_path": "examples/valid_chatbot_improvement.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Positive ASIEP evidence example.",
+      "related_invariant_ids": [
+        "I1",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6",
+        "I8",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "evidence_completeness",
+        "false_positive_rate",
+        "gate_reproducibility"
+      ]
+    },
+    {
+      "target_path": "examples/invalid_missing_gate_report.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_missing_gate_report.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "SCHEMA"
+      ],
+      "actual_error_codes": [
+        "SCHEMA"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for missing gate report evidence.",
+      "related_invariant_ids": [
+        "I5"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall"
+      ]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_regression.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_promote_with_regression.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "INV_SAFETY_REGRESSION"
+      ],
+      "actual_error_codes": [
+        "INV_SAFETY_REGRESSION"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for unsafe promote decision with safety regression.",
+      "related_invariant_ids": [
+        "I6"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall",
+        "gate_reproducibility"
+      ]
+    },
+    {
+      "target_path": "examples/invalid_hash_chain_break.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_hash_chain_break.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "REF_UNRESOLVED"
+      ],
+      "actual_error_codes": [
+        "REF_UNRESOLVED"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for broken evidence reference closure.",
+      "related_invariant_ids": [
+        "I4"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall"
+      ]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_p2f_threshold_violation.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_promote_with_p2f_threshold_violation.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "INV_FLIP_THRESHOLD"
+      ],
+      "actual_error_codes": [
+        "INV_FLIP_THRESHOLD"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for threshold-violating promote decision.",
+      "related_invariant_ids": [
+        "I8"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall",
+        "gate_reproducibility"
+      ]
+    },
+    {
+      "target_path": "examples/invalid_transition_order.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_transition_order.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "STATE_TRANSITION"
+      ],
+      "actual_error_codes": [
+        "STATE_TRANSITION"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for invalid state transition order.",
+      "related_invariant_ids": [
+        "I2",
+        "I3"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall"
+      ]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_regression.json",
+      "target_type": "repair_case",
+      "command": "PYTHONPATH=src python -m asiep_repairer examples/invalid_promote_with_regression.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Repair plan case for unsafe promote decision.",
+      "related_invariant_ids": [
+        "I6"
+      ],
+      "related_metric_ids": [
+        "agent_readability"
+      ]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_p2f_threshold_violation.json",
+      "target_type": "repair_case",
+      "command": "PYTHONPATH=src python -m asiep_repairer examples/invalid_promote_with_p2f_threshold_violation.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Repair plan case for flip-count threshold violation.",
+      "related_invariant_ids": [
+        "I8"
+      ],
+      "related_metric_ids": [
+        "agent_readability"
+      ]
+    },
+    {
+      "target_path": "examples/bundles/valid_chatbot_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/valid_chatbot_bundle/bundle.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Positive local evidence bundle.",
+      "related_invariant_ids": [
+        "I4",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "evidence_completeness",
+        "false_positive_rate"
+      ]
+    },
+    {
+      "target_path": "examples/bundles/invalid_missing_artifact_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_missing_artifact_bundle/bundle.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "BUNDLE_ARTIFACT_MISSING"
+      ],
+      "actual_error_codes": [
+        "BUNDLE_ARTIFACT_MISSING"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for missing local artifact.",
+      "related_invariant_ids": [
+        "I4"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall"
+      ]
+    },
+    {
+      "target_path": "examples/bundles/invalid_digest_mismatch_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_digest_mismatch_bundle/bundle.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "BUNDLE_DIGEST_MISMATCH"
+      ],
+      "actual_error_codes": [
+        "BUNDLE_DIGEST_MISMATCH"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for artifact digest tampering.",
+      "related_invariant_ids": [
+        "I10"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall"
+      ]
+    },
+    {
+      "target_path": "examples/bundles/invalid_path_escape_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_path_escape_bundle/bundle.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "BUNDLE_PATH_ESCAPE"
+      ],
+      "actual_error_codes": [
+        "BUNDLE_PATH_ESCAPE"
+      ],
+      "passed": true,
+      "purpose": "Attack sample for unsafe path escape.",
+      "related_invariant_ids": [
+        "I4"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall"
+      ]
+    },
+    {
+      "target_path": "examples/import_requests/otel_chatbot_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/otel_chatbot_request.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Positive OTel-like trace import.",
+      "related_invariant_ids": [
+        "I1",
+        "I4",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "evidence_completeness",
+        "false_positive_rate",
+        "privacy_policy_compliance"
+      ]
+    },
+    {
+      "target_path": "examples/import_requests/langsmith_chatbot_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/langsmith_chatbot_request.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Positive LangSmith-like trace import.",
+      "related_invariant_ids": [
+        "I1",
+        "I4",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "evidence_completeness",
+        "false_positive_rate",
+        "privacy_policy_compliance"
+      ]
+    },
+    {
+      "target_path": "examples/import_requests/invalid_missing_gate_report_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/invalid_missing_gate_report_request.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "IMPORT_REQUIRED_ROLE_MISSING"
+      ],
+      "actual_error_codes": [
+        "IMPORT_REQUIRED_ROLE_MISSING"
+      ],
+      "passed": true,
+      "purpose": "Import attack sample for missing gate report marker.",
+      "related_invariant_ids": [
+        "I5"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall"
+      ]
+    },
+    {
+      "target_path": "examples/import_requests/invalid_sensitive_content_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/invalid_sensitive_content_request.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "IMPORT_SENSITIVE_CONTENT_BLOCKED"
+      ],
+      "actual_error_codes": [
+        "IMPORT_SENSITIVE_CONTENT_BLOCKED"
+      ],
+      "passed": true,
+      "purpose": "Import attack sample for blocked raw prompt content.",
+      "related_invariant_ids": [
+        "I4"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall",
+        "privacy_policy_compliance"
+      ]
+    },
+    {
+      "target_path": "examples/package_requests/otel_chatbot_package_request.json",
+      "target_type": "package_request",
+      "command": "PYTHONPATH=src python -m asiep_packager examples/package_requests/otel_chatbot_package_request.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Positive packaging request for OTel-generated bundle.",
+      "related_invariant_ids": [
+        "I1",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "packaging_closure",
+        "false_positive_rate"
+      ]
+    },
+    {
+      "target_path": "examples/package_requests/langsmith_chatbot_package_request.json",
+      "target_type": "package_request",
+      "command": "PYTHONPATH=src python -m asiep_packager examples/package_requests/langsmith_chatbot_package_request.json --format json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Positive packaging request for LangSmith-generated bundle.",
+      "related_invariant_ids": [
+        "I1",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "packaging_closure",
+        "false_positive_rate"
+      ]
+    },
+    {
+      "target_path": "examples/package_requests/invalid_unvalidated_bundle_package_request.json",
+      "target_type": "package_request",
+      "command": "PYTHONPATH=src python -m asiep_packager examples/package_requests/invalid_unvalidated_bundle_package_request.json --format json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "expected_error_codes": [
+        "PACKAGE_RESOLVER_FAILED"
+      ],
+      "actual_error_codes": [
+        "PACKAGE_RESOLVER_FAILED"
+      ],
+      "passed": true,
+      "purpose": "Packaging attack sample for unvalidated source bundle.",
+      "related_invariant_ids": [
+        "I10"
+      ],
+      "related_metric_ids": [
+        "tamper_detection_recall",
+        "packaging_closure"
+      ]
+    },
+    {
+      "target_path": "examples/generated_packages/otel_chatbot_package",
+      "target_type": "generated_package",
+      "command": "python -m json.tool examples/generated_packages/otel_chatbot_package/package_manifest.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Generated OTel package closure check.",
+      "related_invariant_ids": [
+        "I1",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "packaging_closure",
+        "privacy_policy_compliance"
+      ]
+    },
+    {
+      "target_path": "examples/generated_packages/langsmith_chatbot_package",
+      "target_type": "generated_package",
+      "command": "python -m json.tool examples/generated_packages/langsmith_chatbot_package/package_manifest.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "expected_error_codes": [],
+      "actual_error_codes": [],
+      "passed": true,
+      "purpose": "Generated LangSmith package closure check.",
+      "related_invariant_ids": [
+        "I1",
+        "I10"
+      ],
+      "related_metric_ids": [
+        "packaging_closure",
+        "privacy_policy_compliance"
+      ]
+    }
+  ],
+  "metric_results": [
+    {
+      "metric_id": "evidence_completeness",
+      "name": "Evidence completeness",
+      "value": 1.0,
+      "numerator": 20,
+      "denominator": 20,
+      "method": "Count required evidence roles and package files in generated valid packages.",
+      "interpretation": "Generated valid packages carry required ASIEP evidence roles and package files.",
+      "limitations": [
+        "Computed over two generated local fixture packages only."
+      ]
+    },
+    {
+      "metric_id": "cross_standard_coverage",
+      "name": "Cross-standard coverage",
+      "value": 0.9333333333333333,
+      "numerator": 84,
+      "denominator": 90,
+      "method": "Count non-empty and non-not_applicable mappings across PROV, OTel, LangSmith-like, FDO-like, RO-Crate-like, and governance columns.",
+      "interpretation": "The local crosswalk covers most field groups but honestly marks non-applicable mappings.",
+      "limitations": [
+        "Coverage is for local minimal mappings, not external standard certification."
+      ]
+    },
+    {
+      "metric_id": "gate_reproducibility",
+      "name": "Gate reproducibility",
+      "value": 1.0,
+      "numerator": 3,
+      "denominator": 3,
+      "method": "Check whether gate decision can be reviewed from gate_report_ref, safety checks, flip counts, and thresholds.",
+      "interpretation": "Valid local examples expose the evidence needed to review promote decisions.",
+      "limitations": [
+        "Does not replay model behavior or external evaluator logic."
+      ]
+    },
+    {
+      "metric_id": "tamper_detection_recall",
+      "name": "Tamper detection recall",
+      "value": 1.0,
+      "numerator": 11,
+      "denominator": 11,
+      "method": "Count known invalid or attack samples that are rejected by validator, resolver, importer, or packager.",
+      "interpretation": "Known local attack samples are detected by the appropriate M0-M5 layer.",
+      "limitations": [
+        "The corpus is small and synthetic."
+      ]
+    },
+    {
+      "metric_id": "false_positive_rate",
+      "name": "False positive rate",
+      "value": 0.0,
+      "numerator": 0,
+      "denominator": 8,
+      "method": "Count known valid local fixtures incorrectly rejected by the pipeline.",
+      "interpretation": "Lower is better; zero means no known valid local fixture was rejected.",
+      "limitations": [
+        "Only covers repository fixtures, not external traces."
+      ]
+    },
+    {
+      "metric_id": "privacy_policy_compliance",
+      "name": "Privacy policy compliance",
+      "value": 1.0,
+      "numerator": 2,
+      "denominator": 2,
+      "method": "Search generated package metadata for blocked raw-content keys and the synthetic sensitive sentinel.",
+      "interpretation": "Generated package metadata keeps raw prompt/input/output content out by default.",
+      "limitations": [
+        "String search is not a full privacy classifier."
+      ]
+    },
+    {
+      "metric_id": "packaging_closure",
+      "name": "Packaging closure",
+      "value": 1.0,
+      "numerator": 2,
+      "denominator": 2,
+      "method": "Validate generated package closure: manifest, evidence, bundle, artifacts, FDO-like record, RO-Crate-like metadata, and PROV JSON-LD.",
+      "interpretation": "Generated packages are closed over the local evidence bundle and metadata files.",
+      "limitations": [
+        "Package closure is local-only and does not test remote resolvability."
+      ]
+    },
+    {
+      "metric_id": "agent_readability",
+      "name": "Agent readability",
+      "value": 1.0,
+      "numerator": 8,
+      "denominator": 8,
+      "method": "Count machine-readable schemas exposed by profile.json for validator, repair, resolver, import, package, and evaluation outputs.",
+      "interpretation": "The profile manifest indexes the agent-readable interface surfaces needed for automated review.",
+      "limitations": [
+        "Does not measure downstream agent performance."
+      ]
+    }
+  ],
+  "attack_corpus_results": {
+    "total_attack_samples": 11,
+    "detected_attack_samples": 11,
+    "results": [
+      {
+        "target_path": "examples/invalid_missing_gate_report.json",
+        "target_type": "evidence_example",
+        "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_missing_gate_report.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "SCHEMA"
+        ],
+        "actual_error_codes": [
+          "SCHEMA"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for missing gate report evidence.",
+        "related_invariant_ids": [
+          "I5"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall"
+        ]
+      },
+      {
+        "target_path": "examples/invalid_promote_with_regression.json",
+        "target_type": "evidence_example",
+        "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_promote_with_regression.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "INV_SAFETY_REGRESSION"
+        ],
+        "actual_error_codes": [
+          "INV_SAFETY_REGRESSION"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for unsafe promote decision with safety regression.",
+        "related_invariant_ids": [
+          "I6"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall",
+          "gate_reproducibility"
+        ]
+      },
+      {
+        "target_path": "examples/invalid_hash_chain_break.json",
+        "target_type": "evidence_example",
+        "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_hash_chain_break.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "REF_UNRESOLVED"
+        ],
+        "actual_error_codes": [
+          "REF_UNRESOLVED"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for broken evidence reference closure.",
+        "related_invariant_ids": [
+          "I4"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall"
+        ]
+      },
+      {
+        "target_path": "examples/invalid_promote_with_p2f_threshold_violation.json",
+        "target_type": "evidence_example",
+        "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_promote_with_p2f_threshold_violation.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "INV_FLIP_THRESHOLD"
+        ],
+        "actual_error_codes": [
+          "INV_FLIP_THRESHOLD"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for threshold-violating promote decision.",
+        "related_invariant_ids": [
+          "I8"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall",
+          "gate_reproducibility"
+        ]
+      },
+      {
+        "target_path": "examples/invalid_transition_order.json",
+        "target_type": "evidence_example",
+        "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_transition_order.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "STATE_TRANSITION"
+        ],
+        "actual_error_codes": [
+          "STATE_TRANSITION"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for invalid state transition order.",
+        "related_invariant_ids": [
+          "I2",
+          "I3"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall"
+        ]
+      },
+      {
+        "target_path": "examples/bundles/invalid_missing_artifact_bundle/bundle.json",
+        "target_type": "bundle",
+        "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_missing_artifact_bundle/bundle.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "BUNDLE_ARTIFACT_MISSING"
+        ],
+        "actual_error_codes": [
+          "BUNDLE_ARTIFACT_MISSING"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for missing local artifact.",
+        "related_invariant_ids": [
+          "I4"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall"
+        ]
+      },
+      {
+        "target_path": "examples/bundles/invalid_digest_mismatch_bundle/bundle.json",
+        "target_type": "bundle",
+        "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_digest_mismatch_bundle/bundle.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "BUNDLE_DIGEST_MISMATCH"
+        ],
+        "actual_error_codes": [
+          "BUNDLE_DIGEST_MISMATCH"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for artifact digest tampering.",
+        "related_invariant_ids": [
+          "I10"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall"
+        ]
+      },
+      {
+        "target_path": "examples/bundles/invalid_path_escape_bundle/bundle.json",
+        "target_type": "bundle",
+        "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_path_escape_bundle/bundle.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "BUNDLE_PATH_ESCAPE"
+        ],
+        "actual_error_codes": [
+          "BUNDLE_PATH_ESCAPE"
+        ],
+        "passed": true,
+        "purpose": "Attack sample for unsafe path escape.",
+        "related_invariant_ids": [
+          "I4"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall"
+        ]
+      },
+      {
+        "target_path": "examples/import_requests/invalid_missing_gate_report_request.json",
+        "target_type": "import_request",
+        "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/invalid_missing_gate_report_request.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "IMPORT_REQUIRED_ROLE_MISSING"
+        ],
+        "actual_error_codes": [
+          "IMPORT_REQUIRED_ROLE_MISSING"
+        ],
+        "passed": true,
+        "purpose": "Import attack sample for missing gate report marker.",
+        "related_invariant_ids": [
+          "I5"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall"
+        ]
+      },
+      {
+        "target_path": "examples/import_requests/invalid_sensitive_content_request.json",
+        "target_type": "import_request",
+        "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/invalid_sensitive_content_request.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "IMPORT_SENSITIVE_CONTENT_BLOCKED"
+        ],
+        "actual_error_codes": [
+          "IMPORT_SENSITIVE_CONTENT_BLOCKED"
+        ],
+        "passed": true,
+        "purpose": "Import attack sample for blocked raw prompt content.",
+        "related_invariant_ids": [
+          "I4"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall",
+          "privacy_policy_compliance"
+        ]
+      },
+      {
+        "target_path": "examples/package_requests/invalid_unvalidated_bundle_package_request.json",
+        "target_type": "package_request",
+        "command": "PYTHONPATH=src python -m asiep_packager examples/package_requests/invalid_unvalidated_bundle_package_request.json --format json",
+        "expected_valid": false,
+        "actual_valid": false,
+        "expected_error_codes": [
+          "PACKAGE_RESOLVER_FAILED"
+        ],
+        "actual_error_codes": [
+          "PACKAGE_RESOLVER_FAILED"
+        ],
+        "passed": true,
+        "purpose": "Packaging attack sample for unvalidated source bundle.",
+        "related_invariant_ids": [
+          "I10"
+        ],
+        "related_metric_ids": [
+          "tamper_detection_recall",
+          "packaging_closure"
+        ]
+      }
+    ]
+  },
+  "crosswalk_coverage": {
+    "field_group_count": 15,
+    "standards_count": 7,
+    "mapped_cells": 84,
+    "total_cells": 90,
+    "coverage": 0.9333333333333333,
+    "invariant_coverage": {
+      "I1": true,
+      "I2": true,
+      "I3": true,
+      "I4": true,
+      "I5": true,
+      "I6": true,
+      "I7": true,
+      "I8": true,
+      "I9": true,
+      "I10": true
+    }
+  },
+  "generated_artifacts": [
+    {
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "artifact_type": "evaluation_report"
+    },
+    {
+      "path": "reports/asiep_v0.1_evaluation_summary.md",
+      "artifact_type": "evaluation_summary"
+    },
+    {
+      "path": "paper_assets/tables/crosswalk_matrix.md",
+      "artifact_type": "paper_table"
+    },
+    {
+      "path": "paper_assets/tables/evaluation_metrics.md",
+      "artifact_type": "paper_table"
+    },
+    {
+      "path": "paper_assets/tables/attack_corpus_results.md",
+      "artifact_type": "paper_table"
+    },
+    {
+      "path": "paper_assets/figures/pipeline_flow.mmd",
+      "artifact_type": "paper_figure"
+    },
+    {
+      "path": "paper_assets/figures/state_machine.mmd",
+      "artifact_type": "paper_figure"
+    },
+    {
+      "path": "paper_assets/paper_outline.md",
+      "artifact_type": "paper_asset"
+    },
+    {
+      "path": "paper_assets/abstract_draft.md",
+      "artifact_type": "paper_asset"
+    }
+  ],
+  "limitations": [
+    "M6 uses local fixtures only and does not call OTel collectors, LangSmith APIs, FDO registries, or remote artifact stores.",
+    "Crosswalk coverage is a local minimal mapping and does not claim external standard certification.",
+    "Metrics are computed over the repository corpus, not over production agent traces.",
+    "Privacy compliance checks search for blocked raw-content keys and synthetic sentinel strings; they are not a full DLP scanner."
+  ],
+  "revalidation_commands": [
+    "PYTHONPATH=src python -m asiep_evaluator --profile profiles/asiep/v0.1/profile.json --format json",
+    "PYTHONPATH=src python scripts/evaluate_profile_demo.py",
+    "PYTHONPATH=src python -m pytest tests/test_evaluator.py"
+  ]
+}
