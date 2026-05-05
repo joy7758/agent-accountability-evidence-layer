@@ -1,0 +1,47 @@
+{
+  "action_required": "remove placeholder text, rebuild PDF, re-run final checks",
+  "affected_tables": [
+    "Table I",
+    "Table II",
+    "Table III"
+  ],
+  "blocker": "AUTHOR LAYOUT CHECK REQUIRED visible in table captions",
+  "blocker_detected": true,
+  "created_at": "2026-05-05T17:24:52.650006+00:00",
+  "editorial_fix_completed": true,
+  "final_submission_ready": false,
+  "final_submission_ready_after_reopen": false,
+  "final_submission_ready_before_fix": true,
+  "fixes_applied": [
+    "Removed visible table-caption layout placeholders from LaTeX source.",
+    "Populated PDF Title, Author, Subject, and Keywords metadata.",
+    "Added public repository/artifact availability statement.",
+    "Added local denominators and conservative labels to Table II without changing metric values.",
+    "Tightened AI-use disclosure wording and heading.",
+    "Checked BibTeX capitalization for key product/specification names."
+  ],
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "reapproval_required": true,
+  "remaining_human_actions": [
+    "Review the rebuilt PDF after editorial fixes.",
+    "Re-confirm final author approval after the editorial fix.",
+    "Re-run final gate promotion only after human re-approval.",
+    "Run final_submission_check.py again after re-approval."
+  ],
+  "report_id": "asiep-escience2026-editorial-fix-m14",
+  "target_venue": "escience2026",
+  "verification": {
+    "acknowledgement_ai_use_disclosure_present": true,
+    "author_layout_placeholders_present": false,
+    "latex_compile_success": true,
+    "overfull_boxes_count": 5,
+    "page_count_total": 8,
+    "pdf_metadata_present": true,
+    "pdf_path": "submission/escience2026/latex/main.pdf",
+    "pdf_sha256": "c044d52bb18d4470aa4b07b4c971122fb16a82b43b3c0450a56020df2896ff1f",
+    "repository_url_present": true,
+    "unresolved_citations": [],
+    "unresolved_references": [],
+    "within_page_limit": true
+  }
+}

@@ -178,6 +178,7 @@ def _generate_compile_report() -> dict[str, Any]:
     report["unresolved_references"] = log_findings["unresolved_references"]
     report["overfull_boxes"] = log_findings["overfull_boxes"]
     report.update(author_block)
+    report.update(_check_editorial_pdf_state(PDF_PATH))
     return report
 
 
@@ -293,8 +294,40 @@ def _check_author_block(path: Path) -> dict[str, Any]:
     }
 
 
+def _check_editorial_pdf_state(path: Path) -> dict[str, Any]:
+    text = ""
+    if path.exists() and shutil.which("pdftotext"):
+        result = subprocess.run(["pdftotext", str(path), "-"], capture_output=True, text=True)
+        if result.returncode == 0:
+            text = result.stdout
+    info = ""
+    if path.exists() and shutil.which("pdfinfo"):
+        result = subprocess.run(["pdfinfo", str(path)], capture_output=True, text=True)
+        if result.returncode == 0:
+            info = result.stdout
+    ack_source = _read_text(ROOT / "submission" / "escience2026" / "latex" / "sections" / "acknowledgements_ai_use.tex")
+    return {
+        "pdf_metadata_present": all(label in info for label in ("Title:", "Author:", "Subject:", "Keywords:")),
+        "author_layout_placeholders_present": "AUTHOR LAYOUT CHECK REQUIRED" in text or "AUTHOR_LAYOUT_CHECK_REQUIRED" in text,
+        "repository_url_present": "github.com/joy7758/" in text and "agent-accountability-evidence-layer" in text,
+        "acknowledgement_ai_use_disclosure_present": (
+            "\\section*{Acknowledgment and AI-Use Disclosure}" in ack_source
+            and "OpenAI ChatGPT (GPT-5.5 Pro)" in ack_source
+            and "OpenAI Codex" in ack_source
+        ),
+        "editorial_fix_completed": (
+            all(label in info for label in ("Title:", "Author:", "Subject:", "Keywords:"))
+            and "AUTHOR LAYOUT CHECK REQUIRED" not in text
+            and "AUTHOR_LAYOUT_CHECK_REQUIRED" not in text
+            and "github.com/joy7758/" in text
+            and "agent-accountability-evidence-layer" in text
+        ),
+    }
+
+
 def _update_integration_report(compile_report: dict[str, Any]) -> None:
     report = _load_json(INTEGRATION_REPORT_PATH)
+    final_gate_status = _load_json_if_exists(ROOT / "submission" / "escience2026" / "final_gate_status.json")
     author_final_approval_exists = (ROOT / "submission" / "escience2026" / "author_final_approval.json").exists()
     repository_policy_decided = _json_bool(ROOT / "submission" / "escience2026" / "repository_policy_decision.json", "final_ready")
     deadline_verified = _json_bool(ROOT / "submission" / "escience2026" / "deadline_verification.json", "deadline_verified")
@@ -311,6 +344,7 @@ def _update_integration_report(compile_report: dict[str, Any]) -> None:
         and license_decided
         and sensitive_reviewed
         and layout_reviewed
+        and final_gate_status.get("final_submission_ready") is True
     )
     report.update(
         {
@@ -384,6 +418,12 @@ def _load_json_if_exists(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return _load_json(path)
+
+
+def _read_text(path: Path) -> str:
+    if not path.exists():
+        return ""
+    return path.read_text(encoding="utf-8")
 
 
 def _assert_schema_valid(payload: dict[str, Any], schema_path: Path) -> None:

@@ -1,18 +1,18 @@
 \begin{table*}[t]
 \centering
-\caption{Local fixture evaluation metrics. AUTHOR\_LAYOUT\_CHECK\_REQUIRED}
-\begin{tabular}{p{0.25\linewidth}p{0.08\linewidth}p{0.58\linewidth}}
+\caption{Local fixture evaluation metrics on the current curated corpus.}
+\begin{tabular}{p{0.24\linewidth}p{0.08\linewidth}p{0.10\linewidth}p{0.50\linewidth}}
 \toprule
-Metric & Value & Interpretation \\
+Metric & Value & Local count & Interpretation \\
 \midrule
-\texttt{evidence\_completeness} & 1.0 & Required fields and artifact roles are present in known valid local cases. \\
-\texttt{cross\_standard\_coverage} & 0.9333 & Most ASIEP field groups have local mappings to PROV, OpenTelemetry-like, LangSmith-like, FDO-like, RO-Crate-like, and governance categories. \\
-\texttt{gate\_reproducibility} & 1.0 & Gate decisions in the local corpus can be checked from gate reports, thresholds, flip counts, and safety checks. \\
-\texttt{tamper\_detection\_recall} & 1.0 & Known invalid and adversarial samples are detected by the implemented local checks. \\
-\texttt{false\_positive\_rate} & 0.0 & Known valid local fixtures are not rejected by the toolchain. \\
-\texttt{privacy\_policy\_compliance} & 1.0 & Generated valid packages avoid default embedding of raw prompts, user inputs, and model outputs under the current sentinel/key scanning policy. \\
-\texttt{packaging\_closure} & 1.0 & Generated packages contain the expected manifest, evidence record, bundle, artifacts, FDO-like record, RO-Crate-like metadata, and PROV JSON-LD. \\
-\texttt{agent\_readability} & 1.0 & Profile manifests, validator outputs, repair plans, bundle resolution results, import results, package results, and evaluation reports are machine-readable. \\
+\texttt{evidence\_completeness} & 1.0 & 20/20 & Required fields and artifact roles are present in generated valid packages. \\
+\texttt{cross\_standard\_coverage} & 0.9333 & 84/90 & Non-empty local mappings across PROV, OpenTelemetry-like, LangSmith-like, FDO-like, RO-Crate-like, and governance columns. \\
+\texttt{gate\_reproducibility} & 1.0 & 3/3 & Gate decisions can be reviewed from gate reports, thresholds, flip counts, and safety checks. \\
+\texttt{tamper\_detection\_recall} & 1.0 & 11/11 & Known invalid or adversarial local samples are rejected by validator, resolver, importer, or packager checks. \\
+\texttt{false\_positive\_rate} & 0.0 & 0/8 & Known valid local fixtures incorrectly rejected by the pipeline. \\
+\texttt{sentinel\_scan\_pass\_rate} & 1.0 & 2/2 & Generated package metadata passes the current raw-content-key and synthetic-sentinel scan. \\
+\texttt{packaging\_closure} & 1.0 & 2/2 & Generated packages contain the expected manifest, evidence record, bundle, artifacts, FDO-like record, RO-Crate-like metadata, and PROV JSON-LD. \\
+\texttt{machine\_readable\_coverage} & 1.0 & 8/8 & Profile manifests and tool outputs are machine-readable for validator, repair, resolver, import, package, and evaluation steps. \\
 \bottomrule
 \end{tabular}
 \end{table*}

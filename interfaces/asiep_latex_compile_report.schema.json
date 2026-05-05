@@ -69,6 +69,11 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
     },
+    "pdf_metadata_present": { "type": "boolean" },
+    "author_layout_placeholders_present": { "type": "boolean" },
+    "repository_url_present": { "type": "boolean" },
+    "acknowledgement_ai_use_disclosure_present": { "type": "boolean" },
+    "editorial_fix_completed": { "type": "boolean" },
     "errors": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
     "warnings": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
     "required_human_actions": {

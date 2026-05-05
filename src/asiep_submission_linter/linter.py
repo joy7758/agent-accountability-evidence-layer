@@ -223,8 +223,12 @@ def _check_final_submission_gates(errors: list[dict[str, Any]], checks: list[dic
     sensitive_scan_report_path = ROOT / "submission" / "escience2026" / "sensitive_content_scan_report.json"
     sensitive_review_path = ROOT / "submission" / "escience2026" / "sensitive_content_review.json"
     layout_review_path = ROOT / "submission" / "escience2026" / "layout_review.json"
+    final_gate_status_path = ROOT / "submission" / "escience2026" / "final_gate_status.json"
 
     latex_report = _load_json_if_exists(latex_report_path)
+    final_gate_status = _load_json_if_exists(final_gate_status_path)
+    final_gate_status_ready = bool(final_gate_status) and final_gate_status.get("final_submission_ready") is True
+    editorial_reapproval_required = bool(final_gate_status) and final_gate_status.get("reapproval_required_after_editorial_fix") is True
     latex_report_valid = bool(latex_report)
     if latex_report:
         before = len(errors)
@@ -314,12 +318,29 @@ def _check_final_submission_gates(errors: list[dict[str, Any]], checks: list[dic
         and sensitive_scan_completed
         and sensitive_review_ready
         and layout_review_ready
+        and final_gate_status_ready
         and manifest.get("final_submission_ready") is True
     )
     _record(checks, "manifest_final_submission_ready", manifest.get("final_submission_ready") is True, "true" if manifest.get("final_submission_ready") is True else "false")
+    _record(checks, "final_gate_status_ready", final_gate_status_ready, "true" if final_gate_status_ready else "false")
+    _record(checks, "editorial_reapproval_required", editorial_reapproval_required, "required" if editorial_reapproval_required else "not required")
     if not final_ready and manifest.get("final_submission_ready") is True:
         errors.append(_issue("SUBMISSION_LINTER_FAILED", "submission_manifest.json marks final_submission_ready=true before every final gate passes."))
-    if compile_success and page_count_checked and within_page_limit and approval_ready and repository_ready and deadline_ready and license_ready and sensitive_scan_completed and sensitive_review_ready and layout_review_ready and manifest.get("final_submission_ready") is not True:
+    if (
+        compile_success
+        and page_count_checked
+        and within_page_limit
+        and approval_ready
+        and repository_ready
+        and deadline_ready
+        and license_ready
+        and sensitive_scan_completed
+        and sensitive_review_ready
+        and layout_review_ready
+        and final_gate_status_ready
+        and manifest.get("final_submission_ready") is not True
+        and not editorial_reapproval_required
+    ):
         errors.append(_issue("SUBMISSION_LINTER_FAILED", "All final artifacts are present but submission_manifest.json is not marked final_submission_ready=true."))
 
 

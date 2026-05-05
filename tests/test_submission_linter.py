@@ -106,7 +106,7 @@ def test_submission_linter_outputs_valid_human_rewrite_package() -> None:
     assert result["valid"] is True
     assert result["stage"] == "rewrite"
     assert result["human_rewrite_required"] is True
-    assert result["final_submission_ready"] is True
+    assert result["final_submission_ready"] is False
     assert result["summary"]["author_verify_markers"] == 0
     assert result["summary"]["deadline_requires_human_verification"] is True
     assert result["summary"]["ieee_ai_disclosure_ready"] is True
@@ -121,7 +121,7 @@ def test_submission_linter_final_stage_passes_after_human_final_gates() -> None:
     assert result["summary"]["paper_author_verify_markers"] == 0
     assert result["summary"]["latex_author_verify_markers"] == 0
     assert result["summary"]["citation_required_markers"] == 0
-    assert result["final_submission_ready"] is True
+    assert result["final_submission_ready"] is False
     assert result["errors"] == []
 
 
@@ -188,7 +188,7 @@ def test_submission_linter_cli_and_demo_script() -> None:
     assert payload["valid"] is True
     demo = subprocess.run([sys.executable, "scripts/submission_demo.py"], cwd=ROOT, check=True, capture_output=True, text=True)
     assert "submission_linter_valid=True" in demo.stdout
-    assert "final_submission_ready=True" in demo.stdout
+    assert "final_submission_ready=False" in demo.stdout
 
 
 def test_human_rewrite_board_and_section_packets_exist() -> None:
@@ -218,24 +218,26 @@ def test_final_human_checklist_contains_m11_gates() -> None:
     assert "repository/anonymization policy decided" in text
 
 
-def test_final_check_script_passes_after_final_human_approval_and_layout_gates() -> None:
+def test_final_check_script_requires_reapproval_after_editorial_fix() -> None:
     result = subprocess.run(
         [sys.executable, "scripts/final_submission_check.py"],
         cwd=ROOT,
         capture_output=True,
         text=True,
     )
-    assert result.returncode == 0
+    assert result.returncode == 1
     payload = json.loads(result.stdout)
-    assert payload["valid"] is True
+    assert payload["valid"] is False
     assert payload["remaining_author_verify_markers"] == 0
-    assert payload["errors"] == []
+    assert any("predates the latest editorial fix" in error["message"] for error in payload["errors"])
     assert payload["checks"]["author_final_approval_exists"] is True
     assert payload["checks"]["repository_decision_exists"] is True
     assert payload["checks"]["deadline_verification_exists"] is True
     assert payload["checks"]["license_decision_final_ready"] is True
     assert payload["checks"]["sensitive_content_review_final_ready"] is True
     assert payload["checks"]["layout_review_final_ready"] is True
+    assert payload["checks"]["editorial_fix_completed"] is True
+    assert payload["checks"]["final_approval_after_editorial_fix"] is False
 
 
 def test_full_paper_integration_report_records_nonready_status() -> None:
@@ -245,11 +247,12 @@ def test_full_paper_integration_report_records_nonready_status() -> None:
     assert report["missing_citation_keys"] == []
     assert report["forbidden_claims_found"] == []
     assert report["latex_synced"] is True
-    assert report["final_submission_ready"] is True
+    assert report["final_submission_ready"] is False
     assert report["author_final_approval_exists"] is True
     assert report["latex_compile_report_path"] == "submission/escience2026/latex_compile_report.json"
     assert report["final_repository_policy_decided"] is True
     assert report["final_deadline_verified"] is True
+    assert report["reapproval_required_after_editorial_fix"] is True
 
 
 def test_m12_latex_compile_report_and_templates_exist() -> None:
@@ -264,6 +267,11 @@ def test_m12_latex_compile_report_and_templates_exist() -> None:
     assert compile_report["author_block_verified"] is True
     assert compile_report["author_block_requires_final_human_review"] is True
     assert compile_report["author_block_missing_strings"] == []
+    assert compile_report["pdf_metadata_present"] is True
+    assert compile_report["author_layout_placeholders_present"] is False
+    assert compile_report["repository_url_present"] is True
+    assert compile_report["acknowledgement_ai_use_disclosure_present"] is True
+    assert compile_report["editorial_fix_completed"] is True
     assert (ROOT / "submission" / "escience2026" / "repository_policy_decision.template.json").exists()
     assert (ROOT / "submission" / "escience2026" / "deadline_verification.template.json").exists()
     assert (ROOT / "submission" / "escience2026" / "license_decision.template.json").exists()
@@ -290,7 +298,7 @@ def test_governance_drafts_are_nonfinal_and_do_not_satisfy_final_gate() -> None:
     assert author_draft["approval_status"]["status"] == "pending_author_final_confirmation"
     final_gate_status = _load_json(ROOT / "submission" / "escience2026" / "final_gate_status.json")
     assert final_gate_status["governance_drafts_present"] is True
-    assert final_gate_status["final_submission_ready"] is True
+    assert final_gate_status["final_submission_ready"] is False
     assert final_gate_status["author_final_approval_status"]["final_file_present"] is True
     assert final_gate_status["author_final_approval_status"]["approved_by_human_author"] is True
 
@@ -316,8 +324,8 @@ def test_latex_submission_demo_runs_and_preserves_final_ready_status() -> None:
     assert payload["paper_linter_valid"] is True
     assert payload["citation_linter_valid"] is True
     assert payload["submission_linter_rewrite_valid"] is True
-    assert payload["final_submission_ready"] is True
-    assert payload["final_submission_check_valid"] is True
+    assert payload["final_submission_ready"] is False
+    assert payload["final_submission_check_valid"] is False
 
 
 def test_final_gate_recommendations_remain_pending_after_final_promotion() -> None:
@@ -368,8 +376,10 @@ def test_final_gate_status_records_promotion_with_final_readiness() -> None:
     assert status["promotion_required_for_final_submission"] is False
     assert len(status["final_gate_files_present"]) == 6
     assert status["final_gate_files_missing"] == []
-    assert status["final_submission_ready"] is True
-    assert status["final_submission_check_passed"] is True
+    assert status["final_submission_ready"] is False
+    assert status["final_submission_check_passed"] is False
+    assert status["editorial_fix_completed"] is True
+    assert status["reapproval_required_after_editorial_fix"] is True
 
 
 def test_promote_recommended_gates_requires_explicit_human_confirmation() -> None:
@@ -387,20 +397,20 @@ def test_promote_recommended_gates_requires_explicit_human_confirmation() -> Non
     assert "approved_by" in payload["missing_confirmations"]
 
 
-def test_final_submission_check_passes_after_recommendation_promotion() -> None:
+def test_final_submission_check_blocks_until_editorial_reapproval() -> None:
     result = subprocess.run(
         [sys.executable, "scripts/final_submission_check.py"],
         cwd=ROOT,
         capture_output=True,
         text=True,
     )
-    assert result.returncode == 0
+    assert result.returncode == 1
     payload = json.loads(result.stdout)
-    assert payload["valid"] is True
+    assert payload["valid"] is False
     assert payload["checks"]["final_gate_recommendations_present"] is True
     assert payload["checks"]["sensitive_content_review_exists"] is True
     assert payload["checks"]["layout_review_exists"] is True
-    assert payload["blocking_items"] == []
+    assert "final author approval predates the latest editorial fix" in payload["blocking_items"]
 
 
 def test_final_review_packet_exists_and_keeps_submission_nonfinal() -> None:
@@ -482,8 +492,8 @@ def test_promotion_dry_run_demo_succeeds_after_final_promotion() -> None:
     assert payload["dry_run_success"] is True
     assert payload["dry_run_created_final_gate_files"] is False
     assert payload["final_gate_files_present"] is True
-    assert payload["final_submission_ready"] is True
-    assert payload["final_submission_check_valid"] is True
+    assert payload["final_submission_ready"] is False
+    assert payload["final_submission_check_valid"] is False
 
 
 def test_final_gate_status_records_m13_review_packet_and_dry_run() -> None:
@@ -492,7 +502,7 @@ def test_final_gate_status_records_m13_review_packet_and_dry_run() -> None:
     assert status["final_review_packet_path"] == "submission/escience2026/final_review_packet"
     assert status["promotion_dry_run_supported"] is True
     assert status["promotion_dry_run_completed"] is True
-    assert status["final_submission_ready"] is True
+    assert status["final_submission_ready"] is False
 
 
 def test_final_submission_packet_exists_after_promotion() -> None:
@@ -502,7 +512,8 @@ def test_final_submission_packet_exists_after_promotion() -> None:
     assert (packet / "README.md").exists()
     assert (packet / "final_submission_summary.md").exists()
     assert (packet / "final_checks_report.md").exists()
-    assert summary["final_submission_ready"] is True
+    assert summary["final_submission_ready"] is False
+    assert summary["reapproval_required_after_editorial_fix"] is True
     assert summary["actual_easychair_submission_completed"] is False
     assert summary["page_count"] == 8
     assert summary["unresolved_citations"] == []

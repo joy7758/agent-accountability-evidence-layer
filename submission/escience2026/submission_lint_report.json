@@ -87,7 +87,7 @@
     }
   ],
   "errors": [],
-  "final_submission_ready": true,
+  "final_submission_ready": false,
   "human_rewrite_required": true,
   "paper_id": "asiep-paper-v0.4-escience-human-editable",
   "profile": "ASIEP",
@@ -116,15 +116,6 @@
       "json_pointer": "",
       "message": "No AUTHOR_VERIFY markers remain; run final submission checks before treating the paper as final.",
       "remediation_hint": "Add AUTHOR_VERIFY markers to sections that require human rewriting, metric checking, citation checking, or CFP verification.",
-      "repairability": "agent_fixable",
-      "severity": "warning"
-    },
-    {
-      "code": "SUBMISSION_LINTER_FAILED",
-      "json_path": "$",
-      "json_pointer": "",
-      "message": "M10 package should not mark final_submission_ready=true before human rewrite.",
-      "remediation_hint": "Inspect the submission linter JSON output and repair the submission manifest, protocol, manuscript, or support files.",
       "repairability": "agent_fixable",
       "severity": "warning"
     }
