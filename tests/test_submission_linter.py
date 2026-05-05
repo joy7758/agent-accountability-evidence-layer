@@ -142,6 +142,10 @@ def test_profile_manifest_indexes_m10_submission_layer() -> None:
         "artifact_availability_statement_path",
         "final_human_checklist_path",
         "latex_compile_report_path",
+        "sensitive_content_scan_report_path",
+        "license_decision_template_path",
+        "license_decision_support_path",
+        "sensitive_content_scan_script",
         "governance_drafts_path",
         "final_gate_status_path",
         "ai_assisted_submission_notes_path",
@@ -230,6 +234,8 @@ def test_final_check_script_fails_until_final_human_approval_and_layout_gates() 
     assert any("Final author approval is missing" in error["message"] for error in payload["errors"])
     assert any(error["code"] == "FINAL_REPOSITORY_POLICY_UNDECIDED" for error in payload["errors"])
     assert any(error["code"] == "FINAL_DEADLINE_UNVERIFIED" for error in payload["errors"])
+    assert any("License decision is missing" in error["message"] for error in payload["errors"])
+    assert any("Sensitive content scan" in error["message"] for error in payload["errors"])
 
 
 def test_full_paper_integration_report_records_nonready_status() -> None:
@@ -253,8 +259,11 @@ def test_m12_latex_compile_report_and_templates_exist() -> None:
     assert compile_report["final_submission_ready"] is False
     assert compile_report["page_limit"] == 8
     assert compile_report["references_excluded"] is True
+    assert "overfull_boxes" in compile_report
     assert (ROOT / "submission" / "escience2026" / "repository_policy_decision.template.json").exists()
     assert (ROOT / "submission" / "escience2026" / "deadline_verification.template.json").exists()
+    assert (ROOT / "submission" / "escience2026" / "license_decision.template.json").exists()
+    assert not (ROOT / "submission" / "escience2026" / "license_decision.json").exists()
     approval_template = _load_json(ROOT / "submission" / "escience2026" / "author_final_approval.template.json")
     _assert_schema_valid(approval_template, ROOT / profile["author_final_approval_schema_path"])
     assert approval_template["approved_by_human_author"] is False
@@ -276,6 +285,18 @@ def test_governance_drafts_are_nonfinal_and_do_not_satisfy_final_gate() -> None:
     assert final_gate_status["final_submission_ready"] is False
     assert final_gate_status["author_final_approval_status"]["final_file_present"] is False
     assert "author final approval not signed" in final_gate_status["blocking_items"]
+
+
+def test_sensitive_content_scan_report_is_nonfinal_until_human_review() -> None:
+    report = _load_json(ROOT / "submission" / "escience2026" / "sensitive_content_scan_report.json")
+    assert report["scan_completed"] is True
+    assert report["requires_human_review"] is True
+    assert report["final_ready"] is False
+    assert "not full data-loss prevention" in " ".join(report["limitations"]).lower()
+    final_gate_status = _load_json(ROOT / "submission" / "escience2026" / "final_gate_status.json")
+    assert final_gate_status["sensitive_content_scan_status"]["scan_completed"] is True
+    assert final_gate_status["sensitive_content_scan_status"]["final_ready"] is False
+    assert final_gate_status["license_status"]["final_ready"] is False
 
 
 def test_latex_submission_demo_runs_and_preserves_nonready_status() -> None:

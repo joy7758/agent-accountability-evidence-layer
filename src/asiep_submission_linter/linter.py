@@ -219,6 +219,8 @@ def _check_final_submission_gates(errors: list[dict[str, Any]], checks: list[dic
     approval_path = ROOT / "submission" / "escience2026" / "author_final_approval.json"
     repository_decision_path = ROOT / "submission" / "escience2026" / "repository_policy_decision.json"
     deadline_verification_path = ROOT / "submission" / "escience2026" / "deadline_verification.json"
+    license_decision_path = ROOT / "submission" / "escience2026" / "license_decision.json"
+    sensitive_scan_report_path = ROOT / "submission" / "escience2026" / "sensitive_content_scan_report.json"
 
     latex_report = _load_json_if_exists(latex_report_path)
     latex_report_valid = bool(latex_report)
@@ -271,6 +273,20 @@ def _check_final_submission_gates(errors: list[dict[str, Any]], checks: list[dic
     if not deadline_ready:
         errors.append(_issue("FINAL_DEADLINE_UNVERIFIED", "Deadline verification is missing or deadline_verified is not true."))
 
+    license_decision = _load_json_if_exists(license_decision_path)
+    license_ready = bool(license_decision) and license_decision.get("final_ready") is True
+    _record(checks, "license_decision_exists", bool(license_decision), "present" if license_decision else "missing")
+    _record(checks, "license_decision_final_ready", license_ready, "ready" if license_ready else "not ready")
+    if not license_ready:
+        errors.append(_issue("SUBMISSION_LINTER_FAILED", "License decision is missing or not final-ready."))
+
+    sensitive_scan = _load_json_if_exists(sensitive_scan_report_path)
+    sensitive_scan_ready = bool(sensitive_scan) and sensitive_scan.get("scan_completed") is True and sensitive_scan.get("final_ready") is True
+    _record(checks, "sensitive_content_scan_report_exists", bool(sensitive_scan), "present" if sensitive_scan else "missing")
+    _record(checks, "sensitive_content_scan_final_ready", sensitive_scan_ready, "ready" if sensitive_scan_ready else "not ready")
+    if not sensitive_scan_ready:
+        errors.append(_issue("SUBMISSION_LINTER_FAILED", "Sensitive content scan report is missing or not final-ready."))
+
     final_ready = (
         compile_success
         and page_count_checked
@@ -278,12 +294,14 @@ def _check_final_submission_gates(errors: list[dict[str, Any]], checks: list[dic
         and approval_ready
         and repository_ready
         and deadline_ready
+        and license_ready
+        and sensitive_scan_ready
         and manifest.get("final_submission_ready") is True
     )
     _record(checks, "manifest_final_submission_ready", manifest.get("final_submission_ready") is True, "true" if manifest.get("final_submission_ready") is True else "false")
     if not final_ready and manifest.get("final_submission_ready") is True:
         errors.append(_issue("SUBMISSION_LINTER_FAILED", "submission_manifest.json marks final_submission_ready=true before every final gate passes."))
-    if compile_success and page_count_checked and within_page_limit and approval_ready and repository_ready and deadline_ready and manifest.get("final_submission_ready") is not True:
+    if compile_success and page_count_checked and within_page_limit and approval_ready and repository_ready and deadline_ready and license_ready and sensitive_scan_ready and manifest.get("final_submission_ready") is not True:
         errors.append(_issue("SUBMISSION_LINTER_FAILED", "All final artifacts are present but submission_manifest.json is not marked final_submission_ready=true."))
 
 

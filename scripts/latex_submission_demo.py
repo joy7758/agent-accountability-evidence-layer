@@ -68,6 +68,7 @@ def main() -> int:
         "within_page_limit": compile_report["within_page_limit"],
         "unresolved_citations": compile_report["unresolved_citations"],
         "unresolved_references": compile_report["unresolved_references"],
+        "overfull_boxes": compile_report["overfull_boxes"],
         "final_submission_ready": False,
         "final_submission_check_valid": final_payload.get("valid", False),
         "required_human_actions": compile_report["required_human_actions"],
@@ -168,6 +169,7 @@ def _generate_compile_report() -> dict[str, Any]:
     report["generated_pdf_path"] = str(PDF_PATH.relative_to(ROOT)) if PDF_PATH.exists() else None
     report["unresolved_citations"] = log_findings["unresolved_citations"]
     report["unresolved_references"] = log_findings["unresolved_references"]
+    report["overfull_boxes"] = log_findings["overfull_boxes"]
     return report
 
 
@@ -197,6 +199,7 @@ def _report(
         "references_excluded": True,
         "unresolved_citations": [],
         "unresolved_references": [],
+        "overfull_boxes": [],
         "errors": _dedupe_issues(errors),
         "warnings": _dedupe_issues(warnings),
         "required_human_actions": _dedupe_strings(required_human_actions),
@@ -220,6 +223,7 @@ def _inspect_log(path: Path) -> dict[str, Any]:
     text = path.read_text(encoding="utf-8", errors="replace")
     unresolved_citations = sorted(set(re.findall(r"Citation `([^']+)' undefined", text)))
     unresolved_references = sorted(set(re.findall(r"Reference `([^']+)' undefined", text)))
+    overfull_boxes = [line.strip() for line in text.splitlines() if line.strip().startswith("Overfull \\hbox")]
     bibtex_failed = "I couldn't open database file" in text or "I found no \\bibdata command" in text
     warnings: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
@@ -234,6 +238,7 @@ def _inspect_log(path: Path) -> dict[str, Any]:
         "warnings": warnings,
         "unresolved_citations": unresolved_citations,
         "unresolved_references": unresolved_references,
+        "overfull_boxes": overfull_boxes,
         "bibtex_failed": bibtex_failed,
     }
 

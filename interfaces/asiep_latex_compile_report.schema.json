@@ -22,6 +22,7 @@
     "references_excluded",
     "unresolved_citations",
     "unresolved_references",
+    "overfull_boxes",
     "errors",
     "warnings",
     "required_human_actions",
@@ -52,6 +53,10 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
       "uniqueItems": true
+    },
+    "overfull_boxes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
     },
     "errors": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
     "warnings": { "type": "array", "items": { "$ref": "#/$defs/issue" } },

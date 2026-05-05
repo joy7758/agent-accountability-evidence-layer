@@ -76,13 +76,15 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 
 ## M12 LaTeX And Final Submission Gates
 
-- [ ] LaTeX compiled successfully.
-- [ ] PDF generated.
-- [ ] Page count checked.
-- [ ] Confirmed <= 8 pages excluding references.
-- [ ] Unresolved citations = 0.
-- [ ] Unresolved references = 0.
+- [x] LaTeX compiled successfully.
+- [x] PDF generated.
+- [x] Page count checked.
+- [x] Confirmed <= 8 pages excluding references.
+- [x] Unresolved citations = 0.
+- [x] Unresolved references = 0.
 - [ ] Overfull boxes reviewed.
+- [ ] License finalized.
+- [ ] Sensitive content scan completed and reviewed.
 - [ ] Repository/anonymization policy decided.
 - [ ] Deadline ambiguity manually resolved.
 - [ ] AI-use disclosure reviewed.
