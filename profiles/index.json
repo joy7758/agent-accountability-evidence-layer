@@ -26,7 +26,10 @@
         "rocrate_like_metadata",
         "prov_jsonld",
         "crosswalk_evaluation",
-        "paper_assets"
+        "paper_assets",
+        "paper_linter",
+        "claim_registry",
+        "evidence_map"
       ],
       "keywords": [
         "ASIEP",
@@ -40,7 +43,9 @@
         "RO-Crate",
         "PROV",
         "evaluation",
-        "crosswalk"
+        "crosswalk",
+        "paper claims",
+        "claim accountability"
       ]
     }
   ]

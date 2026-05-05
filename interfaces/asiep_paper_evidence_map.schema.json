@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_paper_evidence_map.schema.json",
+  "title": "ASIEP Paper Evidence Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "paper_id",
+    "paper_version",
+    "sections",
+    "tables",
+    "figures",
+    "claims"
+  ],
+  "properties": {
+    "paper_id": { "type": "string", "minLength": 1 },
+    "paper_version": { "type": "string", "minLength": 1 },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/section" }
+    },
+    "tables": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/table" }
+    },
+    "figures": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/figure" }
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/claim_ref" }
+    }
+  },
+  "$defs": {
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": { "pattern": "^[A-Za-z][A-Za-z0-9+.-]*://" }
+    },
+    "claim_id": { "type": "string", "pattern": "^C[0-9]+$" },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["section_id", "title", "source_files", "claim_ids", "required_artifacts"],
+      "properties": {
+        "section_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "source_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/repo_path" }
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/claim_id" }
+        },
+        "required_artifacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/repo_path" }
+        }
+      }
+    },
+    "table": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["table_id", "title", "source_files", "output_path", "claim_ids"],
+      "properties": {
+        "table_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "source_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/repo_path" }
+        },
+        "output_path": { "$ref": "#/$defs/repo_path" },
+        "claim_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/claim_id" }
+        }
+      }
+    },
+    "figure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["figure_id", "title", "source_files", "output_path", "claim_ids"],
+      "properties": {
+        "figure_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "source_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/repo_path" }
+        },
+        "output_path": { "$ref": "#/$defs/repo_path" },
+        "claim_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/claim_id" }
+        }
+      }
+    },
+    "claim_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "section_ids", "evidence_refs"],
+      "properties": {
+        "claim_id": { "$ref": "#/$defs/claim_id" },
+        "section_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/repo_path" }
+        }
+      }
+    }
+  }
+}

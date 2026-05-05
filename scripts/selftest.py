@@ -5,6 +5,7 @@ from pathlib import Path
 from asiep_evaluator import evaluate_profile
 from asiep_importer import import_trace
 from asiep_packager import package_bundle
+from asiep_paper_linter import lint_paper
 from asiep_resolver import resolve_bundle
 from asiep_validator import validate_file
 
@@ -80,6 +81,11 @@ def main() -> int:
     metrics = {metric["metric_id"]: metric["value"] for metric in report["metric_results"]}
     status = "PASS" if metrics["false_positive_rate"] == 0 and metrics["privacy_policy_compliance"] == 1 else "FAIL"
     print(f"{status} asiep_v0.1_evaluation: false_positive_rate={metrics['false_positive_rate']} privacy_policy_compliance={metrics['privacy_policy_compliance']}")
+    if status != "PASS":
+        return 1
+    lint_result = lint_paper(ROOT / "profiles" / "asiep" / "v0.1" / "profile.json")
+    status = "PASS" if lint_result["valid"] and lint_result["claims_checked"] >= 12 else "FAIL"
+    print(f"{status} asiep_paper_v0.1: claims={lint_result['claims_checked']} errors={len(lint_result['errors'])}")
     if status != "PASS":
         return 1
     return 0

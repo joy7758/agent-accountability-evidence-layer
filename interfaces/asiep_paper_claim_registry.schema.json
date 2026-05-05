@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_paper_claim_registry.schema.json",
+  "title": "ASIEP Paper Claim Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "paper_id",
+    "paper_version",
+    "profile",
+    "profile_version",
+    "created_at",
+    "claims"
+  ],
+  "properties": {
+    "paper_id": { "type": "string", "minLength": 1 },
+    "paper_version": { "type": "string", "minLength": 1 },
+    "profile": { "type": "string", "const": "ASIEP" },
+    "profile_version": { "type": "string", "const": "0.1.0" },
+    "created_at": { "type": "string", "minLength": 1 },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/claim" }
+    }
+  },
+  "$defs": {
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": { "pattern": "^[A-Za-z][A-Za-z0-9+.-]*://" }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "claim_type",
+        "claim_text",
+        "claim_strength",
+        "evidence_refs",
+        "metric_refs",
+        "artifact_refs",
+        "limitations",
+        "related_work_refs",
+        "reviewer_risks",
+        "allowed_in_abstract",
+        "allowed_in_conclusion"
+      ],
+      "properties": {
+        "claim_id": { "type": "string", "pattern": "^C[0-9]+$" },
+        "claim_type": {
+          "type": "string",
+          "enum": [
+            "design_claim",
+            "implementation_claim",
+            "evaluation_claim",
+            "mapping_claim",
+            "limitation_claim",
+            "positioning_claim"
+          ]
+        },
+        "claim_text": { "type": "string", "minLength": 1 },
+        "claim_strength": { "type": "string", "enum": ["weak", "moderate", "strong"] },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/repo_path" }
+        },
+        "metric_refs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "artifact_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/repo_path" }
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "related_work_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/repo_path" }
+        },
+        "reviewer_risks": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "allowed_in_abstract": { "type": "boolean" },
+        "allowed_in_conclusion": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "claim_type": { "not": { "const": "limitation_claim" } } },
+            "required": ["claim_type"]
+          },
+          "then": {
+            "anyOf": [
+              { "properties": { "evidence_refs": { "minItems": 1 } } },
+              { "properties": { "artifact_refs": { "minItems": 1 } } }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": { "claim_type": { "const": "evaluation_claim" } },
+            "required": ["claim_type"]
+          },
+          "then": { "properties": { "metric_refs": { "minItems": 1 } } }
+        },
+        {
+          "if": {
+            "properties": { "claim_strength": { "const": "strong" } },
+            "required": ["claim_strength"]
+          },
+          "then": { "properties": { "evidence_refs": { "minItems": 2 } } }
+        }
+      ]
+    }
+  }
+}
