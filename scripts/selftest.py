@@ -6,6 +6,7 @@ from asiep_evaluator import evaluate_profile
 from asiep_importer import import_trace
 from asiep_packager import package_bundle
 from asiep_paper_linter import lint_paper
+from asiep_citation_linter import lint_citations
 from asiep_resolver import resolve_bundle
 from asiep_validator import validate_file
 
@@ -86,6 +87,11 @@ def main() -> int:
     lint_result = lint_paper(ROOT / "profiles" / "asiep" / "v0.1" / "profile.json")
     status = "PASS" if lint_result["valid"] and lint_result["claims_checked"] >= 12 else "FAIL"
     print(f"{status} asiep_paper_v0.1: claims={lint_result['claims_checked']} errors={len(lint_result['errors'])}")
+    if status != "PASS":
+        return 1
+    citation_result = lint_citations(ROOT / "profiles" / "asiep" / "v0.1" / "profile.json")
+    status = "PASS" if citation_result["valid"] and citation_result["sources_checked"] >= 10 else "FAIL"
+    print(f"{status} asiep_paper_v0.2_citations: sources={citation_result['sources_checked']} errors={len(citation_result['errors'])}")
     if status != "PASS":
         return 1
     return 0

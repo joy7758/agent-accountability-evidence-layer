@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_citation_claim_map.schema.json",
+  "title": "ASIEP Citation Claim Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "paper_id",
+    "paper_version",
+    "profile",
+    "profile_version",
+    "created_at",
+    "claim_citations"
+  ],
+  "properties": {
+    "paper_id": { "type": "string", "minLength": 1 },
+    "paper_version": { "type": "string", "minLength": 1 },
+    "profile": { "type": "string", "const": "ASIEP" },
+    "profile_version": { "type": "string", "const": "0.1.0" },
+    "created_at": { "type": "string", "minLength": 1 },
+    "claim_citations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/claim_citation" }
+    }
+  },
+  "$defs": {
+    "claim_citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "claim_text",
+        "required_citation",
+        "citation_keys",
+        "source_ids",
+        "support_level",
+        "quote_or_paraphrase",
+        "max_quote_words",
+        "citation_status",
+        "notes"
+      ],
+      "properties": {
+        "claim_id": { "type": "string", "pattern": "^C[0-9]+$" },
+        "claim_text": { "type": "string", "minLength": 1 },
+        "required_citation": { "type": "boolean" },
+        "citation_keys": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z0-9_]+$" }
+        },
+        "source_ids": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z0-9_]+$" }
+        },
+        "support_level": {
+          "type": "string",
+          "enum": ["direct", "indirect", "background", "weak", "unsupported"]
+        },
+        "quote_or_paraphrase": {
+          "type": "string",
+          "enum": ["quote", "paraphrase", "no_direct_text"]
+        },
+        "max_quote_words": { "type": "integer", "minimum": 0 },
+        "citation_status": {
+          "type": "string",
+          "enum": ["ready", "needs_review", "missing", "unsupported"]
+        },
+        "notes": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "required_citation": { "const": true } },
+            "required": ["required_citation"]
+          },
+          "then": {
+            "properties": {
+              "citation_keys": { "minItems": 1 },
+              "source_ids": { "minItems": 1 }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "support_level": { "const": "unsupported" } },
+            "required": ["support_level"]
+          },
+          "then": { "properties": { "citation_status": { "enum": ["unsupported", "needs_review"] } } }
+        }
+      ]
+    }
+  }
+}

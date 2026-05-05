@@ -594,6 +594,105 @@
       "default_strategy": "Make paper accountability artifacts schema-valid before review.",
       "remediation_hint": "Inspect the linter JSON output and repair the schema-invalid paper artifact.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_SOURCE_REGISTRY_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair source registry schema", "deduplicate source ids and citation keys"],
+      "forbidden_actions": ["mark unverified sources as verified without checking primary material"],
+      "default_strategy": "Make source registry entries schema-valid and explicit about verification status.",
+      "remediation_hint": "Repair references/source_registry.json so every source has stable unique ids, citation keys, and verification metadata.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_CLAIM_MAP_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair citation claim map schema", "map claims to existing source ids and citation keys"],
+      "forbidden_actions": ["leave related-work or standard-status claims unmapped"],
+      "default_strategy": "Keep manuscript claims and external source mappings synchronized.",
+      "remediation_hint": "Repair references/citation_claim_map.json so every external claim maps to existing source ids and citation keys.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_SOURCE_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add missing source metadata", "remove stale citation reference"],
+      "forbidden_actions": ["invent a source record for a claim that cannot be verified"],
+      "default_strategy": "Resolve every citation key through source_registry.json and BibTeX.",
+      "remediation_hint": "Add the missing source to references/source_registry.json and BibTeX, or remove the unsupported citation reference.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_UNVERIFIED_SOURCE_USED_AS_VERIFIED",
+      "repairability": "human_required",
+      "allowed_actions": ["verify the source manually", "downgrade the claim citation status", "move the claim to verification gaps"],
+      "forbidden_actions": ["cite an unverified source as ready", "hide an unverified status"],
+      "default_strategy": "Block paper_v0.2 readiness until the source is verified or the claim is removed.",
+      "remediation_hint": "Verify the source and update its status with notes, or remove/downgrade the claim citation.",
+      "requires_external_evidence": true
+    },
+    {
+      "code": "CITATION_EXTERNAL_CLAIM_WITHOUT_SOURCE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["attach primary or canonical source", "weaken or remove the external claim"],
+      "forbidden_actions": ["leave external factual claims uncited"],
+      "default_strategy": "Require external claims to point to verified sources before paper use.",
+      "remediation_hint": "Attach a primary or canonical source, or weaken/remove the external claim.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_UNSUPPORTED_CLAIM",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["remove unsupported claim", "downgrade to limitation", "add verified supporting source"],
+      "forbidden_actions": ["keep unsupported claim in paper_v0.2 as if ready"],
+      "default_strategy": "Unsupported claims should not appear as paper claims.",
+      "remediation_hint": "Remove the claim from paper_v0.2.md, downgrade it to a limitation, or add verified supporting sources.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_SECONDARY_USED_WHEN_PRIMARY_AVAILABLE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["replace secondary source with primary source", "mark secondary source as background only"],
+      "forbidden_actions": ["treat a secondary source as primary when primary source is available"],
+      "default_strategy": "Prefer primary and canonical material for factual support.",
+      "remediation_hint": "Prefer official standard documentation, regulations, product documentation, or primary papers when available.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_BIBTEX_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add BibTeX entry using registry citation_key"],
+      "forbidden_actions": ["fabricate DOI", "invent publication venue"],
+      "default_strategy": "Keep source registry and bibliography keys in lockstep.",
+      "remediation_hint": "Add a BibTeX entry using the same stable citation_key; do not fabricate DOI or publication metadata.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_FORBIDDEN_PRACTICE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["remove overclaim", "add limitation", "switch to verified primary source"],
+      "forbidden_actions": ["claim external certification", "claim external adoption", "cite search snippets as primary sources"],
+      "default_strategy": "Make citation-backed paper claims conservative and source-bounded.",
+      "remediation_hint": "Follow profiles/asiep/v0.1/reference_policy.json and remove overclaims, unverified source use, or unsupported standard claims.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_LINTER_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair source registry schema", "repair citation claim map schema", "repair BibTeX coverage"],
+      "forbidden_actions": ["ignore citation linter failures"],
+      "default_strategy": "Make citation infrastructure schema-valid before paper review.",
+      "remediation_hint": "Inspect the citation linter JSON output and repair the referenced registry, map, BibTeX, or paper draft artifact.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "CITATION_REQUIRED_MARKER_REMAINS",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["replace marker with verified citation", "move unverified claim to verification gaps"],
+      "forbidden_actions": ["leave citation_required in paper_v0.2"],
+      "default_strategy": "Do not ship paper_v0.2 with unresolved citation markers.",
+      "remediation_hint": "Replace citation_required with a verified citation key, or move the unverified claim to references/verification_gaps.md.",
+      "requires_external_evidence": false
     }
   ]
 }
