@@ -1,0 +1,45 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "evaluation_policy_version": "0.1.0",
+  "metrics": [
+    "evidence_completeness",
+    "cross_standard_coverage",
+    "gate_reproducibility",
+    "tamper_detection_recall",
+    "false_positive_rate",
+    "privacy_policy_compliance",
+    "packaging_closure",
+    "agent_readability"
+  ],
+  "corpus_manifest_path": "evaluation/corpus/asiep_v0.1_corpus.json",
+  "crosswalk_matrix_path": "evaluation/crosswalk/asiep_v0.1_crosswalk.json",
+  "report_schema_path": "interfaces/asiep_evaluation_report.schema.json",
+  "required_pipeline_steps": [
+    "validate_examples",
+    "generate_repair_plans",
+    "resolve_bundles",
+    "import_traces",
+    "package_bundles",
+    "verify_crosswalk_coverage",
+    "generate_paper_tables"
+  ],
+  "forbidden_actions": [
+    "use_network",
+    "call_external_api",
+    "fabricate_success",
+    "ignore_failed_validator",
+    "ignore_failed_resolver",
+    "ignore_failed_packager",
+    "modify_input_examples_to_pass",
+    "hide_attack_failures",
+    "inline_sensitive_content"
+  ],
+  "output_rules": {
+    "write_json_report": "reports/asiep_v0.1_evaluation_report.json",
+    "write_markdown_summary": "reports/asiep_v0.1_evaluation_summary.md",
+    "write_paper_assets": "paper_assets",
+    "deterministic_created_at": "2026-05-05T07:00:00Z",
+    "network_access": false
+  }
+}

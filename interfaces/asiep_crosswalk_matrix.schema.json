@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/v0.1/interfaces/asiep_crosswalk_matrix.schema.json",
+  "title": "ASIEP Crosswalk Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile", "profile_version", "matrix_version", "created_at", "standards", "mappings"],
+  "properties": {
+    "profile": { "const": "ASIEP" },
+    "profile_version": { "const": "0.1.0" },
+    "matrix_version": { "const": "0.1.0" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "standards": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "mappings": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/mapping" }
+    }
+  },
+  "$defs": {
+    "lossiness": { "enum": ["none", "partial", "high", "not_applicable"] },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asiep_field",
+        "field_group",
+        "required",
+        "invariant_ids",
+        "validator_rules",
+        "error_codes",
+        "prov_mapping",
+        "otel_mapping",
+        "langsmith_mapping",
+        "fdo_mapping",
+        "rocrate_mapping",
+        "governance_mapping",
+        "lossiness",
+        "notes"
+      ],
+      "properties": {
+        "asiep_field": { "type": "string", "minLength": 1 },
+        "field_group": { "type": "string", "minLength": 1 },
+        "required": { "type": "boolean" },
+        "invariant_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "validator_rules": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "error_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "prov_mapping": { "type": "string" },
+        "otel_mapping": { "type": "string" },
+        "langsmith_mapping": { "type": "string" },
+        "fdo_mapping": { "type": "string" },
+        "rocrate_mapping": { "type": "string" },
+        "governance_mapping": { "type": "string" },
+        "lossiness": { "$ref": "#/$defs/lossiness" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

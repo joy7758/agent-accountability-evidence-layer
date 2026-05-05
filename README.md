@@ -44,6 +44,8 @@ PYTHONPATH=src python -m asiep_importer examples/import_requests/otel_chatbot_re
 PYTHONPATH=src python scripts/import_trace_demo.py
 PYTHONPATH=src python -m asiep_packager examples/package_requests/otel_chatbot_package_request.json --format json
 PYTHONPATH=src python scripts/package_demo.py
+PYTHONPATH=src python -m asiep_evaluator --profile profiles/asiep/v0.1/profile.json --format json
+PYTHONPATH=src python scripts/evaluate_profile_demo.py
 ```
 
 Expected CLI result for the valid example:
@@ -212,6 +214,53 @@ Current M5 limits:
 - RO-Crate-like JSON-LD only; no full community certification
 - no remote artifact fetch
 - no raw prompt, input, output, messages, or completions in package metadata
+
+## M6 Crosswalk Evaluation
+
+M6 turns the local M0-M5 toolchain into reproducible evaluation evidence and
+paper-ready assets. The evaluator reads `profile.json`, the evaluation policy,
+the corpus manifest, and the crosswalk matrix, then reruns the local validator,
+repairer, resolver, importer, and packager paths.
+
+Run the evaluator:
+
+```bash
+PYTHONPATH=src python -m asiep_evaluator --profile profiles/asiep/v0.1/profile.json --format json
+```
+
+Run the summary demo:
+
+```bash
+PYTHONPATH=src python scripts/evaluate_profile_demo.py
+```
+
+Generated reports:
+
+```text
+reports/
+|-- asiep_v0.1_evaluation_report.json
+`-- asiep_v0.1_evaluation_summary.md
+```
+
+Generated paper assets:
+
+```text
+paper_assets/
+|-- abstract_draft.md
+|-- paper_outline.md
+|-- tables/
+`-- figures/
+```
+
+Current M6 limits:
+
+- local fixtures only
+- no real LangSmith API or OpenTelemetry collector
+- no FDO registry, PID application, or global PID claim
+- crosswalk coverage is a local minimal matrix, not external standard
+  certification
+- generated paper assets are tables, figures, an outline, and an abstract draft,
+  not a full paper
 
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.

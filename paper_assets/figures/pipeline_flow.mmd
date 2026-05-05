@@ -1,0 +1,10 @@
+flowchart TD
+  A["local trace fixture"] --> B["asiep_importer"]
+  B --> C["ASIEP evidence bundle"]
+  C --> D["asiep_resolver"]
+  D --> E["asiep_validator --bundle-root"]
+  E --> F["asiep_repairer"]
+  E --> G["asiep_packager"]
+  G --> H["FDO-like / RO-Crate-like / PROV package"]
+  H --> I["asiep_evaluator"]
+  I --> J["reports and paper assets"]

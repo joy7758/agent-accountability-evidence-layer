@@ -1,0 +1,243 @@
+{
+  "corpus_id": "corpus:asiep-v0.1-m0-m6",
+  "corpus_version": "0.1.0",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "examples": [
+    "examples/valid_chatbot_improvement.json",
+    "examples/invalid_missing_gate_report.json",
+    "examples/invalid_promote_with_regression.json",
+    "examples/invalid_hash_chain_break.json",
+    "examples/invalid_promote_with_p2f_threshold_violation.json",
+    "examples/invalid_transition_order.json"
+  ],
+  "bundles": [
+    "examples/bundles/valid_chatbot_bundle/bundle.json",
+    "examples/bundles/invalid_missing_artifact_bundle/bundle.json",
+    "examples/bundles/invalid_digest_mismatch_bundle/bundle.json",
+    "examples/bundles/invalid_path_escape_bundle/bundle.json"
+  ],
+  "import_requests": [
+    "examples/import_requests/otel_chatbot_request.json",
+    "examples/import_requests/langsmith_chatbot_request.json",
+    "examples/import_requests/invalid_missing_gate_report_request.json",
+    "examples/import_requests/invalid_sensitive_content_request.json"
+  ],
+  "package_requests": [
+    "examples/package_requests/otel_chatbot_package_request.json",
+    "examples/package_requests/langsmith_chatbot_package_request.json",
+    "examples/package_requests/invalid_unvalidated_bundle_package_request.json"
+  ],
+  "expected_results": [
+    {
+      "target_path": "examples/valid_chatbot_improvement.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/valid_chatbot_improvement.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Positive ASIEP evidence example.",
+      "related_invariant_ids": ["I1", "I2", "I3", "I4", "I5", "I6", "I8", "I10"],
+      "related_metric_ids": ["evidence_completeness", "false_positive_rate", "gate_reproducibility"]
+    },
+    {
+      "target_path": "examples/invalid_missing_gate_report.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_missing_gate_report.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["SCHEMA"],
+      "purpose": "Attack sample for missing gate report evidence.",
+      "related_invariant_ids": ["I5"],
+      "related_metric_ids": ["tamper_detection_recall"]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_regression.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_promote_with_regression.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["INV_SAFETY_REGRESSION"],
+      "purpose": "Attack sample for unsafe promote decision with safety regression.",
+      "related_invariant_ids": ["I6"],
+      "related_metric_ids": ["tamper_detection_recall", "gate_reproducibility"]
+    },
+    {
+      "target_path": "examples/invalid_hash_chain_break.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_hash_chain_break.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["REF_UNRESOLVED"],
+      "purpose": "Attack sample for broken evidence reference closure.",
+      "related_invariant_ids": ["I4"],
+      "related_metric_ids": ["tamper_detection_recall"]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_p2f_threshold_violation.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_promote_with_p2f_threshold_violation.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["INV_FLIP_THRESHOLD"],
+      "purpose": "Attack sample for threshold-violating promote decision.",
+      "related_invariant_ids": ["I8"],
+      "related_metric_ids": ["tamper_detection_recall", "gate_reproducibility"]
+    },
+    {
+      "target_path": "examples/invalid_transition_order.json",
+      "target_type": "evidence_example",
+      "command": "PYTHONPATH=src python -m asiep_validator examples/invalid_transition_order.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["STATE_TRANSITION"],
+      "purpose": "Attack sample for invalid state transition order.",
+      "related_invariant_ids": ["I2", "I3"],
+      "related_metric_ids": ["tamper_detection_recall"]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_regression.json",
+      "target_type": "repair_case",
+      "command": "PYTHONPATH=src python -m asiep_repairer examples/invalid_promote_with_regression.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Repair plan case for unsafe promote decision.",
+      "related_invariant_ids": ["I6"],
+      "related_metric_ids": ["agent_readability"]
+    },
+    {
+      "target_path": "examples/invalid_promote_with_p2f_threshold_violation.json",
+      "target_type": "repair_case",
+      "command": "PYTHONPATH=src python -m asiep_repairer examples/invalid_promote_with_p2f_threshold_violation.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Repair plan case for flip-count threshold violation.",
+      "related_invariant_ids": ["I8"],
+      "related_metric_ids": ["agent_readability"]
+    },
+    {
+      "target_path": "examples/bundles/valid_chatbot_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/valid_chatbot_bundle/bundle.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Positive local evidence bundle.",
+      "related_invariant_ids": ["I4", "I10"],
+      "related_metric_ids": ["evidence_completeness", "false_positive_rate"]
+    },
+    {
+      "target_path": "examples/bundles/invalid_missing_artifact_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_missing_artifact_bundle/bundle.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["BUNDLE_ARTIFACT_MISSING"],
+      "purpose": "Attack sample for missing local artifact.",
+      "related_invariant_ids": ["I4"],
+      "related_metric_ids": ["tamper_detection_recall"]
+    },
+    {
+      "target_path": "examples/bundles/invalid_digest_mismatch_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_digest_mismatch_bundle/bundle.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["BUNDLE_DIGEST_MISMATCH"],
+      "purpose": "Attack sample for artifact digest tampering.",
+      "related_invariant_ids": ["I10"],
+      "related_metric_ids": ["tamper_detection_recall"]
+    },
+    {
+      "target_path": "examples/bundles/invalid_path_escape_bundle/bundle.json",
+      "target_type": "bundle",
+      "command": "PYTHONPATH=src python -m asiep_resolver examples/bundles/invalid_path_escape_bundle/bundle.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["BUNDLE_PATH_ESCAPE"],
+      "purpose": "Attack sample for unsafe path escape.",
+      "related_invariant_ids": ["I4"],
+      "related_metric_ids": ["tamper_detection_recall"]
+    },
+    {
+      "target_path": "examples/import_requests/otel_chatbot_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/otel_chatbot_request.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Positive OTel-like trace import.",
+      "related_invariant_ids": ["I1", "I4", "I10"],
+      "related_metric_ids": ["evidence_completeness", "false_positive_rate", "privacy_policy_compliance"]
+    },
+    {
+      "target_path": "examples/import_requests/langsmith_chatbot_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/langsmith_chatbot_request.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Positive LangSmith-like trace import.",
+      "related_invariant_ids": ["I1", "I4", "I10"],
+      "related_metric_ids": ["evidence_completeness", "false_positive_rate", "privacy_policy_compliance"]
+    },
+    {
+      "target_path": "examples/import_requests/invalid_missing_gate_report_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/invalid_missing_gate_report_request.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["IMPORT_REQUIRED_ROLE_MISSING"],
+      "purpose": "Import attack sample for missing gate report marker.",
+      "related_invariant_ids": ["I5"],
+      "related_metric_ids": ["tamper_detection_recall"]
+    },
+    {
+      "target_path": "examples/import_requests/invalid_sensitive_content_request.json",
+      "target_type": "import_request",
+      "command": "PYTHONPATH=src python -m asiep_importer examples/import_requests/invalid_sensitive_content_request.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["IMPORT_SENSITIVE_CONTENT_BLOCKED"],
+      "purpose": "Import attack sample for blocked raw prompt content.",
+      "related_invariant_ids": ["I4"],
+      "related_metric_ids": ["tamper_detection_recall", "privacy_policy_compliance"]
+    },
+    {
+      "target_path": "examples/package_requests/otel_chatbot_package_request.json",
+      "target_type": "package_request",
+      "command": "PYTHONPATH=src python -m asiep_packager examples/package_requests/otel_chatbot_package_request.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Positive packaging request for OTel-generated bundle.",
+      "related_invariant_ids": ["I1", "I10"],
+      "related_metric_ids": ["packaging_closure", "false_positive_rate"]
+    },
+    {
+      "target_path": "examples/package_requests/langsmith_chatbot_package_request.json",
+      "target_type": "package_request",
+      "command": "PYTHONPATH=src python -m asiep_packager examples/package_requests/langsmith_chatbot_package_request.json --format json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Positive packaging request for LangSmith-generated bundle.",
+      "related_invariant_ids": ["I1", "I10"],
+      "related_metric_ids": ["packaging_closure", "false_positive_rate"]
+    },
+    {
+      "target_path": "examples/package_requests/invalid_unvalidated_bundle_package_request.json",
+      "target_type": "package_request",
+      "command": "PYTHONPATH=src python -m asiep_packager examples/package_requests/invalid_unvalidated_bundle_package_request.json --format json",
+      "expected_valid": false,
+      "expected_error_codes": ["PACKAGE_RESOLVER_FAILED"],
+      "purpose": "Packaging attack sample for unvalidated source bundle.",
+      "related_invariant_ids": ["I10"],
+      "related_metric_ids": ["tamper_detection_recall", "packaging_closure"]
+    },
+    {
+      "target_path": "examples/generated_packages/otel_chatbot_package",
+      "target_type": "generated_package",
+      "command": "python -m json.tool examples/generated_packages/otel_chatbot_package/package_manifest.json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Generated OTel package closure check.",
+      "related_invariant_ids": ["I1", "I10"],
+      "related_metric_ids": ["packaging_closure", "privacy_policy_compliance"]
+    },
+    {
+      "target_path": "examples/generated_packages/langsmith_chatbot_package",
+      "target_type": "generated_package",
+      "command": "python -m json.tool examples/generated_packages/langsmith_chatbot_package/package_manifest.json",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Generated LangSmith package closure check.",
+      "related_invariant_ids": ["I1", "I10"],
+      "related_metric_ids": ["packaging_closure", "privacy_policy_compliance"]
+    }
+  ]
+}
