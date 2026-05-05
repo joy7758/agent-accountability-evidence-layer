@@ -131,22 +131,35 @@ def main() -> int:
                 "promotion required before final submission",
             ]
         )
-    required_human_actions = [
-        "verify citation keys and metric values",
-        "create license_decision.json after human license decision",
-        "review sensitive_content_scan_report.json and create sensitive_content_review.json only after human review",
-        "review the compiled PDF and create layout_review.json only after human review",
-        "create repository_policy_decision.json after human repository/anonymization decision",
-        "create deadline_verification.json after checking the official venue deadline",
-        "create author_final_approval.json only after human approval",
-        "complete submission/escience2026/final_human_checklist.md",
-    ]
+    required_human_actions = []
     if remaining_author_verify:
         required_human_actions.insert(0, "remove every AUTHOR_VERIFY marker only after human verification")
     if not latex_compile_report or latex_compile_report.get("compile_success") is not True:
         required_human_actions.append("compile IEEE LaTeX and generate the PDF")
     if not latex_compile_report or latex_compile_report.get("page_count_checked") is not True or latex_compile_report.get("within_page_limit") is not True:
         required_human_actions.append("confirm page count against 8 pages excluding references")
+    if not license_decision or license_decision.get("final_ready") is not True:
+        required_human_actions.append("create license_decision.json after human license decision")
+    if not sensitive_review or sensitive_review.get("final_ready") is not True:
+        required_human_actions.append("review sensitive_content_scan_report.json and create sensitive_content_review.json only after human review")
+    if not layout_review or layout_review.get("final_ready") is not True:
+        required_human_actions.append("review the compiled PDF and create layout_review.json only after human review")
+    if not repository_decision or repository_decision.get("final_ready") is not True:
+        required_human_actions.append("create repository_policy_decision.json after human repository/anonymization decision")
+    if not deadline_verification or deadline_verification.get("deadline_verified") is not True:
+        required_human_actions.append("create deadline_verification.json after checking the official venue deadline")
+    if not final_approval or final_approval.get("approved_by_human_author") is not True:
+        required_human_actions.append("create author_final_approval.json only after human approval")
+    if not valid:
+        required_human_actions.append("complete submission/escience2026/final_human_checklist.md")
+    if valid:
+        required_human_actions.extend(
+            [
+                "log in to EasyChair and verify the final live deadline before upload",
+                "upload the generated PDF manually",
+                "check title, author, abstract, keywords, AI-use disclosure, and repository-link policy in the submission system",
+            ]
+        )
     result = {
         "profile": "ASIEP",
         "profile_version": "0.1.0",

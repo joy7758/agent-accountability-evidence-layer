@@ -1,0 +1,24 @@
+{
+  "ai_disclosure_checked": true,
+  "approval_id": "asiep-escience2026-author-final-approval",
+  "approved_at": "2026-05-05T15:40:03.341937+00:00",
+  "approved_by": "Zhang Bin",
+  "approved_by_human_author": true,
+  "citations_checked": true,
+  "claims_checked": true,
+  "deadline_checked": true,
+  "evaluation_numbers_checked": true,
+  "final_pdf_reviewed": true,
+  "final_submission_ready": true,
+  "latex_compiled": true,
+  "license_checked": true,
+  "notes": [
+    "Created only after explicit human confirmation flags were supplied.",
+    "Human author remains responsible for all final submission decisions."
+  ],
+  "page_count_checked": true,
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "repository_policy_checked": true,
+  "sensitive_content_scan_checked": true,
+  "target_venue": "escience2026"
+}

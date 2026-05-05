@@ -1,0 +1,20 @@
+{
+  "cfp_deadline_ambiguity": "CFP row previously recorded both Monday, May 18, 2026 and Tuesday, May 19, 2026 11:59 PM AoE.",
+  "checked_at": "2026-05-05T15:40:03.341937+00:00",
+  "conservative_planning": true,
+  "deadline_checked_by": "Zhang Bin",
+  "deadline_verified": true,
+  "final_ready": true,
+  "notes": [
+    "Promoted from conservative planning recommendation after explicit human confirmation.",
+    "The prior May 18 / May 19 AoE CFP ambiguity is preserved in this record.",
+    "The human author accepted the conservative May 18 AoE planning deadline for final pre-submission gate purposes."
+  ],
+  "official_source_url": "human_verified_live_cfp_or_easychair",
+  "planning_deadline": "2026-05-18T23:59:00-12:00",
+  "planning_deadline_label": "Monday, May 18, 2026, 11:59 PM AoE",
+  "promoted_from": "submission/escience2026/final_gate_recommendations/deadline_verification.recommended.json",
+  "target_venue": "escience2026",
+  "verification_id": "asiep-escience2026-deadline-final",
+  "verified_deadline": "2026-05-18T23:59:00-12:00"
+}

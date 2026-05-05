@@ -19,6 +19,9 @@
     "latex_compiled",
     "repository_policy_checked",
     "deadline_checked",
+    "license_checked",
+    "sensitive_content_scan_checked",
+    "final_pdf_reviewed",
     "final_submission_ready"
   ],
   "properties": {
@@ -36,6 +39,9 @@
     "latex_compiled": { "type": "boolean" },
     "repository_policy_checked": { "type": "boolean" },
     "deadline_checked": { "type": "boolean" },
+    "license_checked": { "type": "boolean" },
+    "sensitive_content_scan_checked": { "type": "boolean" },
+    "final_pdf_reviewed": { "type": "boolean" },
     "final_submission_ready": { "type": "boolean" },
     "notes": { "type": "array", "items": { "type": "string" } }
   }

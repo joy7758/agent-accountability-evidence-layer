@@ -112,10 +112,11 @@ def main() -> int:
     if status != "PASS":
         return 1
     submission_result = lint_submission(ROOT / "submission" / "escience2026" / "submission_manifest.json")
-    status = "PASS" if submission_result["valid"] and submission_result["human_rewrite_required"] and not submission_result["final_submission_ready"] else "FAIL"
+    status = "PASS" if submission_result["valid"] and submission_result["human_rewrite_required"] else "FAIL"
     print(
         f"{status} asiep_submission_package: "
         f"author_verify_markers={submission_result['summary']['author_verify_markers']} "
+        f"final_submission_ready={submission_result['final_submission_ready']} "
         f"errors={len(submission_result['errors'])}"
     )
     if status != "PASS":

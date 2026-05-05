@@ -10,7 +10,7 @@
     "not as a benchmark of agent capability",
     "not as proof of production readiness"
   ],
-  "author_final_approval_exists": false,
+  "author_final_approval_exists": true,
   "citation_key_notes": [
     {
       "reason": "references/asiep_references.bib and references/source_registry.json already define langsmith_observability_concepts as the stable LangSmith observability source key.",
@@ -80,9 +80,9 @@
     }
   ],
   "final_author_approval_required": true,
-  "final_deadline_verified": false,
-  "final_repository_policy_decided": false,
-  "final_submission_ready": false,
+  "final_deadline_verified": true,
+  "final_repository_policy_decided": true,
+  "final_submission_ready": true,
   "forbidden_claims_found": [],
   "integrated_sections_count": 13,
   "latex_compile_attempted": true,
@@ -121,15 +121,11 @@
   "remaining_author_verify_markers": 0,
   "remaining_citation_required_markers": 0,
   "remaining_human_actions": [
-    "Verify the eScience May 18 / May 19 AoE deadline ambiguity manually.",
-    "Decide repository link and anonymization policy.",
-    "Review AI-use disclosure against current IEEE/eScience policy.",
-    "Create author_final_approval.json only after human approval.",
-    "Run scripts/final_submission_check.py and require valid=true before final submission.",
-    "Review submission/escience2026/latex_compile_report.json.",
-    "Create repository_policy_decision.json only after human repository/anonymization decision.",
-    "Create deadline_verification.json only after human deadline verification.",
-    "Create author_final_approval.json only after human final approval."
+    "Log in to EasyChair manually.",
+    "Re-check the live venue deadline before upload.",
+    "Upload submission/escience2026/latex/main.pdf manually.",
+    "Check title, author, abstract, keywords, AI-use disclosure, and repository-link policy in the submission system.",
+    "Review submission/escience2026/latex_compile_report.json."
   ],
   "repository_anonymization_decision_made": false
 }

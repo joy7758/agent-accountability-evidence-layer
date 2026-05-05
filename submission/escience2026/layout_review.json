@@ -1,0 +1,28 @@
+{
+  "author_block_verified": true,
+  "author_placeholders_present": false,
+  "final_ready": true,
+  "layout_status": "accepted_after_human_pdf_review",
+  "overfull_boxes": [
+    "Overfull \\hbox (14.5pt too wide) in paragraph at lines 11--12",
+    "Overfull \\hbox (43.2399pt too wide) in paragraph at lines 11--12",
+    "Overfull \\hbox (12.72385pt too wide) in paragraph at lines 11--11",
+    "Overfull \\hbox (18.71118pt too wide) in paragraph at lines 4--19"
+  ],
+  "overfull_boxes_count": 4,
+  "overfull_boxes_reviewed": true,
+  "overfull_boxes_status": "accepted_after_pdf_review",
+  "page_count": 8,
+  "page_count_checked": true,
+  "pdf_path": "submission/escience2026/latex/main.pdf",
+  "pdf_reviewed": true,
+  "promoted_from": "submission/escience2026/final_gate_recommendations/layout_review.recommended.json",
+  "review_id": "asiep-escience2026-layout-review-final",
+  "reviewed_at": "2026-05-05T15:40:03.341937+00:00",
+  "reviewed_by": "Zhang Bin",
+  "source_report": "submission/escience2026/latex_compile_report.json",
+  "target_venue": "escience2026",
+  "unresolved_citations": [],
+  "unresolved_references": [],
+  "within_page_limit": true
+}

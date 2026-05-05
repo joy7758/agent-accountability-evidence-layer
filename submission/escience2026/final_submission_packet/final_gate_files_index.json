@@ -1,0 +1,14 @@
+{
+  "all_present": true,
+  "final_gate_files": [
+    "submission/escience2026/deadline_verification.json",
+    "submission/escience2026/repository_policy_decision.json",
+    "submission/escience2026/license_decision.json",
+    "submission/escience2026/sensitive_content_review.json",
+    "submission/escience2026/layout_review.json",
+    "submission/escience2026/author_final_approval.json"
+  ],
+  "final_submission_ready": true,
+  "index_id": "asiep-escience2026-final-gate-files-index",
+  "target_venue": "escience2026"
+}
