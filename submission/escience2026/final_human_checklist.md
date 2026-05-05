@@ -125,3 +125,13 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [ ] `layout_review.json` created.
 - [ ] `author_final_approval.json` created.
 - [ ] `final_submission_ready=true`.
+
+## M13 Final Review Packet And Promotion Dry Run
+
+- [x] Final review packet prepared.
+- [x] Promotion command preview prepared.
+- [x] Promotion dry-run available.
+- [ ] Promotion command run by human author.
+- [ ] Final gate files created.
+- [ ] `final_submission_check.py` passed.
+- [ ] `final_submission_ready=true`.

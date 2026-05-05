@@ -388,3 +388,93 @@ def test_final_submission_check_fails_when_only_recommendations_exist() -> None:
     assert payload["checks"]["sensitive_content_review_exists"] is False
     assert payload["checks"]["layout_review_exists"] is False
     assert any("promotion required" in item for item in payload["blocking_items"])
+
+
+def test_final_review_packet_exists_and_keeps_submission_nonfinal() -> None:
+    packet = ROOT / "submission" / "escience2026" / "final_review_packet"
+    dashboard = _load_json(packet / "final_review_dashboard.json")
+    pdf_packet = _load_json(packet / "pdf_review_packet.json")
+    sensitive_packet = _load_json(packet / "sensitive_scan_review_packet.json")
+    assert (packet / "README.md").exists()
+    assert (packet / "final_review_dashboard.md").exists()
+    assert (packet / "promotion_command_preview.sh").exists()
+    assert (packet / "promotion_command_preview.md").exists()
+    assert dashboard["final_submission_ready"] is False
+    assert dashboard["page_count"] == 8
+    assert dashboard["unresolved_citations_count"] == 0
+    assert dashboard["unresolved_references_count"] == 0
+    assert dashboard["overfull_boxes_count"] == 4
+    assert dashboard["recommended_decisions"]["license"] == "Apache-2.0 code + CC-BY-4.0 manuscript/artifacts"
+    assert dashboard["final_gate_files_present"] == []
+    assert pdf_packet["final_pdf_approved"] is False
+    assert pdf_packet["pdf_generated"] is True
+    assert pdf_packet["within_8_page_limit"] is True
+    assert sensitive_packet["final_ready"] is False
+    assert sensitive_packet["findings_count"] == 7
+    assert sensitive_packet["human_review_required"] is True
+
+
+def test_promote_recommended_gates_dry_run_does_not_create_final_files() -> None:
+    final_files = [
+        ROOT / "submission" / "escience2026" / "deadline_verification.json",
+        ROOT / "submission" / "escience2026" / "repository_policy_decision.json",
+        ROOT / "submission" / "escience2026" / "license_decision.json",
+        ROOT / "submission" / "escience2026" / "sensitive_content_review.json",
+        ROOT / "submission" / "escience2026" / "layout_review.json",
+        ROOT / "submission" / "escience2026" / "author_final_approval.json",
+    ]
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/promote_recommended_gates.py",
+            "--human-confirm-final-gates",
+            "--approved-by",
+            "DRY RUN HUMAN AUTHOR",
+            "--confirm-deadline",
+            "--confirm-repository-policy",
+            "--confirm-license",
+            "--confirm-sensitive-scan",
+            "--confirm-layout",
+            "--confirm-ai-disclosure",
+            "--confirm-final-pdf",
+            "--dry-run",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload["valid"] is True
+    assert payload["dry_run"] is True
+    assert payload["promoted"] is False
+    assert payload["missing_required_flags"] == []
+    assert len(payload["would_create_files"]) == 6
+    assert all(not path.exists() for path in final_files)
+
+
+def test_promotion_dry_run_demo_succeeds_without_final_readiness() -> None:
+    result = subprocess.run(
+        [sys.executable, "scripts/promotion_dry_run_demo.py"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload["missing_flags_check_passed"] is True
+    assert payload["dry_run_success"] is True
+    assert payload["final_gate_files_created"] is False
+    assert payload["final_submission_ready"] is False
+    assert payload["final_submission_check_valid"] is False
+
+
+def test_final_gate_status_records_m13_review_packet_and_dry_run() -> None:
+    status = _load_json(ROOT / "submission" / "escience2026" / "final_gate_status.json")
+    assert status["final_review_packet_present"] is True
+    assert status["final_review_packet_path"] == "submission/escience2026/final_review_packet"
+    assert status["promotion_dry_run_supported"] is True
+    assert status["promotion_dry_run_completed"] is True
+    assert status["final_submission_ready"] is False

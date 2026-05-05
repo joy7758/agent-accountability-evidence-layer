@@ -38,8 +38,12 @@ def main() -> int:
     parser.add_argument("--confirm-ai-disclosure", action="store_true")
     parser.add_argument("--confirm-final-pdf", action="store_true")
     parser.add_argument("--overwrite", action="store_true", help="Allow overwriting existing final gate files.")
+    parser.add_argument("--dry-run", action="store_true", help="Validate confirmations and report final files without writing them.")
+    parser.add_argument("--format", choices=["json"], default="json")
     args = parser.parse_args()
 
+    final_paths = _final_paths()
+    would_create_files = [str(path.relative_to(ROOT)) for path in final_paths.values()]
     missing_flags = [flag for flag in REQUIRED_CONFIRM_FLAGS if not getattr(args, flag)]
     if not args.approved_by.strip():
         missing_flags.append("approved_by")
@@ -49,8 +53,14 @@ def main() -> int:
                 {
                     "valid": False,
                     "promoted": False,
+                    "dry_run": args.dry_run,
                     "error": "human_final_gate_confirmation_required",
+                    "errors": ["human_final_gate_confirmation_required"],
+                    "warnings": [],
                     "missing_confirmations": missing_flags,
+                    "missing_required_flags": missing_flags,
+                    "would_create_files": would_create_files,
+                    "final_submission_ready_after_promotion": False,
                     "message": "Recommended records cannot be promoted without every explicit human confirmation flag.",
                 },
                 indent=2,
@@ -60,7 +70,6 @@ def main() -> int:
         return 1
 
     _require_recommendations()
-    final_paths = _final_paths()
     existing = [str(path.relative_to(ROOT)) for path in final_paths.values() if path.exists()]
     if existing and not args.overwrite:
         print(
@@ -68,8 +77,14 @@ def main() -> int:
                 {
                     "valid": False,
                     "promoted": False,
+                    "dry_run": args.dry_run,
                     "error": "final_gate_files_already_exist",
+                    "errors": ["final_gate_files_already_exist"],
+                    "warnings": [],
                     "existing_files": existing,
+                    "missing_required_flags": [],
+                    "would_create_files": would_create_files,
+                    "final_submission_ready_after_promotion": False,
                     "message": "Refusing to overwrite existing final gate files without --overwrite.",
                 },
                 indent=2,
@@ -77,6 +92,30 @@ def main() -> int:
             )
         )
         return 1
+
+    if args.dry_run:
+        print(
+            json.dumps(
+                {
+                    "valid": True,
+                    "promoted": False,
+                    "dry_run": True,
+                    "approved_by": args.approved_by.strip(),
+                    "missing_required_flags": [],
+                    "would_create_files": would_create_files,
+                    "final_submission_ready_after_promotion": True,
+                    "errors": [],
+                    "warnings": [
+                        "Dry run only; final gate files were not created.",
+                        "final_submission_ready remains false until the promotion command is run without --dry-run and final checks pass."
+                    ],
+                    "message": "Dry run passed. Final gate files would be created only in write mode.",
+                },
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return 0
 
     now = datetime.now(timezone.utc).isoformat()
     approved_by = args.approved_by.strip()
@@ -89,13 +128,19 @@ def main() -> int:
 
     print(
         json.dumps(
-            {
-                "valid": True,
-                "promoted": True,
-                "approved_by": approved_by,
-                "created_files": [str(path.relative_to(ROOT)) for path in final_paths.values()],
-                "message": "Final gate files were created from recommendation records after explicit human confirmation.",
-            },
+                {
+                    "valid": True,
+                    "promoted": True,
+                    "dry_run": False,
+                    "approved_by": approved_by,
+                    "created_files": [str(path.relative_to(ROOT)) for path in final_paths.values()],
+                    "missing_required_flags": [],
+                    "would_create_files": would_create_files,
+                    "final_submission_ready_after_promotion": True,
+                    "errors": [],
+                    "warnings": [],
+                    "message": "Final gate files were created from recommendation records after explicit human confirmation.",
+                },
             indent=2,
             sort_keys=True,
         )
