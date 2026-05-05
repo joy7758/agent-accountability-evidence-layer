@@ -73,3 +73,34 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [ ] Final author approval completed.
 - [ ] `author_final_approval.json` created only after human approval.
 - [ ] `final_submission_check.py` passed.
+
+## M12 LaTeX And Final Submission Gates
+
+- [ ] LaTeX compiled successfully.
+- [ ] PDF generated.
+- [ ] Page count checked.
+- [ ] Confirmed <= 8 pages excluding references.
+- [ ] Unresolved citations = 0.
+- [ ] Unresolved references = 0.
+- [ ] Overfull boxes reviewed.
+- [ ] Repository/anonymization policy decided.
+- [ ] Deadline ambiguity manually resolved.
+- [ ] AI-use disclosure reviewed.
+- [ ] `author_final_approval.json` created after human approval.
+- [ ] `final_submission_check.py` passed.
+
+## M12-G1 Governance Draft Gates
+
+- [x] Deadline verification draft prepared.
+- [x] Repository policy draft prepared.
+- [x] Author final approval draft prepared.
+- [ ] Live EasyChair/CFP deadline verified.
+- [ ] Repository/anonymization policy finalized.
+- [ ] License finalized.
+- [ ] Sensitive content scan completed.
+- [ ] Final PDF reviewed.
+- [ ] Author final approval signed.
+- [ ] `submission/escience2026/deadline_verification.json` created.
+- [ ] `submission/escience2026/repository_policy_decision.json` created.
+- [ ] `submission/escience2026/author_final_approval.json` created.
+- [ ] `final_submission_ready=true`.

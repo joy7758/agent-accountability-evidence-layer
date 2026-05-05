@@ -1,0 +1,62 @@
+{
+  "target_venue": "escience2026",
+  "manuscript_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
+  "final_submission_ready": false,
+  "governance_drafts_present": true,
+  "deadline_verification_status": {
+    "draft_path": "submission/escience2026/governance_drafts/deadline_verification.draft.json",
+    "final_path": "submission/escience2026/deadline_verification.json",
+    "draft_present": true,
+    "final_file_present": false,
+    "deadline_verified": false,
+    "status": "draft_ready_for_author_review_not_final"
+  },
+  "repository_policy_status": {
+    "draft_path": "submission/escience2026/governance_drafts/repository_policy_decision.draft.json",
+    "final_path": "submission/escience2026/repository_policy_decision.json",
+    "draft_present": true,
+    "final_file_present": false,
+    "final_ready": false,
+    "status": "draft_prepared_not_finalized"
+  },
+  "author_final_approval_status": {
+    "draft_path": "submission/escience2026/governance_drafts/author_final_approval.draft.json",
+    "final_path": "submission/escience2026/author_final_approval.json",
+    "draft_present": true,
+    "final_file_present": false,
+    "approved_by_human_author": false,
+    "final_submission_ready": false,
+    "status": "approval_record_prepared_not_signed"
+  },
+  "latex_compile_status": {
+    "compile_report_path": "submission/escience2026/latex_compile_report.json",
+    "compile_success": true,
+    "pdf_path": "submission/escience2026/latex/main.pdf"
+  },
+  "page_count_status": {
+    "page_count_checked": true,
+    "page_count_total": 8,
+    "references_excluded_page_count": 8,
+    "within_page_limit": true
+  },
+  "ai_use_disclosure_status": {
+    "disclosure_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
+    "draft_present": true,
+    "requires_human_review": true
+  },
+  "blocking_items": [
+    "author final approval not signed",
+    "live EasyChair/CFP deadline not manually verified",
+    "repository/anonymization policy not finalized",
+    "license not finalized",
+    "sensitive content scan not completed",
+    "final gate files not created"
+  ],
+  "remaining_human_actions": [
+    "Verify the live EasyChair/CFP deadline and create submission/escience2026/deadline_verification.json only after verification.",
+    "Finalize repository/anonymization and license policy, then create submission/escience2026/repository_policy_decision.json.",
+    "Complete sensitive content scanning before public repository release.",
+    "Review the final PDF and AI-use disclosure.",
+    "Sign final approval and create submission/escience2026/author_final_approval.json only after all gates pass."
+  ]
+}

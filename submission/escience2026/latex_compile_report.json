@@ -1,0 +1,35 @@
+{
+  "compile_attempted": true,
+  "compile_success": true,
+  "compiler": "latexmk",
+  "errors": [],
+  "final_submission_ready": false,
+  "generated_pdf_path": "submission/escience2026/latex/main.pdf",
+  "latex_root": "submission/escience2026/latex",
+  "main_tex_path": "submission/escience2026/latex/main.tex",
+  "page_count_checked": true,
+  "page_count_total": 8,
+  "page_limit": 8,
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "references_excluded": true,
+  "references_excluded_page_count": 8,
+  "report_id": "asiep-escience2026-latex-compile-m12",
+  "required_human_actions": [
+    "Create repository_policy_decision.json after human repository/anonymization review.",
+    "Create deadline_verification.json after manually verifying the CFP/EasyChair deadline.",
+    "Create author_final_approval.json only after human approval of every final gate."
+  ],
+  "target_venue": "escience2026",
+  "unresolved_citations": [],
+  "unresolved_references": [],
+  "warnings": [
+    {
+      "code": "LATEX_LAYOUT_CHECK_REQUIRED",
+      "message": "LaTeX log contains overfull boxes or layout-check markers.",
+      "remediation_hint": "Human authors must inspect the compiled PDF layout and resolve overfull boxes or table fit issues.",
+      "repairability": "human_required",
+      "severity": "warning"
+    }
+  ],
+  "within_page_limit": true
+}

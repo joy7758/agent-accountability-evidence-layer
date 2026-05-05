@@ -117,8 +117,10 @@ def lint_submission(
     artifact_ready = _check_text_asset(errors, checks, artifact_text, "artifact_availability_statement", "SUBMISSION_ARTIFACT_STATEMENT_MISSING")
     checklist_ready = _check_text_asset(errors, checks, checklist_text, "final_human_checklist", "SUBMISSION_FINAL_CHECKLIST_MISSING")
     deadline_ready = _check_deadline(errors, checks, manifest, venue_policy)
+    if stage == "final":
+        _check_final_submission_gates(errors, checks, profile, manifest)
 
-    if manifest.get("final_submission_ready") is True:
+    if stage != "final" and manifest.get("final_submission_ready") is True:
         warnings.append(_issue("SUBMISSION_LINTER_FAILED", "M10 package should not mark final_submission_ready=true before human rewrite.", severity="warning"))
     if manifest.get("human_rewrite_required") is not True:
         errors.append(_issue("SUBMISSION_HUMAN_PROTOCOL_INVALID", "M10 package must mark human_rewrite_required=true."))
@@ -212,6 +214,79 @@ def _check_deadline(errors: list[dict[str, Any]], checks: list[dict[str, Any]], 
     return passed
 
 
+def _check_final_submission_gates(errors: list[dict[str, Any]], checks: list[dict[str, Any]], profile: dict[str, Any], manifest: dict[str, Any]) -> None:
+    latex_report_path = _resolve_path(profile.get("latex_compile_report_path", "submission/escience2026/latex_compile_report.json"))
+    approval_path = ROOT / "submission" / "escience2026" / "author_final_approval.json"
+    repository_decision_path = ROOT / "submission" / "escience2026" / "repository_policy_decision.json"
+    deadline_verification_path = ROOT / "submission" / "escience2026" / "deadline_verification.json"
+
+    latex_report = _load_json_if_exists(latex_report_path)
+    latex_report_valid = bool(latex_report)
+    if latex_report:
+        before = len(errors)
+        _extend_schema_errors(
+            errors,
+            latex_report,
+            ROOT / profile["latex_compile_report_schema_path"],
+            "LATEX_COMPILE_POLICY_INVALID",
+        )
+        latex_report_valid = len(errors) == before
+    else:
+        errors.append(_issue("LATEX_PDF_MISSING", f"LaTeX compile report missing: {latex_report_path}."))
+    _record(checks, "latex_compile_report_exists", bool(latex_report), "present" if latex_report else "missing")
+
+    compile_success = latex_report_valid and latex_report.get("compile_success") is True
+    page_count_checked = latex_report_valid and latex_report.get("page_count_checked") is True
+    within_page_limit = latex_report_valid and latex_report.get("within_page_limit") is True
+    _record(checks, "latex_compile_success", compile_success, "passed" if compile_success else "missing or failed")
+    _record(checks, "latex_page_count_checked", page_count_checked, "checked" if page_count_checked else "not checked")
+    _record(checks, "latex_within_page_limit", within_page_limit, "within limit" if within_page_limit else "not verified")
+    if latex_report and not compile_success:
+        errors.append(_issue("LATEX_COMPILE_FAILED", "Final submission gate requires compile_success=true in latex_compile_report.json."))
+    if latex_report and not page_count_checked:
+        errors.append(_issue("LATEX_PAGE_COUNT_FAILED", "Final submission gate requires page_count_checked=true in latex_compile_report.json."))
+    if latex_report and page_count_checked and not within_page_limit:
+        errors.append(_issue("LATEX_PAGE_BUDGET_EXCEEDED", "Final submission gate requires within_page_limit=true for eScience."))
+
+    approval = _load_json_if_exists(approval_path)
+    if approval:
+        _extend_schema_errors(errors, approval, ROOT / profile["author_final_approval_schema_path"], "FINAL_APPROVAL_MISSING")
+    approval_ready = bool(approval) and approval.get("approved_by_human_author") is True and approval.get("final_submission_ready") is True
+    _record(checks, "author_final_approval_exists", bool(approval), "present" if approval else "missing")
+    _record(checks, "author_final_approval_ready", approval_ready, "ready" if approval_ready else "not ready")
+    if not approval_ready:
+        errors.append(_issue("FINAL_APPROVAL_MISSING", "Final author approval is missing, not signed by a human author, or final_submission_ready is not true."))
+
+    repository_decision = _load_json_if_exists(repository_decision_path)
+    repository_ready = bool(repository_decision) and repository_decision.get("final_ready") is True
+    _record(checks, "repository_policy_decision_exists", bool(repository_decision), "present" if repository_decision else "missing")
+    _record(checks, "repository_policy_final_ready", repository_ready, "ready" if repository_ready else "not ready")
+    if not repository_ready:
+        errors.append(_issue("FINAL_REPOSITORY_POLICY_UNDECIDED", "Repository/anonymization policy is missing or not final-ready."))
+
+    deadline_verification = _load_json_if_exists(deadline_verification_path)
+    deadline_ready = bool(deadline_verification) and deadline_verification.get("deadline_verified") is True
+    _record(checks, "deadline_verification_exists", bool(deadline_verification), "present" if deadline_verification else "missing")
+    _record(checks, "deadline_verified", deadline_ready, "verified" if deadline_ready else "not verified")
+    if not deadline_ready:
+        errors.append(_issue("FINAL_DEADLINE_UNVERIFIED", "Deadline verification is missing or deadline_verified is not true."))
+
+    final_ready = (
+        compile_success
+        and page_count_checked
+        and within_page_limit
+        and approval_ready
+        and repository_ready
+        and deadline_ready
+        and manifest.get("final_submission_ready") is True
+    )
+    _record(checks, "manifest_final_submission_ready", manifest.get("final_submission_ready") is True, "true" if manifest.get("final_submission_ready") is True else "false")
+    if not final_ready and manifest.get("final_submission_ready") is True:
+        errors.append(_issue("SUBMISSION_LINTER_FAILED", "submission_manifest.json marks final_submission_ready=true before every final gate passes."))
+    if compile_success and page_count_checked and within_page_limit and approval_ready and repository_ready and deadline_ready and manifest.get("final_submission_ready") is not True:
+        errors.append(_issue("SUBMISSION_LINTER_FAILED", "All final artifacts are present but submission_manifest.json is not marked final_submission_ready=true."))
+
+
 def _extend_schema_errors(errors: list[dict[str, Any]], payload: dict[str, Any], schema_path: Path, code: str) -> None:
     schema_errors = sorted(Draft202012Validator(_load_json(schema_path)).iter_errors(payload), key=str)
     for schema_error in schema_errors:
@@ -249,3 +324,9 @@ def _resolve_path(path: str | Path) -> Path:
 def _load_json(path: Path) -> dict[str, Any]:
     with path.open(encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def _load_json_if_exists(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    return _load_json(path)

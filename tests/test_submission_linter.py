@@ -31,6 +31,23 @@ M10_CODES = {
     "SUBMISSION_FINAL_CHECKLIST_MISSING",
     "SUBMISSION_LINTER_FAILED",
 }
+M12_CODES = {
+    "LATEX_COMPILE_POLICY_INVALID",
+    "LATEX_ROOT_MISSING",
+    "LATEX_MAIN_MISSING",
+    "LATEX_COMPILE_FAILED",
+    "LATEX_PDF_MISSING",
+    "LATEX_PAGE_COUNT_FAILED",
+    "LATEX_PAGE_BUDGET_EXCEEDED",
+    "LATEX_REFERENCE_BOUNDARY_UNCHECKED",
+    "LATEX_BIBTEX_FAILED",
+    "LATEX_UNRESOLVED_CITATION",
+    "LATEX_UNRESOLVED_REFERENCE",
+    "LATEX_LAYOUT_CHECK_REQUIRED",
+    "FINAL_APPROVAL_MISSING",
+    "FINAL_REPOSITORY_POLICY_UNDECIDED",
+    "FINAL_DEADLINE_UNVERIFIED",
+}
 
 
 def _load_json(path: Path) -> dict:
@@ -97,13 +114,17 @@ def test_submission_linter_outputs_valid_human_rewrite_package() -> None:
     assert result["errors"] == []
 
 
-def test_submission_linter_final_stage_passes_marker_gate_after_integration() -> None:
+def test_submission_linter_final_stage_fails_without_human_final_gates() -> None:
     result = lint_submission(profile_path=PROFILE_PATH, stage="final")
-    assert result["valid"] is True
+    assert result["valid"] is False
     assert result["stage"] == "final"
     assert result["summary"]["paper_author_verify_markers"] == 0
     assert result["summary"]["latex_author_verify_markers"] == 0
     assert result["summary"]["citation_required_markers"] == 0
+    codes = {error["code"] for error in result["errors"]}
+    assert "FINAL_APPROVAL_MISSING" in codes
+    assert "FINAL_REPOSITORY_POLICY_UNDECIDED" in codes
+    assert "FINAL_DEADLINE_UNVERIFIED" in codes
 
 
 def test_profile_manifest_indexes_m10_submission_layer() -> None:
@@ -112,12 +133,21 @@ def test_profile_manifest_indexes_m10_submission_layer() -> None:
         "human_authoring_protocol_schema_path",
         "submission_manifest_schema_path",
         "submission_lint_report_schema_path",
+        "latex_compile_report_schema_path",
+        "author_final_approval_schema_path",
         "manuscript_v04_escience_path",
         "human_authoring_protocol_path",
         "submission_manifest_path",
         "latex_scaffold_path",
         "artifact_availability_statement_path",
         "final_human_checklist_path",
+        "latex_compile_report_path",
+        "governance_drafts_path",
+        "final_gate_status_path",
+        "ai_assisted_submission_notes_path",
+        "repository_policy_decision_template_path",
+        "deadline_verification_template_path",
+        "author_final_approval_template_path",
     ):
         assert key in manifest
         assert (ROOT / manifest[key]).exists()
@@ -129,7 +159,9 @@ def test_repair_policy_and_error_registry_cover_m10_codes() -> None:
     policy = _load_json(ROOT / "profiles" / "asiep" / "v0.1" / "repair_policy.json")
     policy_codes = {item["code"] for item in policy["error_code_repair_map"]}
     assert M10_CODES <= policy_codes
+    assert M12_CODES <= policy_codes
     assert M10_CODES <= set(ERROR_CODES)
+    assert M12_CODES <= set(ERROR_CODES)
 
 
 def test_submission_linter_cli_and_demo_script() -> None:
@@ -175,10 +207,13 @@ def test_human_rewrite_board_and_section_packets_exist() -> None:
 def test_final_human_checklist_contains_m11_gates() -> None:
     text = (ROOT / "submission" / "escience2026" / "final_human_checklist.md").read_text(encoding="utf-8").lower()
     assert "m11 final gates" in text
+    assert "m12 latex and final submission gates" in text
     assert "all `author_verify` markers removed" in text
     assert "all citation keys checked" in text
     assert "latex compiled" in text
     assert "8-page limit" in text
+    assert "unresolved citations = 0" in text
+    assert "repository/anonymization policy decided" in text
 
 
 def test_final_check_script_fails_until_final_human_approval_and_layout_gates() -> None:
@@ -193,6 +228,8 @@ def test_final_check_script_fails_until_final_human_approval_and_layout_gates() 
     assert payload["valid"] is False
     assert payload["remaining_author_verify_markers"] == 0
     assert any("Final author approval is missing" in error["message"] for error in payload["errors"])
+    assert any(error["code"] == "FINAL_REPOSITORY_POLICY_UNDECIDED" for error in payload["errors"])
+    assert any(error["code"] == "FINAL_DEADLINE_UNVERIFIED" for error in payload["errors"])
 
 
 def test_full_paper_integration_report_records_nonready_status() -> None:
@@ -204,3 +241,48 @@ def test_full_paper_integration_report_records_nonready_status() -> None:
     assert report["latex_synced"] is True
     assert report["final_submission_ready"] is False
     assert report["author_final_approval_exists"] is False
+    assert report["latex_compile_report_path"] == "submission/escience2026/latex_compile_report.json"
+    assert report["final_repository_policy_decided"] is False
+    assert report["final_deadline_verified"] is False
+
+
+def test_m12_latex_compile_report_and_templates_exist() -> None:
+    profile = _load_json(PROFILE_PATH)
+    compile_report = _load_json(ROOT / "submission" / "escience2026" / "latex_compile_report.json")
+    _assert_schema_valid(compile_report, ROOT / profile["latex_compile_report_schema_path"])
+    assert compile_report["final_submission_ready"] is False
+    assert compile_report["page_limit"] == 8
+    assert compile_report["references_excluded"] is True
+    assert (ROOT / "submission" / "escience2026" / "repository_policy_decision.template.json").exists()
+    assert (ROOT / "submission" / "escience2026" / "deadline_verification.template.json").exists()
+    approval_template = _load_json(ROOT / "submission" / "escience2026" / "author_final_approval.template.json")
+    _assert_schema_valid(approval_template, ROOT / profile["author_final_approval_schema_path"])
+    assert approval_template["approved_by_human_author"] is False
+    assert not (ROOT / "submission" / "escience2026" / "author_final_approval.json").exists()
+    assert not (ROOT / "submission" / "escience2026" / "repository_policy_decision.json").exists()
+    assert not (ROOT / "submission" / "escience2026" / "deadline_verification.json").exists()
+
+
+def test_governance_drafts_are_nonfinal_and_do_not_satisfy_final_gate() -> None:
+    drafts = ROOT / "submission" / "escience2026" / "governance_drafts"
+    assert (drafts / "README.md").exists()
+    assert (drafts / "deadline_verification.draft.json").exists()
+    assert (drafts / "repository_policy_decision.draft.json").exists()
+    author_draft = _load_json(drafts / "author_final_approval.draft.json")
+    assert author_draft["approval_status"]["approved_by_human_author"] is False
+    assert author_draft["approval_status"]["status"] == "pending_author_final_confirmation"
+    final_gate_status = _load_json(ROOT / "submission" / "escience2026" / "final_gate_status.json")
+    assert final_gate_status["governance_drafts_present"] is True
+    assert final_gate_status["final_submission_ready"] is False
+    assert final_gate_status["author_final_approval_status"]["final_file_present"] is False
+    assert "author final approval not signed" in final_gate_status["blocking_items"]
+
+
+def test_latex_submission_demo_runs_and_preserves_nonready_status() -> None:
+    demo = subprocess.run([sys.executable, "scripts/latex_submission_demo.py"], cwd=ROOT, check=True, capture_output=True, text=True)
+    payload = json.loads(demo.stdout)
+    assert payload["paper_linter_valid"] is True
+    assert payload["citation_linter_valid"] is True
+    assert payload["submission_linter_rewrite_valid"] is True
+    assert payload["final_submission_ready"] is False
+    assert payload["final_submission_check_valid"] is False

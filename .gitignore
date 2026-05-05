@@ -6,3 +6,10 @@ __pycache__/
 .DS_Store
 examples/generated_bundles/
 examples/generated_packages/
+submission/escience2026/latex/*.aux
+submission/escience2026/latex/*.bbl
+submission/escience2026/latex/*.blg
+submission/escience2026/latex/*.fdb_latexmk
+submission/escience2026/latex/*.fls
+submission/escience2026/latex/*.log
+submission/escience2026/latex/*.pdf

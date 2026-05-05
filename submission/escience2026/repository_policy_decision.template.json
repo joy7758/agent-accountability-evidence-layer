@@ -1,0 +1,10 @@
+{
+  "decision_id": "repository-policy-escience2026-template",
+  "target_venue": "escience2026",
+  "review_mode": "single-blind",
+  "repository_policy": "undecided",
+  "decided_by": "TODO:human-author",
+  "decided_at": "TODO:YYYY-MM-DDTHH:MM:SSZ",
+  "rationale": "TODO:explain whether public repository, anonymized artifact, or omission until camera-ready is appropriate.",
+  "final_ready": false
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_latex_compile_report.schema.json",
+  "title": "ASIEP LaTeX Compile Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_id",
+    "paper_id",
+    "target_venue",
+    "latex_root",
+    "main_tex_path",
+    "compiler",
+    "compile_attempted",
+    "compile_success",
+    "generated_pdf_path",
+    "page_count_checked",
+    "page_count_total",
+    "references_excluded_page_count",
+    "within_page_limit",
+    "page_limit",
+    "references_excluded",
+    "unresolved_citations",
+    "unresolved_references",
+    "errors",
+    "warnings",
+    "required_human_actions",
+    "final_submission_ready"
+  ],
+  "properties": {
+    "report_id": { "type": "string", "minLength": 1 },
+    "paper_id": { "type": "string", "minLength": 1 },
+    "target_venue": { "type": "string", "minLength": 1 },
+    "latex_root": { "type": "string", "minLength": 1 },
+    "main_tex_path": { "type": "string", "minLength": 1 },
+    "compiler": { "type": ["string", "null"] },
+    "compile_attempted": { "type": "boolean" },
+    "compile_success": { "type": "boolean" },
+    "generated_pdf_path": { "type": ["string", "null"] },
+    "page_count_checked": { "type": "boolean" },
+    "page_count_total": { "type": ["integer", "null"], "minimum": 0 },
+    "references_excluded_page_count": { "type": ["integer", "null"], "minimum": 0 },
+    "within_page_limit": { "type": "boolean" },
+    "page_limit": { "type": "integer", "minimum": 1 },
+    "references_excluded": { "type": "boolean" },
+    "unresolved_citations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "unresolved_references": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "errors": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "warnings": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "required_human_actions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "final_submission_ready": { "type": "boolean" }
+  },
+  "$defs": {
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "remediation_hint",
+        "repairability"
+      ],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "severity": { "type": "string", "enum": ["error", "warning"] },
+        "message": { "type": "string", "minLength": 1 },
+        "remediation_hint": { "type": "string", "minLength": 1 },
+        "repairability": {
+          "type": "string",
+          "enum": [
+            "auto_fixable",
+            "agent_fixable",
+            "external_evidence_required",
+            "human_required",
+            "not_fixable"
+          ]
+        }
+      }
+    }
+  }
+}
