@@ -9,6 +9,8 @@ Current technical status:
 - Manuscript: `manuscript/paper_v0.4_escience_human_editable.md`
 - LaTeX root: `submission/escience2026/latex`
 - PDF: `submission/escience2026/latex/main.pdf`
+- Author block: Zhang Bin, Independent Researcher, ORCID 0009-0002-8861-1481, joy7759@gmail.com
+- Author placeholders present: no
 - Page count: 8
 - Page limit: 8 pages excluding references
 - Unresolved citations: 0
@@ -17,6 +19,7 @@ Current technical status:
 
 Recommended decisions:
 
+- Author identity: Zhang Bin, Independent Researcher, ORCID 0009-0002-8861-1481, joy7759@gmail.com
 - License: Apache-2.0 code + CC-BY-4.0 manuscript/artifacts
 - Repository policy: `public_repo_allowed`
 - Planning deadline: `2026-05-18T23:59:00-12:00`

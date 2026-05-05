@@ -1,0 +1,18 @@
+{
+  "affiliation": "Independent Researcher",
+  "author_name": "Zhang Bin",
+  "decision_status": "recommended_pending_final_author_review",
+  "email": "joy7759@gmail.com",
+  "final_ready": false,
+  "orcid": "0009-0002-8861-1481",
+  "pending_final_human_review": true,
+  "recommendation_id": "asiep-escience2026-author-identity-recommendation-m14-author",
+  "rationale": [
+    "The prior LaTeX author block contained AUTHOR IDENTITY CHECK REQUIRED and AUTHOR AFFILIATION CHECK REQUIRED placeholders.",
+    "The user provided Zhang Bin, Independent Researcher, ORCID 0009-0002-8861-1481, and joy7759@gmail.com as the recommended block.",
+    "Independent Researcher is used because no institutional affiliation was provided."
+  ],
+  "target_file": "submission/escience2026/latex/main.tex",
+  "target_venue": "escience2026",
+  "must_not_be_used_as_final_approval": true
+}

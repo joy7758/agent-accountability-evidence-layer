@@ -151,6 +151,13 @@ def _generate_compile_report() -> dict[str, Any]:
     if log_findings["bibtex_failed"]:
         errors.append(_issue("LATEX_BIBTEX_FAILED", "LaTeX/BibTeX log indicates a bibliography failure."))
 
+    author_block = _check_author_block(PDF_PATH)
+    if author_block["author_placeholders_present"]:
+        warnings.append(_issue("LATEX_LAYOUT_CHECK_REQUIRED", "Compiled PDF still contains author identity or affiliation placeholders.", severity="warning"))
+        required_human_actions.append("Replace author identity and affiliation placeholders before final submission.")
+    if not author_block["author_block_verified"]:
+        required_human_actions.append("Verify the author block in the compiled PDF before final approval.")
+
     if not within_page_limit:
         required_human_actions.append("Do not mark final_submission_ready until page count is checked against 8 pages excluding references.")
     required_human_actions.extend(
@@ -170,6 +177,7 @@ def _generate_compile_report() -> dict[str, Any]:
     report["unresolved_citations"] = log_findings["unresolved_citations"]
     report["unresolved_references"] = log_findings["unresolved_references"]
     report["overfull_boxes"] = log_findings["overfull_boxes"]
+    report.update(author_block)
     return report
 
 
@@ -256,6 +264,33 @@ def _count_pages(path: Path) -> dict[str, Any]:
         return {"checked": True, "total": len(PdfReader(str(path)).pages)}
     except Exception:
         return {"checked": False, "total": None}
+
+
+def _check_author_block(path: Path) -> dict[str, Any]:
+    expected = [
+        "Zhang Bin",
+        "Independent Researcher",
+        "joy7759@gmail.com",
+        "0009-0002-8861-1481",
+    ]
+    placeholders = [
+        "AUTHOR IDENTITY CHECK REQUIRED",
+        "AUTHOR AFFILIATION CHECK REQUIRED",
+    ]
+    text = ""
+    if path.exists() and shutil.which("pdftotext"):
+        result = subprocess.run(["pdftotext", str(path), "-"], capture_output=True, text=True)
+        if result.returncode == 0:
+            text = result.stdout
+    missing = [item for item in expected if item not in text]
+    placeholders_present = any(item in text for item in placeholders)
+    return {
+        "author_placeholders_present": placeholders_present,
+        "author_block_verified": bool(text) and not placeholders_present and not missing,
+        "author_block_requires_final_human_review": True,
+        "author_block_expected_strings": expected,
+        "author_block_missing_strings": missing,
+    }
 
 
 def _update_integration_report(compile_report: dict[str, Any]) -> None:

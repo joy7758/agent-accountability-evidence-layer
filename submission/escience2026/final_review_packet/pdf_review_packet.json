@@ -1,5 +1,14 @@
 {
   "final_pdf_approved": false,
+  "author_block_status": "fixed_pending_final_human_review",
+  "author_placeholders_present": false,
+  "author_block_expected_strings": [
+    "Zhang Bin",
+    "Independent Researcher",
+    "joy7759@gmail.com",
+    "0009-0002-8861-1481"
+  ],
+  "author_block_missing_strings": [],
   "generated_pdf_path": "submission/escience2026/latex/main.pdf",
   "overfull_boxes": [
     "Overfull \\hbox (14.5pt too wide) in paragraph at lines 11--12",
@@ -13,6 +22,7 @@
   "references_excluded_page_count": 8,
   "required_human_pdf_checks": [
     "visually inspect title/authors if present",
+    "confirm author identity and affiliation block",
     "inspect overfull boxes",
     "inspect tables",
     "inspect crosswalk table",

@@ -150,6 +150,7 @@ def main() -> int:
 
 def _require_recommendations() -> None:
     required = [
+        "author_identity.recommended.json",
         "license_decision.recommended.json",
         "repository_policy_decision.recommended.json",
         "deadline_verification.recommended.json",

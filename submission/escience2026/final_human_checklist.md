@@ -135,3 +135,14 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [ ] Final gate files created.
 - [ ] `final_submission_check.py` passed.
 - [ ] `final_submission_ready=true`.
+
+## M14-AUTHOR Author Block Fix
+
+- [x] Author identity placeholder removed.
+- [x] Author affiliation placeholder removed.
+- [x] Author block recompiled into PDF.
+- [ ] Author identity finally confirmed.
+- [ ] Institutional affiliation confirmed or Independent Researcher accepted.
+- [ ] `author_final_approval.json` created.
+- [ ] `final_submission_check.py` passed.
+- [ ] `final_submission_ready=true`.

@@ -5,6 +5,11 @@
   "created_at": "2026-05-05T00:00:00+08:00",
   "recommended_decisions": [
     {
+      "gate": "author_identity",
+      "recommendation": "Zhang Bin, Independent Researcher, ORCID 0009-0002-8861-1481, joy7759@gmail.com",
+      "path": "submission/escience2026/final_gate_recommendations/author_identity.recommended.json"
+    },
+    {
       "gate": "license",
       "recommendation": "Apache-2.0 code + CC-BY-4.0 manuscript/artifacts",
       "path": "submission/escience2026/final_gate_recommendations/license_decision.recommended.json"

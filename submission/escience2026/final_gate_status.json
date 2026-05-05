@@ -15,6 +15,9 @@
     "recommended_plan_path": "submission/escience2026/final_gate_recommendations/author_final_approval.recommended_plan.json",
     "status": "approval_record_prepared_not_signed"
   },
+  "author_block_status": "fixed_pending_final_human_review",
+  "author_identity_recommendation_present": true,
+  "author_placeholders_present": false,
   "blocking_items": [
     "recommended records are present but are not final gate files",
     "author final approval not signed",
@@ -81,7 +84,7 @@
   "promotion_dry_run_completed": true,
   "promotion_dry_run_supported": true,
   "recommended_ai_disclosure_status": "recommended_acceptable_pending_final_author_review",
-  "recommended_decisions_count": 7,
+  "recommended_decisions_count": 8,
   "recommended_layout_status": "provisionally_acceptable_pending_pdf_review",
   "recommended_license": "Apache-2.0 code + CC-BY-4.0 manuscript/artifacts",
   "recommended_planning_deadline": "2026-05-18T23:59:00-12:00",
