@@ -1,0 +1,70 @@
+{
+  "review_id": "asiep-escience2026-sensitive-content-review-recommendation-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "recommendation_type": "sensitive_content_review",
+  "source_report": "submission/escience2026/sensitive_content_scan_report.json",
+  "scan_completed": true,
+  "findings_count": 7,
+  "recommended_classification": "expected_fixture_or_documentation_markers",
+  "final_ready": false,
+  "pending_final_human_review": true,
+  "findings": [
+    {
+      "path": "manuscript/paper_v0.3_escience.md",
+      "line": 118,
+      "rule_id": "raw_prompt_marker",
+      "classification": "expected_fixture_or_documentation_marker",
+      "notes": "Documentation phrase describing ref-only import behavior."
+    },
+    {
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "line": 414,
+      "rule_id": "raw_prompt_marker",
+      "classification": "expected_fixture_or_documentation_marker",
+      "notes": "Evaluation report describes an attack sample for blocked raw prompt content."
+    },
+    {
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "line": 590,
+      "rule_id": "raw_prompt_marker",
+      "classification": "expected_fixture_or_documentation_marker",
+      "notes": "Metric interpretation documents that package metadata avoids raw prompt/input/output content."
+    },
+    {
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "line": 829,
+      "rule_id": "raw_prompt_marker",
+      "classification": "expected_fixture_or_documentation_marker",
+      "notes": "Evaluation report describes an attack sample for blocked raw prompt content."
+    },
+    {
+      "path": "paper_assets/tables/attack_corpus_results.md",
+      "line": 12,
+      "rule_id": "raw_prompt_marker",
+      "classification": "expected_fixture_or_documentation_marker",
+      "notes": "Paper asset table describes the negative fixture."
+    },
+    {
+      "path": "examples/fixtures/invalid_sensitive_content_trace.json",
+      "line": 17,
+      "rule_id": "raw_prompt_marker",
+      "classification": "expected_fixture_or_documentation_marker",
+      "notes": "Synthetic negative fixture intentionally includes a sentinel raw_prompt field."
+    },
+    {
+      "path": "examples/import_requests/invalid_sensitive_content_request.json",
+      "line": 24,
+      "rule_id": "raw_prompt_marker",
+      "classification": "expected_fixture_or_documentation_marker",
+      "notes": "Import request documents the negative fixture."
+    }
+  ],
+  "rationale": [
+    "The current findings are warning-level raw prompt markers.",
+    "The paths indicate documentation, evaluation reports, paper assets, or synthetic negative fixtures.",
+    "No final sensitive-content clearance is granted until the human author reviews the findings."
+  ],
+  "must_not_be_used_as_final_gate_file": true,
+  "final_gate_file_path": "submission/escience2026/sensitive_content_review.json"
+}

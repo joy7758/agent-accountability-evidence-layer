@@ -1,0 +1,19 @@
+{
+  "decision_id": "asiep-escience2026-license-recommendation-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "recommendation_type": "license_decision",
+  "code_license": "Apache-2.0",
+  "manuscript_license": "CC-BY-4.0",
+  "artifact_license": "CC-BY-4.0",
+  "decision_status": "recommended_pending_final_human_review",
+  "final_ready": false,
+  "pending_final_human_review": true,
+  "rationale": [
+    "Apache-2.0 is preferable to MIT for reusable infrastructure code because it includes an explicit patent grant.",
+    "CC-BY-4.0 is suitable for manuscript text and research artifacts intended for academic reuse.",
+    "Institutional, publisher, or coauthor constraints may require revision before final submission."
+  ],
+  "must_not_be_used_as_final_gate_file": true,
+  "final_gate_file_path": "submission/escience2026/license_decision.json"
+}

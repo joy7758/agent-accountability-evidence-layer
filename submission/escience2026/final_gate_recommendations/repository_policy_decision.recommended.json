@@ -1,0 +1,21 @@
+{
+  "decision_id": "asiep-escience2026-repository-policy-recommendation-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "recommendation_type": "repository_policy_decision",
+  "repository_policy": "public_repo_allowed",
+  "decision_status": "recommended_pending_final_human_review",
+  "final_ready": false,
+  "pending_final_human_review": true,
+  "rationale": [
+    "The venue policy is recorded as single-blind.",
+    "A public repository improves artifact inspectability and reproducibility.",
+    "The current author instructions should still be checked before final submission."
+  ],
+  "fallback_options": [
+    "anonymized_required",
+    "omit_until_camera_ready"
+  ],
+  "must_not_be_used_as_final_gate_file": true,
+  "final_gate_file_path": "submission/escience2026/repository_policy_decision.json"
+}

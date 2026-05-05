@@ -1,0 +1,73 @@
+{
+  "recommendation_set_id": "asiep-escience2026-final-gate-recommendations-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "created_at": "2026-05-05T00:00:00+08:00",
+  "recommended_decisions": [
+    {
+      "gate": "license",
+      "recommendation": "Apache-2.0 code + CC-BY-4.0 manuscript/artifacts",
+      "path": "submission/escience2026/final_gate_recommendations/license_decision.recommended.json"
+    },
+    {
+      "gate": "repository_policy",
+      "recommendation": "public_repo_allowed",
+      "path": "submission/escience2026/final_gate_recommendations/repository_policy_decision.recommended.json"
+    },
+    {
+      "gate": "deadline_planning",
+      "recommendation": "conservative May 18 AoE",
+      "path": "submission/escience2026/final_gate_recommendations/deadline_verification.recommended.json"
+    },
+    {
+      "gate": "layout_review",
+      "recommendation": "provisionally acceptable pending PDF review",
+      "path": "submission/escience2026/final_gate_recommendations/layout_review.recommended.json"
+    },
+    {
+      "gate": "sensitive_content_review",
+      "recommendation": "expected fixture/documentation markers pending final review",
+      "path": "submission/escience2026/final_gate_recommendations/sensitive_content_review.recommended.json"
+    },
+    {
+      "gate": "ai_use_disclosure",
+      "recommendation": "acceptable pending final author review",
+      "path": "submission/escience2026/final_gate_recommendations/ai_use_disclosure_review.recommended.json"
+    },
+    {
+      "gate": "author_final_approval",
+      "recommendation": "not approved; plan only",
+      "path": "submission/escience2026/final_gate_recommendations/author_final_approval.recommended_plan.json"
+    }
+  ],
+  "final_gate_files_not_created": [
+    "submission/escience2026/deadline_verification.json",
+    "submission/escience2026/repository_policy_decision.json",
+    "submission/escience2026/license_decision.json",
+    "submission/escience2026/sensitive_content_review.json",
+    "submission/escience2026/layout_review.json",
+    "submission/escience2026/author_final_approval.json"
+  ],
+  "current_final_submission_ready": false,
+  "pending_final_human_review": true,
+  "promotion_required_for_final_submission": true,
+  "blocking_items": [
+    "recommended records are not final gate files",
+    "live EasyChair/CFP deadline still requires human verification",
+    "repository/anonymization policy still requires final human decision",
+    "license still requires final human decision",
+    "sensitive-content findings still require human review",
+    "layout still requires final PDF review",
+    "author final approval is not signed"
+  ],
+  "remaining_human_actions": [
+    "Review every recommendation record.",
+    "Verify the live EasyChair/CFP deadline.",
+    "Confirm repository/anonymization policy.",
+    "Confirm license policy.",
+    "Review sensitive-content findings.",
+    "Review the final PDF layout.",
+    "Review AI-use disclosure.",
+    "Run scripts/promote_recommended_gates.py only with explicit human confirmation flags."
+  ]
+}

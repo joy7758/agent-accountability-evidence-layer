@@ -1,0 +1,26 @@
+{
+  "review_id": "asiep-escience2026-ai-use-disclosure-review-recommendation-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "recommendation_type": "ai_use_disclosure_review",
+  "source_file": "submission/escience2026/author_ai_use_disclosure_draft.md",
+  "ai_use_disclosure_status": "recommended_acceptable_pending_final_author_review",
+  "checks": {
+    "identifies_ai_systems": true,
+    "identifies_sections": true,
+    "describes_level_of_use": true,
+    "states_human_responsibility": true,
+    "states_ai_systems_are_not_authors": true,
+    "states_ai_was_not_used_to_fabricate_results_citations_metrics_or_evidence": true
+  },
+  "final_ready": false,
+  "pending_final_human_review": true,
+  "rationale": [
+    "The current disclosure identifies ChatGPT / GPT-5.5 Pro and Codex.",
+    "It identifies manuscript sections and repository-support tasks where AI assistance was used.",
+    "It states human responsibility and says AI systems are not authors.",
+    "It states AI was not used to fabricate results, citations, metrics, or evidence artifacts."
+  ],
+  "must_not_be_used_as_final_gate_file": true,
+  "final_gate_file_path": "submission/escience2026/author_final_approval.json"
+}

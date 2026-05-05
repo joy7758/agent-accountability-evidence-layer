@@ -1,0 +1,21 @@
+{
+  "verification_id": "asiep-escience2026-deadline-recommendation-m12-l2r",
+  "target_venue": "escience2026",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "recommendation_type": "deadline_verification",
+  "planning_deadline": "2026-05-18T23:59:00-12:00",
+  "planning_deadline_label": "Monday, May 18, 2026, 11:59 PM AoE",
+  "conservative_planning": true,
+  "live_deadline_verified": false,
+  "deadline_verified": false,
+  "decision_status": "recommended_conservative_planning_pending_live_verification",
+  "final_ready": false,
+  "pending_final_human_review": true,
+  "rationale": [
+    "The CFP row contains a Monday May 18 / Tuesday May 19 AoE ambiguity.",
+    "The conservative planning choice uses the earlier May 18 AoE date.",
+    "The final EasyChair or CFP deadline must still be checked before final submission."
+  ],
+  "must_not_be_used_as_final_gate_file": true,
+  "final_gate_file_path": "submission/escience2026/deadline_verification.json"
+}
