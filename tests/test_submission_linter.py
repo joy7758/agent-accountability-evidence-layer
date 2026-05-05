@@ -22,6 +22,7 @@ M10_CODES = {
     "SUBMISSION_HUMAN_PROTOCOL_INVALID",
     "SUBMISSION_MANUSCRIPT_MISSING",
     "SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING",
+    "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN",
     "SUBMISSION_LATEX_SCAFFOLD_MISSING",
     "SUBMISSION_AI_DISCLOSURE_MISSING",
     "SUBMISSION_ARTIFACT_STATEMENT_MISSING",
@@ -89,6 +90,7 @@ def test_ieee_ai_disclosure_and_latex_scaffold_are_present() -> None:
 def test_submission_linter_outputs_valid_human_rewrite_package() -> None:
     result = lint_submission(MANIFEST_PATH)
     assert result["valid"] is True
+    assert result["stage"] == "rewrite"
     assert result["human_rewrite_required"] is True
     assert result["final_submission_ready"] is False
     assert result["summary"]["author_verify_markers"] > 0
@@ -96,6 +98,14 @@ def test_submission_linter_outputs_valid_human_rewrite_package() -> None:
     assert result["summary"]["ieee_ai_disclosure_ready"] is True
     assert result["summary"]["latex_scaffold_ready"] is True
     assert result["errors"] == []
+
+
+def test_submission_linter_final_stage_blocks_remaining_author_verify() -> None:
+    result = lint_submission(profile_path=PROFILE_PATH, stage="final")
+    assert result["valid"] is False
+    assert result["stage"] == "final"
+    assert result["summary"]["paper_author_verify_markers"] > 0
+    assert any(error["code"] == "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN" for error in result["errors"])
 
 
 def test_profile_manifest_indexes_m10_submission_layer() -> None:
@@ -130,8 +140,10 @@ def test_submission_linter_cli_and_demo_script() -> None:
             sys.executable,
             "-m",
             "asiep_submission_linter",
-            "--manifest",
-            str(MANIFEST_PATH),
+            "--profile",
+            str(PROFILE_PATH),
+            "--stage",
+            "rewrite",
             "--format",
             "json",
         ],
@@ -145,3 +157,41 @@ def test_submission_linter_cli_and_demo_script() -> None:
     demo = subprocess.run([sys.executable, "scripts/submission_demo.py"], cwd=ROOT, check=True, capture_output=True, text=True)
     assert "submission_linter_valid=True" in demo.stdout
     assert "final_submission_ready=False" in demo.stdout
+
+
+def test_human_rewrite_board_and_section_packets_exist() -> None:
+    board = _load_json(ROOT / "submission" / "escience2026" / "human_rewrite_board.json")
+    assert board["current_status"] == "pending_human_rewrite"
+    assert len(board["sections"]) >= 12
+    assert all(section["status"] == "pending_human_rewrite" for section in board["sections"])
+    assert all(section["author_verify_markers_count"] >= 1 for section in board["sections"])
+    packets = list((ROOT / "submission" / "escience2026" / "section_packets").glob("*_packet.md"))
+    assert len(packets) >= 12
+    for packet in packets:
+        text = packet.read_text(encoding="utf-8").lower()
+        assert "human rewrite checklist" in text
+        assert "claims to preserve" in text
+        assert "overclaim phrases to avoid" in text
+
+
+def test_final_human_checklist_contains_m11_gates() -> None:
+    text = (ROOT / "submission" / "escience2026" / "final_human_checklist.md").read_text(encoding="utf-8").lower()
+    assert "m11 final gates" in text
+    assert "all `author_verify` markers removed" in text
+    assert "all citation keys checked" in text
+    assert "latex compiled" in text
+    assert "8-page limit" in text
+
+
+def test_final_check_script_fails_until_human_markers_removed() -> None:
+    result = subprocess.run(
+        [sys.executable, "scripts/final_submission_check.py"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 1
+    payload = json.loads(result.stdout)
+    assert payload["valid"] is False
+    assert payload["remaining_author_verify_markers"] > 0
+    assert any(error["code"] == "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN" for error in payload["errors"])
