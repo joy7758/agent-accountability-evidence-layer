@@ -1,0 +1,11 @@
+\section{Cross-standard Mapping}
+
+ASIEP is designed as a thin evidence-object layer rather than a replacement for existing provenance models, observability tools, or research-object packaging frameworks. Its value depends on whether it can connect trace sources, provenance semantics, and reusable evidence packages while adding the constraints specific to agent self-improvement events. For this reason, the implementation includes a local crosswalk matrix that maps ASIEP field groups to PROV, OpenTelemetry-like traces, LangSmith-like traces, FDO-like records, RO-Crate-like metadata, and AI governance logging categories \cite{w3c_prov_dm,otel_genai_semconv,langsmith_observability_concepts,fdo_architecture_spec,workflow_run_rocrate}.
+
+\input{tables/crosswalk_summary}
+
+The mapping is intentionally marked with lossiness. Some ASIEP fields map directly, such as agent identifiers, trace references, evidence artifacts, and generated candidate entities. Other fields are only partially represented by existing layers. For example, pass-to-fail flip counts, gate thresholds, repairability classes, rollback requirements, and lifecycle transition constraints are not native to generic provenance models. Similarly, local FDO-like and RO-Crate-like outputs demonstrate packaging feasibility, but they do not imply registry submission, externally resolvable identifier issuance, or full RO-Crate certification.
+
+This crosswalk clarifies ASIEP's role. PROV can describe activities, entities, and agents, but it does not define the minimum fields required for a self-improvement gate. OpenTelemetry-like and LangSmith-like traces can record execution events, feedback, scores, spans, and runs, but they do not define when a candidate is frozen, when evidence is locked, or when a promotion is unsafe. FDO-like and RO-Crate-like packages can organize evidence artifacts, but they do not specify self-improvement lifecycle invariants. ASIEP provides these domain constraints while allowing the surrounding infrastructure to remain reusable.
+
+The mapping is therefore not an external standard-conformance claim. It is a local interoperability demonstration. It shows that ASIEP can sit between runtime traces and reusable evidence packages, using existing models where they are appropriate and adding self-improvement-specific constraints where they are missing.

@@ -1,0 +1,25 @@
+\section{Requirements for Agent Self-Improvement Evidence}
+
+\subsection{R1. Evidence completeness}
+
+A self-improvement evidence object must capture the minimum information needed to reconstruct the improvement decision. This includes the trigger, lineage from the base blueprint to the candidate blueprint, evidence references, candidate diff or candidate artifact reference, validation result, gate report, decision reason, integrity metadata, and rollback reference. Without these fields, a later auditor or agent cannot determine whether the change was justified, merely attempted, or safely releasable.
+
+\subsection{R2. Lifecycle discipline}
+
+The profile must define a lifecycle state machine for self-improvement events. A candidate should not be gated before evidence is locked; a promotion decision should not exist before the candidate is frozen; and a deployed version should remain linked to monitoring and rollback evidence. The lifecycle states include Draft, Observed, EvidenceLocked, CandidateFrozen, Gated, Promoted or Rejected, Deployed, Monitored, and RolledBack or Retired. This turns an improvement loop into a verifiable sequence rather than an unordered set of logs.
+
+\subsection{R3. Reference and digest binding}
+
+ASIEP should not require raw prompts, user inputs, model outputs, tool definitions, feedback comments, or system configurations to be embedded directly in the evidence object. These artifacts may be sensitive or access-controlled. The profile therefore binds external artifacts through references, media types, digests, access policies, and redaction policies. This design preserves verifiability while reducing unnecessary exposure of protected trace content.
+
+\subsection{R4. Agent-readable validation and repair}
+
+Validation output must be usable by agents as well as human reviewers. A validator should return stable error codes, JSON paths, invariant identifiers, repairability classes, and remediation hints. This allows another agent to inspect a failed evidence object, distinguish missing evidence from unsafe promotion, and generate a bounded repair plan without fabricating evidence or hiding non-repairable failures.
+
+\subsection{R5. Cross-standard interoperability}
+
+ASIEP should connect to existing infrastructure rather than replace it. OpenTelemetry-like and LangSmith-like traces can serve as execution and feedback sources. W3C PROV can provide provenance semantics for activities, entities, and agents. FDO-like records and RO-Crate-like metadata can support local evidence packaging. ASIEP defines the self-improvement-specific constraints that are not supplied by these layers alone.
+
+\subsection{R6. Honest local evaluation}
+
+The evaluation must distinguish local conformance evidence from external certification or general benchmark performance. A local corpus can test whether valid examples pass, invalid examples fail, bundles resolve, packages close, and attack cases are detected. The reported results should therefore be described as local fixture results, not as proof of production readiness, standard compliance, or completeness for all agent systems.

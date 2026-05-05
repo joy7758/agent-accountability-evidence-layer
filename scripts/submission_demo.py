@@ -35,7 +35,7 @@ def main() -> int:
     citation_result = lint_citations(PROFILE_PATH)
     venue_result = lint_venue(
         ROOT / "venues" / "escience2026" / "venue_policy.json",
-        ROOT / "manuscript" / "paper_v0.3_escience.md",
+        ROOT / "manuscript" / "paper_v0.4_escience_human_editable.md",
     )
     submission_result = lint_submission(MANIFEST_PATH)
     REPORT_PATH.write_text(json.dumps(submission_result, indent=2, sort_keys=True) + "\n", encoding="utf-8")

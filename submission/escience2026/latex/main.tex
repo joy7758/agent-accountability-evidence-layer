@@ -1,0 +1,44 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{cite}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{A FAIR Evidence Object Layer for Auditable Agent Self-Improvement\\
+\large From Agent Traces to Verifiable Evidence Packages}
+
+\author{
+\IEEEauthorblockN{AUTHOR\_IDENTITY\_CHECK\_REQUIRED}
+\IEEEauthorblockA{AUTHOR\_AFFILIATION\_CHECK\_REQUIRED}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Agent systems increasingly support iterative revision of prompts, tools, memories, retrieval policies, planners, and release candidates based on feedback. However, current traces and logs rarely represent an agent self-improvement event as a verifiable evidence object that can be inspected, validated, packaged, and reused. This paper proposes ASIEP, the Agent Self-Improvement Evidence Profile, a minimal FAIR-compatible profile for describing auditable self-improvement cycles. ASIEP captures trigger evidence, lineage, candidate changes, validation results, gate decisions, integrity metadata, and rollback references through a reference-and-digest design rather than by embedding raw traces or sensitive artifacts.
+
+We implement an agent-native local toolchain around the profile, including a validator, repair planner, resolver, trace importer, local FDO/RO-Crate-like packager, and evaluator. The toolchain enables another agent or reviewer to check conformance, interpret stable validation errors, resolve evidence references, generate local evidence packages, and evaluate known valid, invalid, and tampered cases. We evaluate the current implementation using local fixtures, adversarial evidence cases, generated bundles, local packages, and a cross-standard mapping to PROV, OpenTelemetry-like traces, LangSmith-like traces, FDO-like records, and RO-Crate-like metadata. Results support reproducible local evidence checking, but are not external certification, production deployment, or evidence of completeness for all agent systems.
+\end{abstract}
+
+\begin{IEEEkeywords}
+agent accountability, FAIR evidence, provenance, self-improvement, validation, reproducibility
+\end{IEEEkeywords}
+
+\input{sections/introduction}
+\input{sections/problem_scope}
+\input{sections/requirements}
+\input{sections/asiep_profile}
+\input{sections/toolchain}
+\input{sections/evidence_packaging}
+\input{sections/evaluation}
+\input{sections/cross_standard_mapping}
+\input{sections/limitations}
+\input{sections/conclusion}
+\input{sections/acknowledgements_ai_use}
+
+\bibliographystyle{IEEEtran}
+\bibliography{../../../references/asiep_references}
+
+\end{document}

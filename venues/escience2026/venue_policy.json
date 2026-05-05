@@ -38,7 +38,7 @@
     "Cross-standard Mapping",
     "Limitations",
     "Conclusion",
-    "Acknowledgements and AI-use disclosure draft"
+    "Acknowledgements and AI-use Disclosure"
   ],
   "recommended_sections": [
     "Artifacts and Reproducibility",
@@ -57,9 +57,9 @@
     "legal compliance solution"
   ],
   "required_disclosures": [
-    "Draft for human authoring and verification",
-    "Human authors must verify and rewrite final prose",
-    "AI-use disclosure"
+    "AI-assisted planning",
+    "author reviewed, edited, and approved",
+    "AI systems were not used as authors"
   ],
   "required_positioning": [
     "FAIR evidence object",

@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering
+\caption{Selected ASIEP cross-standard mappings. AUTHOR\_LAYOUT\_CHECK\_REQUIRED}
+\begin{tabular}{p{0.18\linewidth}p{0.18\linewidth}p{0.22\linewidth}p{0.18\linewidth}p{0.16\linewidth}}
+\toprule
+ASIEP element & PROV mapping & Trace mapping & Package mapping & Notes \\
+\midrule
+\texttt{cycle\_id} & \texttt{prov:Activity} & trace root / run root & RO-Crate \texttt{CreateAction} & Improvement cycle. \\
+\texttt{agent\_id} & \texttt{prov:Agent} & agent id / project tag & FDO-like metadata & Responsible agent context. \\
+\texttt{base\_blueprint\_id} & used \texttt{prov:Entity} & config/version metadata & package artifact/entity & Prior version. \\
+\texttt{candidate\_blueprint\_id} & generated \texttt{prov:Entity} & candidate metadata & package artifact/entity & Proposed reusable change. \\
+\texttt{trace\_refs} & used \texttt{prov:Entity} & trace/span/run id & crate artifact & Execution evidence. \\
+\texttt{feedback\_refs} & used \texttt{prov:Entity} & feedback record & crate artifact & Feedback evidence. \\
+\texttt{gate\_report\_ref} & generated \texttt{prov:Entity} & evaluator/custom span & crate artifact & Gate evidence. \\
+\texttt{approver} & \texttt{prov:Agent} & reviewer/service tag & package actor metadata & Gate actor. \\
+\texttt{prev\_record\_hash} & extension & no direct equivalent & manifest integrity & Integrity extension. \\
+\bottomrule
+\end{tabular}
+\end{table*}

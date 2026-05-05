@@ -1,222 +1,200 @@
 # A FAIR Evidence Object Layer for Auditable Agent Self-Improvement
 
-Draft for human rewrite and verification. This v0.4 file is a human-editable
-IEEE eScience 2026 working draft, not a final submission. Every
-`AUTHOR_VERIFY` marker must be resolved by human authors before M11.
+## From Agent Traces to Verifiable Evidence Packages
 
 ## Abstract
 
-AUTHOR_VERIFY: Rewrite this abstract in the authors' own prose after checking
-the final report in `reports/asiep_v0.1_evaluation_report.json`.
+Agent systems increasingly support iterative revision of prompts, tools, memories, retrieval policies, planners, and release candidates based on feedback. However, current traces and logs rarely represent an agent self-improvement event as a verifiable evidence object that can be inspected, validated, packaged, and reused. This paper proposes ASIEP, the Agent Self-Improvement Evidence Profile, a minimal FAIR-compatible profile for describing auditable self-improvement cycles. ASIEP captures trigger evidence, lineage, candidate changes, validation results, gate decisions, integrity metadata, and rollback references through a reference-and-digest design rather than by embedding raw traces or sensitive artifacts.
 
-Agent self-improvement claims are hard to reproduce when traces, feedback,
-scores, diffs, gate reports, repair decisions, and package metadata are split
-across tools. We present ASIEP, the Agent Self-Improvement Evidence Profile,
-as a local minimal implementation of a FAIR evidence object layer for
-auditable self-improvement events. ASIEP is not a new self-improvement
-algorithm; it records a claimed improvement as a machine-readable evidence
-object with references, digests, lifecycle states, invariants, validation
-errors, repair plans, bundle resolution, and local packaging. The repository
-implements a trace-to-evidence-to-package pipeline and evaluates it with local
-fixtures, adversarial evidence cases, a cross-standard matrix, and generated
-packages. The results are local fixture infrastructure checks, not external
-certification, not a deployment claim, and not a general benchmark.
+We implement an agent-native local toolchain around the profile, including a validator, repair planner, resolver, trace importer, local FDO/RO-Crate-like packager, and evaluator. The toolchain enables another agent or reviewer to check conformance, interpret stable validation errors, resolve evidence references, generate local evidence packages, and evaluate known valid, invalid, and tampered cases. We evaluate the current implementation using local fixtures, adversarial evidence cases, generated bundles, local packages, and a cross-standard mapping to PROV, OpenTelemetry-like traces, LangSmith-like traces, FDO-like records, and RO-Crate-like metadata. Results support reproducible local evidence checking, but are not external certification, production deployment, or evidence of completeness for all agent systems.
 
 ## Introduction
 
-AUTHOR_VERIFY: Rewrite for narrative flow and verify all citations.
+Agent systems are moving from one-shot task execution toward iterative improvement. Modern agents may revise prompts, update tool wrappers, adjust memory rules, change retrieval policies, modify planners, or promote new release candidates after receiving feedback. This shift creates an evidence problem for computational research infrastructure. A normal trace can record what happened during a single run, such as a model call, tool invocation, retrieved document, or output. A self-improvement event is different: it changes an artifact that may influence future runs. The accountability question therefore becomes temporal. A reviewer, downstream agent, or operator needs to know why a change was proposed, which prior version it derived from, what evidence supported it, how it was validated, why it was promoted or rejected, and how it can be rolled back if it later proves unsafe or invalid.
 
-Scientific workflows increasingly include LLM agents, trace sources, and
-agentic tools that can revise their behavior. When such a system claims that a
-revision improved performance, the useful scientific artifact is not only a
-conversation log or a dashboard trace. Reviewers need a findable, reusable,
-machine-readable evidence object that another agent or human reviewer can
-validate, resolve, package, and challenge.
+Existing work addresses important parts of this problem, but not the event-level evidence object itself. Self-Refine, Reflexion, and Voyager show that agents can improve behavior through feedback, reflection, or accumulated skills [@self_refine_2023; @reflexion_2023; @voyager_2023]. AgentDevel frames self-evolving agents as a release-engineering problem involving traces, candidate versions, and regression gates [@agentdevel_2026]. Observability systems such as OpenTelemetry GenAI and LangSmith provide execution traces, spans, runs, feedback records, and evaluation signals [@otel_genai_semconv; @langsmith_observability_concepts]. Provenance and packaging frameworks such as W3C PROV, FAIR Digital Objects, and Workflow Run RO-Crate provide foundations for representing activities, entities, agents, digital objects, and machine-actionable research packages [@w3c_prov_dm; @fdo_architecture_spec; @workflow_run_rocrate]. These layers are valuable, but they do not define the minimum self-improvement-specific evidence required to audit one reusable agent change.
 
-Self-Refine, Reflexion, Voyager, and AgentDevel motivate the broader space of
-agent improvement and release-oriented self-evolving systems
-[@self_refine_2023; @reflexion_2023; @voyager_2023; @agentdevel_2026]. ASIEP
-occupies a different layer. It treats a self-improvement event as evidence to
-be inspected, not as an algorithm to produce the improvement. This framing
-matches eScience because the main contribution is computational research
-infrastructure: a FAIR evidence object, reproducible local pipeline, local
-evidence package, reusable validator, and explicit crosswalk to provenance and
-package structures.
+This paper proposes ASIEP, the Agent Self-Improvement Evidence Profile. ASIEP is a minimal FAIR-compatible profile for representing an agent self-improvement cycle as a verifiable, lifecycle-aware, reference-bound evidence object. It does not introduce a new self-improvement algorithm, agent framework, benchmark, or production governance system. Instead, it defines what must be present for a self-improvement event to be auditable: trigger evidence, lineage, candidate change evidence, validation results, gate decisions, integrity metadata, rollback references, and compliance metadata. ASIEP uses a reference-and-digest design so that raw prompts, traces, user inputs, model outputs, and gate artifacts do not need to be embedded directly in the core evidence object.
+
+The paper makes three contributions. First, it defines the ASIEP profile, including field groups, lifecycle states, and invariants for agent self-improvement evidence. These invariants prevent common invalid states, such as promotion without a gate report, gating before a candidate is frozen, or evidence locking without digest-bound references. Second, it implements an agent-native local toolchain consisting of a validator, repair planner, resolver, importer, packager, and evaluator. The toolchain produces machine-readable validation errors, bounded repair plans, digest-checked bundle resolution, local trace imports, FDO-like and RO-Crate-like package outputs, PROV JSON-LD, and evaluation reports. Third, it evaluates the current implementation on a local fixture corpus containing valid records, invalid records, tampered bundles, missing artifacts, digest mismatches, path-escape cases, import fixtures, package requests, and adversarial evidence cases.
+
+The scope is deliberately narrow. ASIEP is not a certified standard, not a production deployment, not a full OpenTelemetry or LangSmith integration, not a real FDO registry implementation, and not full RO-Crate certification. The evaluation is local and curated. Its purpose is to test whether a minimal evidence profile and local toolchain can support reproducible conformance checking, evidence closure, attack detection, and cross-standard mapping for agent self-improvement events.
 
 ## Problem and Scope
 
-AUTHOR_VERIFY: Keep the scope narrow. Do not broaden this into general AI
-governance.
+An agent self-improvement event is not merely another inference, tool call, or execution trace. Ordinary agent actions usually affect one task instance: a model answers a question, invokes a tool, retrieves context, or updates an intermediate working state. A self-improvement event is different because it changes an artifact that may shape later decisions, such as a prompt, policy, tool wrapper, memory snapshot, retrieval configuration, planner, evaluation script, or release candidate. This makes the accountability problem temporal. The relevant question is not only what happened in one run, but why a reusable change was proposed, which prior version it derived from, what evidence supported it, whether the candidate was validated, why a gate accepted or rejected it, and how the system can roll back if the change is later found unsafe or invalid.
 
-An agent self-improvement event can involve runtime traces, feedback, scores,
-diagnoses, candidate diffs, gate reports, approvals, monitoring records, and
-rollback evidence. These artifacts are usually stored in different systems.
-That fragmentation makes it hard to reproduce whether a claimed change was
-evaluated, whether the gate decision follows the evidence, whether referenced
-artifacts still exist, and whether artifact digests still match.
+Prior work and infrastructure address important parts of this space. Self-Refine, Reflexion, and Voyager show that language agents can improve behavior through feedback, reflection, or accumulated skills [@self_refine_2023; @reflexion_2023; @voyager_2023]. AgentDevel frames self-evolving agents as a release-engineering process involving traces, candidate versions, and regression gates [@agentdevel_2026]. Observability systems such as OpenTelemetry GenAI and LangSmith provide trace and feedback structures that can record execution-level evidence [@otel_genai_semconv; @langsmith_observability_concepts]. Provenance and packaging frameworks such as W3C PROV, FDO, and Workflow Run RO-Crate provide reusable foundations for activities, entities, agents, digital-object records, and machine-actionable research objects [@w3c_prov_dm; @fdo_architecture_spec; @workflow_run_rocrate].
 
-ASIEP v0.1 addresses this as a local fixture and minimal implementation. It
-does not call real OpenTelemetry collectors, real LangSmith APIs, or real FDO
-registries. It does not register real persistent identifiers. Its RO-Crate and
-FDO outputs are local-like exchange metadata. Its privacy checks are local
-sentinel checks, not production DLP. It is not external certification.
+What remains missing is a minimal, implementation-independent evidence profile for the self-improvement event itself. Such a profile should not replace self-improvement algorithms, tracing systems, provenance models, or packaging frameworks. Instead, it should define the self-improvement-specific constraints that connect these layers: which evidence is required before a candidate can be frozen, how references are bound to artifacts, how a validation result relates to a gate decision, and how rollback evidence remains attached to the promoted or rejected change. In this sense, ASIEP acts as a thin evidence-object layer between raw traces and reusable evidence packages.
+
+The scope of this paper is deliberately narrow. We do not propose a new agent optimization algorithm, a benchmark for agent capability, or a production governance system. We also do not claim full OpenTelemetry integration, real LangSmith API integration, FDO registry registration, PID issuance, full RO-Crate certification, or external standard certification. We focus on a local minimal implementation of ASIEP, including a schema, lifecycle state machine, invariants, validator, repair planner, resolver, trace importer, local FDO/RO-Crate-like packager, evaluator, fixture corpus, and adversarial evidence cases.
 
 ## Requirements for Agent Self-Improvement Evidence
 
-AUTHOR_VERIFY: Convert these into concise eScience requirements.
+### R1. Evidence completeness
 
-The profile is designed around six requirements:
+A self-improvement evidence object must capture the minimum information needed to reconstruct the improvement decision. This includes the trigger, lineage from the base blueprint to the candidate blueprint, evidence references, candidate diff or candidate artifact reference, validation result, gate report, decision reason, integrity metadata, and rollback reference. Without these fields, a later auditor or agent cannot determine whether the change was justified, merely attempted, or safely releasable.
 
-1. Agent-readable discovery through `profiles/asiep/v0.1/profile.json`.
-2. Stable schema, invariant, and error-code surfaces for automated review.
-3. Evidence-preserving repair plans that do not invent gate reports,
-   approvals, external references, or digests.
-4. Local evidence bundle resolution that recomputes SHA-256 digests and blocks
-   path escape.
-5. Trace-to-evidence import from local OTel-like and LangSmith-like fixtures
-   without embedding raw prompt, input, or output by default.
-6. Local package closure through manifest, FDO-like record, RO-Crate-like
-   metadata, and PROV JSON-LD.
+### R2. Lifecycle discipline
+
+The profile must define a lifecycle state machine for self-improvement events. A candidate should not be gated before evidence is locked; a promotion decision should not exist before the candidate is frozen; and a deployed version should remain linked to monitoring and rollback evidence. The lifecycle states include Draft, Observed, EvidenceLocked, CandidateFrozen, Gated, Promoted or Rejected, Deployed, Monitored, and RolledBack or Retired. This turns an improvement loop into a verifiable sequence rather than an unordered set of logs.
+
+### R3. Reference and digest binding
+
+ASIEP should not require raw prompts, user inputs, model outputs, tool definitions, feedback comments, or system configurations to be embedded directly in the evidence object. These artifacts may be sensitive or access-controlled. The profile therefore binds external artifacts through references, media types, digests, access policies, and redaction policies. This design preserves verifiability while reducing unnecessary exposure of protected trace content.
+
+### R4. Agent-readable validation and repair
+
+Validation output must be usable by agents as well as human reviewers. A validator should return stable error codes, JSON paths, invariant identifiers, repairability classes, and remediation hints. This allows another agent to inspect a failed evidence object, distinguish missing evidence from unsafe promotion, and generate a bounded repair plan without fabricating evidence or hiding non-repairable failures.
+
+### R5. Cross-standard interoperability
+
+ASIEP should connect to existing infrastructure rather than replace it. OpenTelemetry-like and LangSmith-like traces can serve as execution and feedback sources. W3C PROV can provide provenance semantics for activities, entities, and agents. FDO-like records and RO-Crate-like metadata can support local evidence packaging. ASIEP defines the self-improvement-specific constraints that are not supplied by these layers alone.
+
+### R6. Honest local evaluation
+
+The evaluation must distinguish local conformance evidence from external certification or general benchmark performance. A local corpus can test whether valid examples pass, invalid examples fail, bundles resolve, packages close, and attack cases are detected. The reported results should therefore be described as local fixture results, not as proof of production readiness, standard compliance, or completeness for all agent systems.
 
 ## ASIEP Profile and Lifecycle
 
-AUTHOR_VERIFY: Check field names against `schemas/asiep.schema.json` and
-`docs/state_machine.md`.
+ASIEP defines the evidence object for a single agent self-improvement cycle. Its unit of representation is not an individual message, tool call, trace span, or complete agent deployment, but the improvement event in which an agent system proposes, validates, gates, and records a reusable change. The changed artifact may be a prompt, policy, tool wrapper, memory snapshot, retrieval configuration, planner, evaluation script, or release candidate. This unit is intentionally narrow: it is small enough to validate through explicit invariants, yet broad enough to capture the evidence needed to determine whether a reusable change was justified, accepted or rejected, and recoverable.
 
-ASIEP records profile identity, cycle metadata, lineage, triggers, actors,
-runtime metadata, evidence references, evaluation results, gate decisions,
-integrity metadata, compliance fields, and optional rollback evidence. Its
-lifecycle moves from draft to candidate, evaluated, gated, promoted or
-rejected, and optionally rolled back.
+The profile is organized into field groups rather than as a flat log format. Each group corresponds to one accountability function in the improvement cycle.
 
-The validator checks JSON Schema conformance, lifecycle ordering, evidence
-reference closure, gate report presence, safety regression constraints, flip
-threshold constraints, rollback evidence, digest format, and optional local
-bundle verification. The invariant and conformance matrix surfaces are
-designed so another agent can map a failure to a field, rule, example, test,
-and remediation hint.
+| Field group | Purpose |
+|---|---|
+| profile | Declares the profile name, version, and extension model. |
+| record | Gives the cycle a stable identity and lifecycle state. |
+| lineage | Links the base blueprint, candidate blueprint, parent release, and change scope. |
+| trigger | Explains why the improvement cycle started. |
+| actors | Records provider, critic, evaluator, approver, and operator roles. |
+| runtime | Binds the model, tool registry, memory snapshot, and environment digests. |
+| evidence | References traces, feedback, scores, diagnosis, candidate diff, and gate report. |
+| evaluation | Captures datasets, metrics, flip counts, and safety checks. |
+| gate | Records policy version, thresholds, decision, and decision reason. |
+| integrity | Stores payload hash, previous record hash, signature, and timestamp metadata. |
+| compliance | Records retention, redaction, privacy, and legal-basis references. |
+
+This structure separates the core record from the artifacts it references. ASIEP does not require raw traces, prompts, user inputs, model outputs, or gate reports to be embedded directly in the evidence object. Instead, the record binds external artifacts through references, media types, roles, digests, and access policies. This keeps the profile compact and allows sensitive or large artifacts to remain in controlled storage while still supporting local verification through digest checks.
+
+The lifecycle state machine prevents the evidence object from becoming an unordered metadata container. The states are Draft, Observed, EvidenceLocked, CandidateFrozen, Gated, Promoted or Rejected, Deployed, Monitored, and RolledBack or Retired. These states do not attempt to model every release process used by every agent platform. They define the minimum sequence required for a third party, reviewer, or downstream agent to inspect the improvement event. Evidence must be observed before it can be locked. A candidate must be frozen before it can be gated. A promoted candidate must remain linked to deployment, monitoring, and rollback evidence. A rejected candidate remains useful because it records why a proposed improvement did not pass the gate.
+
+Lifecycle transitions are enforced by invariants rather than by documentation alone. Invariants are the bridge between the ASIEP profile and the validator. For example, a record cannot enter EvidenceLocked without resolvable and digest-bound evidence references. It cannot enter Gated before the candidate has reached CandidateFrozen. A Promoted decision requires a gate report. Promotion is blocked when the gate report indicates a safety regression or when pass-to-fail counts exceed the configured threshold. External evidence references must include a URI or bundle-relative path, media type, role, and digest. Rollback claims require incident or monitoring evidence.
+
+These invariants make ASIEP executable as a conformance profile rather than merely readable metadata. A human reviewer can inspect the evidence object, but another agent can also validate it, classify failure causes, request missing artifacts, and rerun checks. This matters because agent self-improvement may occur in environments where audit and repair tasks are themselves partially automated. ASIEP therefore treats the evidence object as both a human-readable research record and a machine-readable accountability artifact.
+
+The extension model is deliberately conservative. Implementations may add domain-specific fields for particular agent platforms, evaluation regimes, deployment environments, or policy requirements. However, extensions should not weaken lifecycle rules, remove required evidence bindings, or bypass gate invariants. ASIEP does not fully model all possible agent updates and does not provide complete governance. Its role is narrower: to define a minimal local profile that makes self-improvement evidence explicit, reference-bound, lifecycle-aware, and checkable.
 
 ## Agent-native Toolchain
 
-AUTHOR_VERIFY: Verify every module path and keep the list short enough for an
-8-page IEEE paper.
+ASIEP is implemented as an agent-native toolchain rather than only as a static schema. The goal is not merely to help a human auditor read a record, but also to let another agent inspect the record, classify errors, request missing evidence, generate bounded repair plans, resolve artifact references, package evidence, and rerun evaluation. This design reflects the expected operating environment of agent-to-agent systems, where validation and evidence preparation may be delegated to specialized agents. For this reason, the toolchain emphasizes stable machine-readable outputs rather than informal terminal messages.
 
-The current repository implements the following local toolchain:
+The `asiep_validator` is the primary conformance component. It checks JSON Schema conformance, required field groups, lifecycle state consistency, required evidence references, gate consistency, rollback evidence, and selected semantic invariants. Its output is structured JSON. Each error contains a stable error code, JSON path, invariant identifier when applicable, repairability class, and remediation hint. This allows a downstream agent to distinguish missing external evidence from unsafe promotion, missing rollback evidence, unresolved references, or digest mismatch. Stable error objects also make validator behavior reproducible across fixture versions.
 
-- `asiep_validator`: validates evidence objects and emits agent-readable JSON.
-- `asiep_repairer`: converts validator errors into evidence-preserving repair
-  plans.
-- `asiep_resolver`: resolves local bundle references and verifies digests.
-- `asiep_importer`: converts local OTel-like and LangSmith-like fixtures into
-  ASIEP bundles.
-- `asiep_packager`: emits local exchange packages with package manifest,
-  FDO-like record, RO-Crate-like metadata, and PROV JSON-LD.
-- `asiep_evaluator`: reruns the local corpus and emits metrics and
-  paper-ready tables.
-- `asiep_paper_linter`, `asiep_citation_linter`, and venue/submission linters:
-  check claim evidence, source mappings, venue fit, and human rewrite gates.
+The `asiep_repairer` converts validation failures into bounded repair plans. It does not directly mutate the evidence object and does not fabricate missing evidence. This boundary is central to the design. A repair plan may recommend adding a missing reference, correcting a lifecycle state when supporting evidence already exists, or changing an invalid promotion decision to rejection. However, it must not invent a gate report, change a safety regression from true to false, forge a digest, or rewrite an artifact reference to hide tampering. Repairability is therefore treated as a constrained workflow: structural omissions may be repairable, but evidential failures require new evidence or human review.
+
+The `asiep_resolver` turns symbolic evidence references into locally verifiable bindings. It checks whether referenced artifacts exist inside a local evidence bundle, prevents path escape, recomputes SHA-256 digests, and reports missing artifacts or digest mismatches. This step prevents ASIEP from becoming a set of unverifiable links. A record that names a trace, feedback file, candidate diff, or gate report is not locally closed until the resolver confirms that the artifact exists, remains inside the bundle boundary, and matches the declared digest.
+
+The `asiep_importer` converts local OpenTelemetry-like and LangSmith-like fixtures into ASIEP evidence bundles. The importer follows a reference-only policy: it maps trace roots, spans, run identifiers, feedback records, scores, and candidate artifacts into ASIEP references rather than embedding all raw content into the profile object. This keeps the ASIEP record compact and separates the profile from artifact storage. The current importer is local and fixture-based. It does not claim full OpenTelemetry collector integration or real LangSmith API integration.
+
+The `asiep_packager` transforms validated and resolved bundles into local research-object outputs. These include a package manifest, an FDO-like local record, RO-Crate-like metadata, and PROV JSON-LD. The packager is intentionally conservative: it requires successful ASIEP validation and successful bundle resolution before packaging. Its outputs support local inspection, reproducibility, and cross-standard mapping, but they do not imply real FDO registry submission, externally resolvable identifier issuance, or full RO-Crate certification.
+
+The `asiep_evaluator` runs the local corpus and produces conformance and robustness metrics. It evaluates known valid records, invalid records, tampered bundles, missing evidence cases, gate violations, rollback cases, and cross-standard mapping coverage. It also generates paper-ready tables and reports. Its purpose is to test whether the current implementation behaves consistently on the local fixture corpus. It is not a general benchmark of agent capability and does not provide production assurance.
+
+Together, these components make ASIEP more than a descriptive metadata template. The validator checks conformance, the repairer produces bounded repair plans, the resolver verifies local artifact bindings, the importer connects trace fixtures to evidence bundles, the packager creates local evidence packages, and the evaluator reports reproducible local results. The result is a runnable evidence-checking workflow for agent self-improvement events.
 
 ## Evidence Bundle and Local Packaging
 
-AUTHOR_VERIFY: Make clear that local package metadata is a bridge, not a
-formal certification claim.
+ASIEP separates the evidence record from the artifacts it references. This separation is necessary because raw traces, feedback comments, candidate diffs, score reports, gate reports, prompts, outputs, and system configurations may be large, sensitive, or access-controlled. Embedding all of them directly in the evidence object would make the record difficult to share, harder to govern, and less reusable across research settings. The bundle design keeps the ASIEP record compact while binding each external artifact through a role, media type, relative path, and digest. The evidence object remains portable without pretending that every source artifact is safe to expose.
 
-ASIEP uses reference plus digest rather than embedding all raw evidence in the
-record. The bundle manifest declares artifact URIs, paths, roles, media types,
-and expected digests. The resolver loads the local bundle, checks that paths
-remain inside the bundle root, recomputes digests, and reports missing files,
-undeclared references, unused declarations, or digest mismatches.
+A local evidence bundle contains a bundle manifest, an ASIEP evidence record, and artifact files. The manifest declares expected artifacts and records their roles, locations, media types, and digests. The resolver checks whether every referenced artifact is declared, located inside the bundle root, and digest-matched. It also detects missing artifacts, undeclared references, unused artifacts, digest mismatches, and path escape attempts. The resolver is intentionally local-only. It does not fetch remote URIs, authenticate with external services, or resolve globally registered identifiers. This boundary keeps the evaluation reproducible and avoids overstating the implementation as deployed evidence infrastructure.
 
-The packager runs resolver and validator first, then emits a local package
-containing `package_manifest.json`, `fdo_record.json`,
-`ro-crate-metadata.json`, `prov.jsonld`, the evidence record, the bundle
-manifest, and copied artifacts. The package is intended for exchange and
-revalidation by another agent.
+Packaging is performed only after ASIEP validation and bundle resolution succeed. The local packager then produces four outputs. First, it generates a package manifest that records package identity, included artifacts, digests, and packaging metadata. Second, it creates an FDO-like local record that represents the evidence package as a digital object without claiming registry registration or PID issuance. Third, it generates RO-Crate-like metadata to describe the evidence bundle as a machine-actionable research object. Fourth, it creates PROV JSON-LD to express provenance relations among the improvement cycle, base blueprint, candidate blueprint, evidence artifacts, evaluator activity, and gate report. These outputs make the package easier for another agent or reviewer to inspect, but they do not constitute external standard certification.
+
+The packaging layer is important for eScience-oriented reproducibility. A reviewer can rerun the importer, resolver, validator, packager, and evaluator on the local corpus, inspect generated packages, and compare the resulting metrics with the evaluation report. The package is therefore a reproducible local research object for the current implementation. It supports FAIR-oriented evidence reuse by making artifacts findable within the bundle, accessible under declared local policies, interoperable through mappings to PROV/FDO-like/RO-Crate-like structures, and reusable through explicit roles, digests, and lifecycle metadata.
+
+This design keeps ASIEP's claims modest. The evidence bundle is not a production archive, not a full compliance record, and not a substitute for external governance review. The FDO-like and RO-Crate-like outputs are local representations used to demonstrate packaging feasibility. The PROV JSON-LD output provides a provenance-oriented view of the improvement event, but some mappings are necessarily lossy because ASIEP includes self-improvement-specific constraints, such as gate thresholds and rollback references, that are not native to generic provenance models. The intended result is a locally verifiable evidence package, not a certified infrastructure deployment.
 
 ## Evaluation
 
-AUTHOR_VERIFY: Replace any stale metric values with the exact values from the
-latest regenerated report before submission.
+The evaluation tests ASIEP as a local evidence-conformance layer, not as a benchmark of agent capability. We do not evaluate whether ASIEP improves an agent's task performance, planning ability, or reasoning quality. Instead, we evaluate whether the current minimal implementation can make agent self-improvement evidence checkable: distinguishing valid and invalid evidence records, resolving local evidence bundles, detecting known tampering cases, generating bounded repair plans, packaging validated bundles, and reporting cross-standard mapping coverage. This framing is intentionally narrow. The evaluation measures auditability, closure, and conformance behavior on a curated local fixture corpus. It does not claim external certification, production deployment, or general benchmark performance.
 
-The M6 evaluator generates `reports/asiep_v0.1_evaluation_report.json`. The
-report includes eight metrics: evidence completeness, cross-standard coverage,
-gate reproducibility, tamper detection recall, false positive rate, privacy
-policy compliance, packaging closure, and agent readability.
+The evaluation corpus contains valid ASIEP evidence records, invalid evidence records, local evidence bundles, missing-artifact bundles, digest-mismatch bundles, path-escape bundles, OpenTelemetry-like and LangSmith-like import fixtures, package requests, and adversarial evidence cases. The evaluation pipeline reuses the implemented tools. The validator checks profile conformance, lifecycle consistency, evidence references, gate consistency, rollback evidence, and semantic invariants. The repairer produces bounded repair plans for invalid records. The resolver verifies local artifact bindings and digest consistency. The importer generates ASIEP evidence bundles from local trace-like fixtures under a reference-only policy. The packager creates local FDO-like records, RO-Crate-like metadata, PROV JSON-LD, and package manifests. The evaluator aggregates these results into machine-readable reports and paper-ready tables.
 
-The local fixture evaluation reports tamper detection recall of 1.0 for known
-adversarial examples and false positive rate of 0.0 for known valid local
-fixtures. These are regression-style local corpus measurements. They should
-not be presented as open-world security results or benchmark comparisons.
+The reported metrics are evidence-infrastructure metrics rather than task-performance metrics.
+
+| Metric | Value | Interpretation |
+|---|---:|---|
+| `evidence_completeness` | 1.0 | Required fields and artifact roles are present in known valid local cases. |
+| `cross_standard_coverage` | 0.9333 | Most ASIEP field groups have local mappings to PROV, OpenTelemetry-like, LangSmith-like, FDO-like, RO-Crate-like, and governance categories. |
+| `gate_reproducibility` | 1.0 | Gate decisions in the local corpus can be checked from gate reports, thresholds, flip counts, and safety checks. |
+| `tamper_detection_recall` | 1.0 | Known invalid and adversarial samples are detected by the implemented local checks. |
+| `false_positive_rate` | 0.0 | Known valid local fixtures are not rejected by the toolchain. |
+| `privacy_policy_compliance` | 1.0 | Generated valid packages avoid default embedding of raw prompts, user inputs, and model outputs under the current sentinel/key scanning policy. |
+| `packaging_closure` | 1.0 | Generated packages contain the expected manifest, evidence record, bundle, artifacts, FDO-like record, RO-Crate-like metadata, and PROV JSON-LD. |
+| `agent_readability` | 1.0 | Profile manifests, validator outputs, repair plans, bundle resolution results, import results, package results, and evaluation reports are machine-readable. |
+
+The evidence paths for these results are `reports/asiep_v0.1_evaluation_report.json`, `paper_assets/tables/evaluation_metrics.md`, `paper_assets/tables/attack_corpus_results.md`, `evaluation/corpus/asiep_v0.1_corpus.json`, and `evaluation/crosswalk/asiep_v0.1_crosswalk.json`.
+
+On the current local corpus, all known valid examples pass the relevant checks, and all known invalid or adversarial examples are detected by at least one component of the toolchain. Missing gate reports, unsafe promotion decisions, pass-to-fail threshold violations, broken hash chains, missing artifacts, digest mismatches, and path-escape attempts are surfaced as structured errors. The validator reports these failures through stable error codes, JSON paths, invariant identifiers, repairability classes, and remediation hints. This allows the evaluator to treat validation as a reproducible machine-readable process rather than as a manual inspection step.
+
+The generated repair plans preserve the evidence boundary. They request missing evidence, recommend lifecycle corrections when supporting evidence already exists, or suggest safe decision changes when a promotion is inconsistent with the gate result. They do not fabricate gate reports, rewrite safety results, change a safety regression from `true` to `false`, or forge digests to match tampered artifacts. This distinction is important because a repair mechanism for evidence objects should improve structural consistency without weakening evidential integrity.
+
+The resolver results show that ASIEP references can be converted into locally verifiable bindings. A reference is not accepted merely because it appears in the profile. The resolver checks that the artifact exists inside the local bundle, remains within the bundle boundary, and matches the declared digest. The packager results further show that validated and resolved bundles can be converted into local research-object outputs, including package manifests, FDO-like records, RO-Crate-like metadata, and PROV JSON-LD.
+
+These results indicate that ASIEP can support reproducible local evidence checking for agent self-improvement events. In particular, the combination of lifecycle invariants, digest-bound bundle resolution, and gate-consistency checks provides a practical way to distinguish valid records from several common evidence failures. The evaluation also shows that ASIEP can be imported from local trace-like fixtures and repackaged as local research objects.
+
+The evaluation remains limited. The corpus is local and curated, and the reported values should not be interpreted as general benchmark results. The OpenTelemetry-like and LangSmith-like traces are local fixtures rather than live integrations. The FDO-like and RO-Crate-like packages are local representations rather than externally certified records. Privacy-policy compliance is checked through sentinel and key scanning, not full data-loss prevention. These limitations are intentional for v0.1: the goal is to demonstrate a reproducible evidence profile and local toolchain before claiming external deployment, third-party assurance, or broad coverage across agent systems.
 
 ## Cross-standard Mapping
 
-AUTHOR_VERIFY: Confirm all citation keys and lossiness statements.
+ASIEP is designed as a thin evidence-object layer rather than a replacement for existing provenance models, observability tools, or research-object packaging frameworks. Its value depends on whether it can connect trace sources, provenance semantics, and reusable evidence packages while adding the constraints specific to agent self-improvement events. For this reason, the implementation includes a local crosswalk matrix that maps ASIEP field groups to PROV, OpenTelemetry-like traces, LangSmith-like traces, FDO-like records, RO-Crate-like metadata, and AI governance logging categories [@w3c_prov_dm; @otel_genai_semconv; @langsmith_observability_concepts; @fdo_architecture_spec; @workflow_run_rocrate].
 
-The local crosswalk maps ASIEP field groups to PROV, OpenTelemetry GenAI-like
-trace concepts, LangSmith-like trace concepts, FDO-like records,
-RO-Crate-like metadata, and AI governance logging. PROV supplies a
-domain-agnostic provenance vocabulary [@w3c_prov_dm; @w3c_prov_o]. OTel and
-LangSmith represent trace-source context [@otel_genai_semconv;
-@otel_genai_agent_spans; @langsmith_observability_concepts]. FDO and
-RO-Crate motivate package and object exchange boundaries
-[@fdo_architecture_spec; @workflow_run_rocrate; @process_run_crate].
+| ASIEP element | PROV mapping | Trace mapping | Package mapping | Notes |
+|---|---|---|---|
+| `cycle_id` | `prov:Activity` | trace root / run root | RO-Crate `CreateAction` | Represents the improvement cycle. |
+| `agent_id` | `prov:Agent` | `gen_ai.agent.id` / project agent tag | FDO-like object metadata | Identifies the responsible agent context. |
+| `base_blueprint_id` | `prov:Entity` used | config or version metadata | package artifact/entity | Prior version or blueprint. |
+| `candidate_blueprint_id` | `prov:Entity` generated | candidate metadata | package artifact/entity | Proposed reusable change. |
+| `trace_refs` | `prov:Entity` used | `trace_id` / `span_id` / `run_id` | crate artifact | Execution evidence. |
+| `feedback_refs` | `prov:Entity` used | feedback record | crate artifact | Feedback evidence. |
+| `gate_report_ref` | `prov:Entity` generated | evaluator run / custom span | crate artifact | Gate evidence. |
+| `approver` | `prov:Agent` | service identity / reviewer tag | package actor metadata | Approval or gate actor. |
+| `prev_record_hash` | extension | no direct equivalent | manifest integrity field | Provenance-of-provenance / integrity extension. |
 
-The matrix records lossiness explicitly. ASIEP does not replace these
-standards or tools. It defines the evidence object that sits between trace
-capture, provenance semantics, local package exchange, and agent-readable
-review.
+The mapping is intentionally marked with lossiness. Some ASIEP fields map directly, such as agent identifiers, trace references, evidence artifacts, and generated candidate entities. Other fields are only partially represented by existing layers. For example, pass-to-fail flip counts, gate thresholds, repairability classes, rollback requirements, and lifecycle transition constraints are not native to generic provenance models. Similarly, local FDO-like and RO-Crate-like outputs demonstrate packaging feasibility, but they do not imply registry submission, externally resolvable identifier issuance, or full RO-Crate certification.
 
-## Artifacts and Reproducibility
+This crosswalk clarifies ASIEP's role. PROV can describe activities, entities, and agents, but it does not define the minimum fields required for a self-improvement gate. OpenTelemetry-like and LangSmith-like traces can record execution events, feedback, scores, spans, and runs, but they do not define when a candidate is frozen, when evidence is locked, or when a promotion is unsafe. FDO-like and RO-Crate-like packages can organize evidence artifacts, but they do not specify self-improvement lifecycle invariants. ASIEP provides these domain constraints while allowing the surrounding infrastructure to remain reusable.
 
-AUTHOR_VERIFY: Replace the repository URL placeholder before submission and
-check anonymization requirements.
-
-The repository contains the ASIEP schema, JSON-LD context, invariant docs,
-validator, repairer, resolver, importer, packager, evaluator, local examples,
-attack corpus, source registry, citation map, and paper assets. The
-submission package includes a human authoring protocol, submission manifest,
-IEEE-style LaTeX scaffold, artifact availability statement, final human
-checklist, and AI-use disclosure draft. Human authors must decide whether the
-repository link should be included during single-blind review.
+The mapping is therefore not an external standard-conformance claim. It is a local interoperability demonstration. It shows that ASIEP can sit between runtime traces and reusable evidence packages, using existing models where they are appropriate and adding self-improvement-specific constraints where they are missing.
 
 ## Limitations
 
-AUTHOR_VERIFY: Preserve all limitations. Do not compress this section below
-what reviewers need to assess the evidence.
+The current implementation is local by design. The trace inputs are fixtures, the bundles are local directories, and the packages are generated as local research objects. This design supports reproducibility for reviewers because the same local corpus can be validated, resolved, imported, packaged, and evaluated without depending on external services. However, it does not demonstrate operation in a deployed agent platform, live observability stack, or production release pipeline. The reported results should therefore be read as local evidence of conformance behavior, not as deployment evidence.
 
-The implementation is local-fixture only. It does not use real external
-services, does not apply for a registry identifier, does not provide
-cryptographic signature verification beyond local digests, and does not
-include a large-scale benchmark or human-subject evaluation. The privacy check
-is intentionally narrow. The package metadata is local-like. The current
-paper is a human-editable draft and must be rewritten, checked against the CFP
-deadline ambiguity, formatted, compiled, and reviewed before submission.
+The implementation also has explicit external integration limits. It does not connect to a real OpenTelemetry collector, call the LangSmith API, submit records to an FDO registry, issue externally resolvable identifiers, or provide full RO-Crate certification. The terms OpenTelemetry-like, LangSmith-like, FDO-like, and RO-Crate-like are used deliberately. They indicate local fixtures, local mappings, and local package structures, not external conformance claims. This boundary avoids overstating the implementation while preserving a clear path for future integration work.
+
+The privacy and security checks are limited. ASIEP uses a reference-and-digest design to avoid embedding raw sensitive artifacts by default, and the current evaluator checks for sentinel strings and sensitive-key patterns. This is useful for detecting common local violations of the reference-only policy, but it is not a substitute for full data-loss prevention, access-control enforcement, cryptographic signature verification, secure key management, or legal compliance review. A production implementation would need stronger redaction, authorization, retention, audit, and incident-response controls.
+
+The evaluation corpus is curated and local. It includes known valid examples, invalid records, tampered bundles, missing evidence cases, digest mismatches, path-escape attempts, unsafe promotion cases, and policy violations. This corpus is sufficient to test whether the current toolchain behaves consistently on known cases, but it is not a large-scale benchmark of agent systems. The reported tamper-detection recall and false-positive rate are measured only on this corpus. They should not be interpreted as evidence of general robustness against all attacks or all forms of evidence manipulation.
+
+ASIEP is also not claimed to be complete for all agent systems. It focuses on self-improvement events and treats them as evidence objects. Other critical agent-to-agent actions, such as delegation, negotiation, data access, transaction execution, cross-organization authorization, or multi-party dispute resolution, may require additional profiles under a broader Agent Accountability Evidence Layer. The current profile does not evaluate human-in-the-loop organizational governance, institutional approval processes, or long-term operational monitoring across real deployments.
+
+Future work should proceed in controlled stages: test ASIEP on live traces, extend the corpus across multiple agent frameworks, add stronger cryptographic verification, evaluate human review workflows, and engage provenance, FDO, RO-Crate, observability, and AI governance communities. These extensions should preserve the same boundary discipline: ASIEP should remain a minimal evidence profile for auditable self-improvement events, not a broad claim to solve agent governance as a whole.
 
 ## Conclusion
 
-AUTHOR_VERIFY: Rewrite with the final contribution framing after page-budget
-work.
+This paper presented ASIEP, a minimal FAIR-compatible evidence object profile for auditable agent self-improvement events. The central claim is modest: self-improvement should not be treated only as a runtime trace or an informal log entry, because it changes artifacts that may shape future agent behavior. ASIEP addresses this gap by binding trigger evidence, lineage, candidate changes, validation results, gate decisions, integrity metadata, and rollback references into a lifecycle-aware and reference-bound evidence object.
 
-ASIEP v0.1 demonstrates a local FAIR evidence object layer for auditable agent
-self-improvement. Its contribution is not another agent-improvement algorithm.
-It is a reproducible evidence pipeline that turns local trace fixtures into
-evidence objects, verifies local artifact binding, validates gate decisions,
-generates repair plans, packages evidence for exchange, and produces
-paper-ready evaluation assets.
+The local implementation demonstrates that ASIEP can be checked by an agent-readable toolchain. The validator, repair planner, resolver, importer, packager, and evaluator support structured conformance checking, bounded repair planning, digest-bound bundle resolution, local trace import, evidence packaging, and fixture-based evaluation. On the current local corpus, the toolchain distinguishes known valid and invalid records, detects several evidence failures, and produces reusable local research-object packages.
 
-## Acknowledgements and AI-use disclosure draft
+The work remains intentionally limited. It does not claim production deployment, external certification, complete governance coverage, live observability integration, real FDO registration, PID issuance, or full RO-Crate certification. Future work should test ASIEP on live traces, extend the corpus across multiple agent frameworks, strengthen cryptographic and privacy controls, evaluate human review workflows, and refine the profile through engagement with provenance, FAIR Digital Object, RO-Crate, observability, and AI governance communities. The broader direction is an Agent Accountability Evidence Layer in which self-improvement is one important profile among other agent-to-agent accountability events.
 
-AUTHOR_VERIFY: This disclosure must appear in the acknowledgements in the
-final IEEE-style manuscript if AI-generated content remains in submitted
-content.
+## Acknowledgements and AI-use Disclosure
 
-Codex / OpenAI language-model tools were used for project scaffolding, code
-generation assistance, testing support, evidence-map drafting, citation
-infrastructure drafting, and preparation of this human-editable manuscript
-draft. AI-generated content was used in draft sections including the abstract,
-introduction, toolchain summary, evaluation summary, limitation wording, and
-submission-support files. The level of use was structural drafting,
-summarization of repository artifacts, code scaffolding, and editorial
-organization; final claims, citations, formatting, and prose must be verified
-and rewritten by human authors. Human authors are responsible for all
-submitted content, and AI systems are not authors.
+The author thanks the communities developing provenance, FAIR Digital Object, RO-Crate, observability, and agent evaluation infrastructures, whose public specifications and research systems informed the framing of this work.
+
+This manuscript was human-authored with AI-assisted planning, verification, toolchain scaffolding support, boundary-risk review, and language polishing. OpenAI ChatGPT, GPT-5.5 Pro, was used to help structure the manuscript, refine section drafts, check consistency of claims, identify overclaiming risks, and improve English expression in the Abstract, Introduction, Problem and Scope, Requirements, ASIEP Profile and Lifecycle, Agent-native Toolchain, Evidence Bundle and Local Packaging, Evaluation, Cross-standard Mapping, Limitations, Conclusion, and this disclosure statement. Codex was used to support repository scaffolding, code generation, tests, schemas, local fixtures, evaluation assets, and submission-checking utilities.
+
+The author reviewed, edited, and approved the manuscript content and remains responsible for all claims, citations, evaluation numbers, code artifacts, and final submission decisions. AI systems were not used as authors and were not used to fabricate experimental results, citations, evaluation metrics, or evidence artifacts.

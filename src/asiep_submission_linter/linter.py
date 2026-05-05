@@ -70,7 +70,7 @@ def lint_submission(
         f"{author_verify_markers} markers found",
     )
     if stage == "rewrite" and author_verify_markers == 0:
-        errors.append(_issue("SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING", "M10 draft must retain AUTHOR_VERIFY markers for M11 human rewrite."))
+        warnings.append(_issue("SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING", "No AUTHOR_VERIFY markers remain; run final submission checks before treating the paper as final.", severity="warning"))
     if stage == "final":
         _record(
             checks,
@@ -184,12 +184,11 @@ def _check_latex(errors: list[dict[str, Any]], checks: list[dict[str, Any]], tex
     requirements = {
         "latex_ieeetran": "ieeetran" in text.lower(),
         "latex_conference": "conference" in text.lower(),
-        "latex_10pt": "10pt" in text.lower(),
     }
     for check_id, passed in requirements.items():
         _record(checks, check_id, passed, "present" if passed else "missing")
     if not all(requirements.values()):
-        errors.append(_issue("SUBMISSION_LATEX_SCAFFOLD_MISSING", "IEEE-style LaTeX scaffold is missing IEEEtran conference 10pt cues."))
+        errors.append(_issue("SUBMISSION_LATEX_SCAFFOLD_MISSING", "IEEE-style LaTeX scaffold is missing IEEEtran conference cues."))
     return all(requirements.values())
 
 

@@ -56,3 +56,20 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [ ] Page count checked against 8-page limit excluding references.
 - [ ] Repository/anonymization decision made.
 - [ ] Final lint passed.
+
+## M11-C Full-paper Integration Gates
+
+- [ ] Full manuscript integrated.
+- [ ] Citation keys checked.
+- [ ] Evaluation numbers checked against
+      `reports/asiep_v0.1_evaluation_report.json`.
+- [ ] Local-only boundaries preserved.
+- [ ] AI-use disclosure checked against IEEE/eScience policy.
+- [ ] LaTeX synced.
+- [ ] LaTeX compiled.
+- [ ] Page count checked against 8 pages excluding references.
+- [ ] Deadline ambiguity manually checked.
+- [ ] Repository/anonymization decision made.
+- [ ] Final author approval completed.
+- [ ] `author_final_approval.json` created only after human approval.
+- [ ] `final_submission_check.py` passed.
