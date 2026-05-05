@@ -58,6 +58,17 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
     },
+    "author_placeholders_present": { "type": "boolean" },
+    "author_block_verified": { "type": "boolean" },
+    "author_block_requires_final_human_review": { "type": "boolean" },
+    "author_block_expected_strings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "author_block_missing_strings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
     "errors": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
     "warnings": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
     "required_human_actions": {

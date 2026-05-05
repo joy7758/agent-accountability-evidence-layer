@@ -1,4 +1,14 @@
 {
+  "author_block_expected_strings": [
+    "Zhang Bin",
+    "Independent Researcher",
+    "joy7759@gmail.com",
+    "0009-0002-8861-1481"
+  ],
+  "author_block_missing_strings": [],
+  "author_block_requires_final_human_review": true,
+  "author_block_verified": true,
+  "author_placeholders_present": false,
   "compile_attempted": true,
   "compile_success": true,
   "compiler": "latexmk",

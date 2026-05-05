@@ -11,6 +11,7 @@ Current status:
 
 Recommended decisions:
 
+- Author identity: Zhang Bin, Independent Researcher, ORCID 0009-0002-8861-1481, joy7759@gmail.com.
 - License: Apache-2.0 for code; CC-BY-4.0 for manuscript and artifacts.
 - Repository policy: `public_repo_allowed`.
 - Deadline planning: conservative May 18 AoE.

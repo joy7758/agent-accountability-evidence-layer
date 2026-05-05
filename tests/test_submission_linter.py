@@ -261,6 +261,10 @@ def test_m12_latex_compile_report_and_templates_exist() -> None:
     assert compile_report["page_limit"] == 8
     assert compile_report["references_excluded"] is True
     assert "overfull_boxes" in compile_report
+    assert compile_report["author_placeholders_present"] is False
+    assert compile_report["author_block_verified"] is True
+    assert compile_report["author_block_requires_final_human_review"] is True
+    assert compile_report["author_block_missing_strings"] == []
     assert (ROOT / "submission" / "escience2026" / "repository_policy_decision.template.json").exists()
     assert (ROOT / "submission" / "escience2026" / "deadline_verification.template.json").exists()
     assert (ROOT / "submission" / "escience2026" / "license_decision.template.json").exists()
@@ -319,8 +323,9 @@ def test_final_gate_recommendations_are_pending_and_nonfinal() -> None:
     assert index["current_final_submission_ready"] is False
     assert index["pending_final_human_review"] is True
     assert index["promotion_required_for_final_submission"] is True
-    assert len(index["recommended_decisions"]) == 7
+    assert len(index["recommended_decisions"]) == 8
     for path in (
+        "author_identity.recommended.json",
         "license_decision.recommended.json",
         "repository_policy_decision.recommended.json",
         "deadline_verification.recommended.json",
@@ -346,7 +351,10 @@ def test_final_gate_recommendations_are_pending_and_nonfinal() -> None:
 def test_final_gate_status_records_recommendations_without_final_readiness() -> None:
     status = _load_json(ROOT / "submission" / "escience2026" / "final_gate_status.json")
     assert status["final_gate_recommendations_present"] is True
-    assert status["recommended_decisions_count"] == 7
+    assert status["author_block_status"] == "fixed_pending_final_human_review"
+    assert status["author_identity_recommendation_present"] is True
+    assert status["author_placeholders_present"] is False
+    assert status["recommended_decisions_count"] == 8
     assert status["recommended_license"] == "Apache-2.0 code + CC-BY-4.0 manuscript/artifacts"
     assert status["recommended_repository_policy"] == "public_repo_allowed"
     assert status["recommended_planning_deadline"] == "2026-05-18T23:59:00-12:00"

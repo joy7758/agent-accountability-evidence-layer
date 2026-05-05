@@ -21,6 +21,7 @@
   "final_submission_ready": false,
   "human_review_required_items": [
     "Open and visually inspect submission/escience2026/latex/main.pdf.",
+    "Confirm author block: Zhang Bin, Independent Researcher, ORCID, and email.",
     "Confirm 8 pages excluding references.",
     "Confirm the 4 overfull boxes are acceptable or fix layout.",
     "Confirm Apache-2.0 for code and CC-BY-4.0 for manuscript/artifacts.",
@@ -32,6 +33,8 @@
   ],
   "latex_root": "submission/escience2026/latex",
   "manuscript_path": "manuscript/paper_v0.4_escience_human_editable.md",
+  "author_block_status": "fixed_pending_final_human_review",
+  "author_placeholders_present": false,
   "overfull_boxes_count": 4,
   "page_count": 8,
   "page_limit": 8,
@@ -40,6 +43,7 @@
   "promotion_command_available": true,
   "promotion_command_path": "scripts/promote_recommended_gates.py",
   "recommended_decisions": {
+    "author_identity": "Zhang Bin, Independent Researcher, ORCID 0009-0002-8861-1481, joy7759@gmail.com",
     "ai_use_disclosure": "acceptable pending final author review",
     "author_approval": "not approved yet",
     "layout_review": "provisionally acceptable pending PDF review",
