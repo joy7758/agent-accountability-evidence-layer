@@ -1,0 +1,80 @@
+{
+  "profile_name": "ASIEP",
+  "profile_version": "0.1.0",
+  "reference_policy_version": "0.1.0",
+  "source_priority_order": [
+    "official_standard",
+    "regulation",
+    "official_documentation",
+    "academic_paper",
+    "preprint",
+    "product_documentation",
+    "security_guidance",
+    "secondary_source",
+    "other"
+  ],
+  "allowed_source_types": [
+    "academic_paper",
+    "official_standard",
+    "official_documentation",
+    "regulation",
+    "security_guidance",
+    "product_documentation",
+    "secondary_source",
+    "preprint",
+    "other"
+  ],
+  "forbidden_citation_practices": [
+    "fabricate_citation",
+    "cite_search_snippet_as_primary_source",
+    "cite_secondary_source_when_primary_available",
+    "overclaim_standard_certification",
+    "overclaim_external_adoption",
+    "cite_unverified_source_as_verified",
+    "omit_limitations_for_local_fixture_results",
+    "represent_preprint_as_peer_reviewed_without_check"
+  ],
+  "forbidden_overclaim_phrases": [
+    "ASIEP is an adopted standard",
+    "ASIEP has external certification",
+    "ASIEP has a globally resolvable PID",
+    "ASIEP is production ready governance",
+    "ASIEP provides complete privacy protection",
+    "ASIEP has full OTel integration",
+    "ASIEP has full LangSmith integration",
+    "ASIEP has full RO-Crate certification",
+    "ASIEP is a universal solution",
+    "ASIEP achieves benchmark SOTA"
+  ],
+  "required_citation_practices": [
+    "prefer_official_standard_docs",
+    "prefer_primary_paper_or_arxiv_for_research_work",
+    "mark_preprint_status",
+    "mark_development_status_for_evolving_specs",
+    "cite_access_date_for_web_docs",
+    "maintain_claim_to_source_mapping",
+    "keep_repository_evidence_separate_from_external_citations"
+  ],
+  "quote_limits": {
+    "max_words_per_source": 25,
+    "default_quote_or_paraphrase": "paraphrase"
+  },
+  "verification_rules": {
+    "unverified_sources_must_not_be_cited_in_paper_v02": true,
+    "official_status_claims_require_official_or_canonical_source": true,
+    "related_work_claims_require_primary_paper_or_canonical_project_source": true,
+    "product_docs_are_not_standards": true,
+    "local_results_require_local_limitations": true
+  },
+  "update_rules": {
+    "rerun_citation_linter_after_source_registry_changes": true,
+    "record_unresolved_items_in_verification_gaps": true,
+    "do_not_upgrade_partially_verified_without_rechecking_source": true
+  },
+  "paper_versioning_rules": {
+    "m7_input": "manuscript/paper_v0.1.md",
+    "m8_output": "manuscript/paper_v0.2.md",
+    "paper_v02_must_not_contain_citation_required": true,
+    "paper_v02_is_not_final_submission": true
+  }
+}

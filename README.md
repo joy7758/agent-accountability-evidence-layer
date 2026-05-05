@@ -46,6 +46,9 @@ PYTHONPATH=src python -m asiep_packager examples/package_requests/otel_chatbot_p
 PYTHONPATH=src python scripts/package_demo.py
 PYTHONPATH=src python -m asiep_evaluator --profile profiles/asiep/v0.1/profile.json --format json
 PYTHONPATH=src python scripts/evaluate_profile_demo.py
+PYTHONPATH=src python -m asiep_paper_linter --profile profiles/asiep/v0.1/profile.json --format json
+PYTHONPATH=src python -m asiep_citation_linter --profile profiles/asiep/v0.1/profile.json --format json
+PYTHONPATH=src python scripts/citation_demo.py
 ```
 
 Expected CLI result for the valid example:
@@ -299,6 +302,53 @@ Current M7 limits:
 - no new runtime modules or external integrations are added
 - the linter checks local evidence binding and high-risk wording, not academic
   correctness of future citations
+
+## M8 Citation Hardening
+
+M8 adds external reference verification and citation hardening for
+`manuscript/paper_v0.2.md`. The agent-readable citation layer is:
+
+```text
+references/
+|-- source_registry.json
+|-- citation_claim_map.json
+|-- asiep_references.bib
+|-- verification_notes.md
+`-- verification_gaps.md
+```
+
+View the hardened draft:
+
+```bash
+sed -n '1,260p' manuscript/paper_v0.2.md
+```
+
+Run the citation linter:
+
+```bash
+PYTHONPATH=src python -m asiep_citation_linter --profile profiles/asiep/v0.1/profile.json --format json
+```
+
+Run the citation demo:
+
+```bash
+PYTHONPATH=src python scripts/citation_demo.py
+```
+
+`references/source_registry.json` records stable source ids, citation keys,
+source type, authority level, verification status, supported claim ids, caveats,
+and access dates. `references/citation_claim_map.json` connects paper claims to
+those sources and separates repository evidence from external citations.
+
+Current M8 limits:
+
+- paper v0.2 is citation-hardened, not a final paper
+- verified means checked against available canonical pages at the recorded
+  access date, not permanent source stability
+- partially verified sources must keep caveats visible
+- no citation is treated as evidence of external ASIEP adoption or certification
+- no new runtime module, API integration, collector, registry call, or PID
+  registration is added
 
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.

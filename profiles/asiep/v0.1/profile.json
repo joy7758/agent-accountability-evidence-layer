@@ -17,6 +17,8 @@
       "evaluate local corpus and generate paper-ready evidence assets",
       "inspect paper claims and evidence bindings",
       "lint paper overclaims",
+      "inspect external source registry",
+      "lint paper citations",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -38,6 +40,10 @@
       "paper linter",
       "claim registry",
       "evidence map",
+      "source registry",
+      "citation map",
+      "citation linter",
+      "BibTeX",
       "repair plan",
       "conformance"
     ]
@@ -65,21 +71,29 @@
   "corpus_manifest_schema_path": "interfaces/asiep_corpus_manifest.schema.json",
   "paper_claim_registry_schema_path": "interfaces/asiep_paper_claim_registry.schema.json",
   "paper_evidence_map_schema_path": "interfaces/asiep_paper_evidence_map.schema.json",
+  "source_registry_schema_path": "interfaces/asiep_source_registry.schema.json",
+  "citation_claim_map_schema_path": "interfaces/asiep_citation_claim_map.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
   "package_policy_path": "profiles/asiep/v0.1/package_policy.json",
   "evaluation_policy_path": "profiles/asiep/v0.1/evaluation_policy.json",
   "paper_policy_path": "profiles/asiep/v0.1/paper_policy.json",
+  "reference_policy_path": "profiles/asiep/v0.1/reference_policy.json",
   "crosswalk_matrix_path": "evaluation/crosswalk/asiep_v0.1_crosswalk.json",
   "corpus_manifest_path": "evaluation/corpus/asiep_v0.1_corpus.json",
+  "source_registry_path": "references/source_registry.json",
+  "citation_claim_map_path": "references/citation_claim_map.json",
+  "bibliography_path": "references/asiep_references.bib",
   "paper_assets_path": "paper_assets",
   "manuscript_path": "manuscript",
+  "manuscript_v02_path": "manuscript/paper_v0.2.md",
   "repair_loop_supported": true,
   "bundle_resolver_supported": true,
   "importer_supported": true,
   "packager_supported": true,
   "evaluator_supported": true,
   "paper_linter_supported": true,
+  "citation_linter_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
@@ -143,6 +157,13 @@
     "default_output_format": "text",
     "agent_output_format": "json",
     "json_command_template": "PYTHONPATH=src python -m asiep_paper_linter --profile profiles/asiep/v0.1/profile.json --format json"
+  },
+  "citation_linter_entrypoint": {
+    "module": "asiep_citation_linter",
+    "cli": "python -m asiep_citation_linter",
+    "default_output_format": "text",
+    "agent_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python -m asiep_citation_linter --profile profiles/asiep/v0.1/profile.json --format json"
   },
   "examples": {
     "valid_examples": [
@@ -252,7 +273,18 @@
     "PAPER_MISSING_FIGURE",
     "PAPER_EVIDENCE_REF_MISSING",
     "PAPER_ASSET_MISSING",
-    "PAPER_LINTER_FAILED"
+    "PAPER_LINTER_FAILED",
+    "CITATION_SOURCE_REGISTRY_INVALID",
+    "CITATION_CLAIM_MAP_INVALID",
+    "CITATION_SOURCE_MISSING",
+    "CITATION_UNVERIFIED_SOURCE_USED_AS_VERIFIED",
+    "CITATION_EXTERNAL_CLAIM_WITHOUT_SOURCE",
+    "CITATION_UNSUPPORTED_CLAIM",
+    "CITATION_SECONDARY_USED_WHEN_PRIMARY_AVAILABLE",
+    "CITATION_BIBTEX_MISSING",
+    "CITATION_FORBIDDEN_PRACTICE",
+    "CITATION_LINTER_FAILED",
+    "CITATION_REQUIRED_MARKER_REMAINS"
   ],
   "supported_output_formats": [
     {
@@ -286,6 +318,10 @@
     {
       "format": "paper-lint-json",
       "consumer": "agent paper claim accountability and overclaim review loops"
+    },
+    {
+      "format": "citation-lint-json",
+      "consumer": "agent external source verification and claim-to-citation review loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"
