@@ -1,0 +1,11 @@
+{
+  "decision_id": "license-decision-escience2026-template",
+  "target_venue": "escience2026",
+  "code_license": "undecided",
+  "manuscript_license": "undecided",
+  "artifact_license": "undecided",
+  "decided_by": "TODO:human-author",
+  "decided_at": "TODO:YYYY-MM-DDTHH:MM:SSZ",
+  "rationale": "TODO:choose MIT, Apache-2.0, CC-BY-4.0, or another appropriate institutional/license route.",
+  "final_ready": false
+}

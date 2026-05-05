@@ -7,6 +7,12 @@
   "generated_pdf_path": "submission/escience2026/latex/main.pdf",
   "latex_root": "submission/escience2026/latex",
   "main_tex_path": "submission/escience2026/latex/main.tex",
+  "overfull_boxes": [
+    "Overfull \\hbox (14.5pt too wide) in paragraph at lines 11--12",
+    "Overfull \\hbox (43.2399pt too wide) in paragraph at lines 11--12",
+    "Overfull \\hbox (12.72385pt too wide) in paragraph at lines 11--11",
+    "Overfull \\hbox (18.71118pt too wide) in paragraph at lines 4--19"
+  ],
   "page_count_checked": true,
   "page_count_total": 8,
   "page_limit": 8,

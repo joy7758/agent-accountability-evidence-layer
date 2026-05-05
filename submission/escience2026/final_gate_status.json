@@ -1,62 +1,81 @@
 {
-  "target_venue": "escience2026",
-  "manuscript_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
-  "final_submission_ready": false,
-  "governance_drafts_present": true,
-  "deadline_verification_status": {
-    "draft_path": "submission/escience2026/governance_drafts/deadline_verification.draft.json",
-    "final_path": "submission/escience2026/deadline_verification.json",
-    "draft_present": true,
-    "final_file_present": false,
-    "deadline_verified": false,
-    "status": "draft_ready_for_author_review_not_final"
-  },
-  "repository_policy_status": {
-    "draft_path": "submission/escience2026/governance_drafts/repository_policy_decision.draft.json",
-    "final_path": "submission/escience2026/repository_policy_decision.json",
-    "draft_present": true,
-    "final_file_present": false,
-    "final_ready": false,
-    "status": "draft_prepared_not_finalized"
-  },
-  "author_final_approval_status": {
-    "draft_path": "submission/escience2026/governance_drafts/author_final_approval.draft.json",
-    "final_path": "submission/escience2026/author_final_approval.json",
-    "draft_present": true,
-    "final_file_present": false,
-    "approved_by_human_author": false,
-    "final_submission_ready": false,
-    "status": "approval_record_prepared_not_signed"
-  },
-  "latex_compile_status": {
-    "compile_report_path": "submission/escience2026/latex_compile_report.json",
-    "compile_success": true,
-    "pdf_path": "submission/escience2026/latex/main.pdf"
-  },
-  "page_count_status": {
-    "page_count_checked": true,
-    "page_count_total": 8,
-    "references_excluded_page_count": 8,
-    "within_page_limit": true
-  },
   "ai_use_disclosure_status": {
     "disclosure_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
     "draft_present": true,
     "requires_human_review": true
+  },
+  "author_final_approval_status": {
+    "approved_by_human_author": false,
+    "draft_path": "submission/escience2026/governance_drafts/author_final_approval.draft.json",
+    "draft_present": true,
+    "final_file_present": false,
+    "final_path": "submission/escience2026/author_final_approval.json",
+    "final_submission_ready": false,
+    "status": "approval_record_prepared_not_signed"
   },
   "blocking_items": [
     "author final approval not signed",
     "live EasyChair/CFP deadline not manually verified",
     "repository/anonymization policy not finalized",
     "license not finalized",
-    "sensitive content scan not completed",
-    "final gate files not created"
+    "final gate files not created",
+    "sensitive content scan requires human review"
   ],
+  "deadline_verification_status": {
+    "deadline_verified": false,
+    "draft_path": "submission/escience2026/governance_drafts/deadline_verification.draft.json",
+    "draft_present": true,
+    "final_file_present": false,
+    "final_path": "submission/escience2026/deadline_verification.json",
+    "status": "draft_ready_for_author_review_not_final"
+  },
+  "final_submission_ready": false,
+  "governance_drafts_present": true,
+  "latex_compile_status": {
+    "compile_report_path": "submission/escience2026/latex_compile_report.json",
+    "compile_success": true,
+    "pdf_path": "submission/escience2026/latex/main.pdf"
+  },
+  "license_status": {
+    "final_file_present": false,
+    "final_path": "submission/escience2026/license_decision.json",
+    "final_ready": false,
+    "status": "undecided",
+    "support_path": "submission/escience2026/license_decision.md",
+    "template_path": "submission/escience2026/license_decision.template.json",
+    "template_present": true
+  },
+  "manuscript_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
+  "page_count_status": {
+    "page_count_checked": true,
+    "page_count_total": 8,
+    "references_excluded_page_count": 8,
+    "within_page_limit": true
+  },
   "remaining_human_actions": [
     "Verify the live EasyChair/CFP deadline and create submission/escience2026/deadline_verification.json only after verification.",
     "Finalize repository/anonymization and license policy, then create submission/escience2026/repository_policy_decision.json.",
     "Complete sensitive content scanning before public repository release.",
     "Review the final PDF and AI-use disclosure.",
-    "Sign final approval and create submission/escience2026/author_final_approval.json only after all gates pass."
-  ]
+    "Sign final approval and create submission/escience2026/author_final_approval.json only after all gates pass.",
+    "Finalize license decision and create submission/escience2026/license_decision.json.",
+    "Review submission/escience2026/sensitive_content_scan_report.json and resolve or accept findings before final approval."
+  ],
+  "repository_policy_status": {
+    "draft_path": "submission/escience2026/governance_drafts/repository_policy_decision.draft.json",
+    "draft_present": true,
+    "final_file_present": false,
+    "final_path": "submission/escience2026/repository_policy_decision.json",
+    "final_ready": false,
+    "status": "draft_prepared_not_finalized"
+  },
+  "sensitive_content_scan_status": {
+    "final_ready": false,
+    "findings_count": 7,
+    "report_path": "submission/escience2026/sensitive_content_scan_report.json",
+    "requires_human_review": true,
+    "scan_completed": true,
+    "status": "scan_completed_requires_human_review"
+  },
+  "target_venue": "escience2026"
 }
