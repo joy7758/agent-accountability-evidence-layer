@@ -30,11 +30,7 @@
   "references_excluded": true,
   "references_excluded_page_count": 8,
   "report_id": "asiep-escience2026-latex-compile-m12",
-  "required_human_actions": [
-    "Create repository_policy_decision.json after human repository/anonymization review.",
-    "Create deadline_verification.json after manually verifying the CFP/EasyChair deadline.",
-    "Create author_final_approval.json only after human approval of every final gate."
-  ],
+  "required_human_actions": [],
   "target_venue": "escience2026",
   "unresolved_citations": [],
   "unresolved_references": [],

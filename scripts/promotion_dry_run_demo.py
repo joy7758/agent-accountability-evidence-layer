@@ -19,6 +19,7 @@ FINAL_FILES = [
 
 
 def main() -> int:
+    final_files_before = {str(path.relative_to(ROOT)) for path in FINAL_FILES if path.exists()}
     missing_flags = _run_json([sys.executable, "scripts/promote_recommended_gates.py"])
     missing_flags_check_passed = (
         missing_flags["returncode"] == 1
@@ -52,7 +53,9 @@ def main() -> int:
         and bool(dry_run["payload"].get("would_create_files"))
     )
 
-    final_gate_files_created = any(path.exists() for path in FINAL_FILES)
+    final_files_after = {str(path.relative_to(ROOT)) for path in FINAL_FILES if path.exists()}
+    dry_run_created_final_gate_files = final_files_after != final_files_before
+    final_gate_files_present = bool(final_files_after)
     final_check = _run_json([sys.executable, "scripts/final_submission_check.py"])
     final_submission_check_valid = final_check["payload"].get("valid") is True
     final_submission_ready = _load_final_submission_ready()
@@ -60,14 +63,15 @@ def main() -> int:
     summary = {
         "missing_flags_check_passed": missing_flags_check_passed,
         "dry_run_success": dry_run_success,
-        "final_gate_files_created": final_gate_files_created,
+        "dry_run_created_final_gate_files": dry_run_created_final_gate_files,
+        "final_gate_files_present": final_gate_files_present,
         "final_submission_ready": final_submission_ready,
         "final_submission_check_valid": final_submission_check_valid,
         "would_create_files": dry_run["payload"].get("would_create_files", []),
         "final_submission_check_errors": final_check["payload"].get("errors", []),
     }
     print(json.dumps(summary, indent=2, sort_keys=True))
-    return 0 if missing_flags_check_passed and dry_run_success and not final_gate_files_created and not final_submission_ready and not final_submission_check_valid else 1
+    return 0 if missing_flags_check_passed and dry_run_success and not dry_run_created_final_gate_files else 1
 
 
 def _run_json(command: list[str]) -> dict[str, Any]:

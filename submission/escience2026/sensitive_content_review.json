@@ -1,0 +1,77 @@
+{
+  "classification": "expected_fixture_or_documentation_markers",
+  "final_ready": true,
+  "findings_classified": [
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 118,
+      "path": "manuscript/paper_v0.3_escience.md",
+      "rule_id": "raw_prompt_marker",
+      "severity": "warning",
+      "snippet": "LangSmith-like fixtures into ASIEP bundles without embedding raw prompt,"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 414,
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "rule_id": "raw_prompt_marker",
+      "severity": "warning",
+      "snippet": "\"purpose\": \"Import attack sample for blocked raw prompt content.\","
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 590,
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "rule_id": "raw_prompt_marker",
+      "severity": "warning",
+      "snippet": "\"interpretation\": \"Generated package metadata keeps raw prompt/input/output content out by default.\","
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 829,
+      "path": "reports/asiep_v0.1_evaluation_report.json",
+      "rule_id": "raw_prompt_marker",
+      "severity": "warning",
+      "snippet": "\"purpose\": \"Import attack sample for blocked raw prompt content.\","
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 12,
+      "path": "paper_assets/tables/attack_corpus_results.md",
+      "rule_id": "raw_prompt_marker",
+      "severity": "warning",
+      "snippet": "| `examples/import_requests/invalid_sensitive_content_request.json` | import_request | True | `IMPORT_SENSITIVE_CONTENT_BLOCKED` | Import attack sample for blocked raw prompt content. |"
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 17,
+      "path": "examples/fixtures/invalid_sensitive_content_trace.json",
+      "rule_id": "raw_prompt_marker",
+      "severity": "warning",
+      "snippet": "\"raw_prompt\": \"SYNTHETIC_SECRET_PROMPT_DO_NOT_IMPORT\""
+    },
+    {
+      "classification": "expected_fixture_or_documentation_marker",
+      "line": 24,
+      "path": "examples/import_requests/invalid_sensitive_content_request.json",
+      "rule_id": "raw_prompt_marker",
+      "severity": "warning",
+      "snippet": "\"notes\": \"Negative fixture intentionally includes raw_prompt and must be blocked.\""
+    }
+  ],
+  "findings_count": 7,
+  "findings_reviewed": true,
+  "notes": [
+    "Promoted from recommendation after human review.",
+    "This remains a sentinel/pattern review, not full data-loss prevention."
+  ],
+  "possible_sensitive_content_unresolved": false,
+  "promoted_from": "submission/escience2026/final_gate_recommendations/sensitive_content_review.recommended.json",
+  "review_id": "asiep-escience2026-sensitive-content-review-final",
+  "reviewed_at": "2026-05-05T15:40:03.341937+00:00",
+  "reviewed_by": "Zhang Bin",
+  "scan_completed": true,
+  "source_report": "submission/escience2026/sensitive_content_scan_report.json",
+  "target_venue": "escience2026",
+  "unresolved_possible_sensitive_findings": []
+}

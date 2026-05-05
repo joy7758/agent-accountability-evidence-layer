@@ -1,0 +1,11 @@
+{
+  "decided_at": "2026-05-05T15:40:03.341937+00:00",
+  "decided_by": "Zhang Bin",
+  "decision_id": "asiep-escience2026-repository-policy-final",
+  "final_ready": true,
+  "promoted_from": "submission/escience2026/final_gate_recommendations/repository_policy_decision.recommended.json",
+  "rationale": "Promoted from recommendation after human confirmation of current author instructions.",
+  "repository_policy": "public_repo_allowed",
+  "review_mode": "single-blind",
+  "target_venue": "escience2026"
+}

@@ -13,6 +13,9 @@
   "latex_compiled": false,
   "repository_policy_checked": false,
   "deadline_checked": false,
+  "license_checked": false,
+  "sensitive_content_scan_checked": false,
+  "final_pdf_reviewed": false,
   "final_submission_ready": false,
   "notes": [
     "Do not copy this template to author_final_approval.json until a human author has completed every final gate."

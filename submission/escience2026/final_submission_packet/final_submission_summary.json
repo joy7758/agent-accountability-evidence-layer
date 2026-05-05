@@ -1,0 +1,39 @@
+{
+  "actual_easychair_submission_completed": false,
+  "ai_use_disclosure_included": true,
+  "author_block_verified": true,
+  "author_placeholders_present": false,
+  "created_at": "2026-05-05T15:45:14.223372+00:00",
+  "deadline": "2026-05-18T23:59:00-12:00",
+  "deadline_notes": [
+    "Promoted from conservative planning recommendation after explicit human confirmation.",
+    "The prior May 18 / May 19 AoE CFP ambiguity is preserved in this record.",
+    "The human author accepted the conservative May 18 AoE planning deadline for final pre-submission gate purposes."
+  ],
+  "external_certification_claimed": false,
+  "final_approval_status": {
+    "approved_at": "2026-05-05T15:40:03.341937+00:00",
+    "approved_by": "Zhang Bin",
+    "approved_by_human_author": true
+  },
+  "final_submission_ready": true,
+  "latex_root": "submission/escience2026/latex",
+  "license_choice": {
+    "artifact_license": "CC-BY-4.0",
+    "code_license": "Apache-2.0",
+    "manuscript_license": "CC-BY-4.0"
+  },
+  "manuscript_path": "manuscript/paper_v0.4_escience_human_editable.md",
+  "packet_id": "asiep-escience2026-final-submission-packet",
+  "page_count": 8,
+  "page_limit": 8,
+  "paper_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
+  "pdf_path": "submission/escience2026/latex/main.pdf",
+  "references_excluded": true,
+  "repository_policy": "public_repo_allowed",
+  "target_venue": "IEEE eScience 2026",
+  "unresolved_citations": [],
+  "unresolved_references": [],
+  "venue_id": "escience2026",
+  "within_page_limit": true
+}

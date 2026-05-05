@@ -55,6 +55,7 @@ def main() -> int:
             "errors": [{"code": "SUBMISSION_LINTER_FAILED", "message": final_check.stdout or final_check.stderr}],
         }
 
+    final_submission_ready = final_payload.get("valid") is True
     summary = {
         "paper_linter_valid": paper_result["valid"],
         "citation_linter_valid": citation_result["valid"],
@@ -69,7 +70,7 @@ def main() -> int:
         "unresolved_citations": compile_report["unresolved_citations"],
         "unresolved_references": compile_report["unresolved_references"],
         "overfull_boxes": compile_report["overfull_boxes"],
-        "final_submission_ready": False,
+        "final_submission_ready": final_submission_ready,
         "final_submission_check_valid": final_payload.get("valid", False),
         "required_human_actions": compile_report["required_human_actions"],
         "final_submission_check_errors": final_payload.get("errors", []),
@@ -160,13 +161,12 @@ def _generate_compile_report() -> dict[str, Any]:
 
     if not within_page_limit:
         required_human_actions.append("Do not mark final_submission_ready until page count is checked against 8 pages excluding references.")
-    required_human_actions.extend(
-        [
-            "Create repository_policy_decision.json after human repository/anonymization review.",
-            "Create deadline_verification.json after manually verifying the CFP/EasyChair deadline.",
-            "Create author_final_approval.json only after human approval of every final gate.",
-        ]
-    )
+    if not _json_bool(ROOT / "submission" / "escience2026" / "repository_policy_decision.json", "final_ready"):
+        required_human_actions.append("Create repository_policy_decision.json after human repository/anonymization review.")
+    if not _json_bool(ROOT / "submission" / "escience2026" / "deadline_verification.json", "deadline_verified"):
+        required_human_actions.append("Create deadline_verification.json after manually verifying the CFP/EasyChair deadline.")
+    if not (ROOT / "submission" / "escience2026" / "author_final_approval.json").exists():
+        required_human_actions.append("Create author_final_approval.json only after human approval of every final gate.")
 
     report = _report(compiler, compile_attempted, compile_success, errors, warnings, _dedupe_strings(required_human_actions))
     report["page_count_checked"] = page_count_checked
@@ -298,6 +298,20 @@ def _update_integration_report(compile_report: dict[str, Any]) -> None:
     author_final_approval_exists = (ROOT / "submission" / "escience2026" / "author_final_approval.json").exists()
     repository_policy_decided = _json_bool(ROOT / "submission" / "escience2026" / "repository_policy_decision.json", "final_ready")
     deadline_verified = _json_bool(ROOT / "submission" / "escience2026" / "deadline_verification.json", "deadline_verified")
+    license_decided = _json_bool(ROOT / "submission" / "escience2026" / "license_decision.json", "final_ready")
+    sensitive_reviewed = _json_bool(ROOT / "submission" / "escience2026" / "sensitive_content_review.json", "final_ready")
+    layout_reviewed = _json_bool(ROOT / "submission" / "escience2026" / "layout_review.json", "final_ready")
+    final_ready = (
+        compile_report["compile_success"]
+        and compile_report["page_count_checked"]
+        and compile_report["within_page_limit"]
+        and author_final_approval_exists
+        and repository_policy_decided
+        and deadline_verified
+        and license_decided
+        and sensitive_reviewed
+        and layout_reviewed
+    )
     report.update(
         {
             "latex_compile_attempted": compile_report["compile_attempted"],
@@ -315,7 +329,7 @@ def _update_integration_report(compile_report: dict[str, Any]) -> None:
             "final_repository_policy_decided": repository_policy_decided,
             "final_deadline_verified": deadline_verified,
             "author_final_approval_exists": author_final_approval_exists,
-            "final_submission_ready": False,
+            "final_submission_ready": final_ready,
         }
     )
     if "remaining_human_actions" in report:
@@ -334,11 +348,14 @@ def _update_integration_report(compile_report: dict[str, Any]) -> None:
             existing_actions
             + [
                 "Review submission/escience2026/latex_compile_report.json.",
-                "Create repository_policy_decision.json only after human repository/anonymization decision.",
-                "Create deadline_verification.json only after human deadline verification.",
-                "Create author_final_approval.json only after human final approval.",
             ]
         )
+        if not repository_policy_decided:
+            report["remaining_human_actions"].append("Create repository_policy_decision.json only after human repository/anonymization decision.")
+        if not deadline_verified:
+            report["remaining_human_actions"].append("Create deadline_verification.json only after human deadline verification.")
+        if not author_final_approval_exists:
+            report["remaining_human_actions"].append("Create author_final_approval.json only after human final approval.")
     INTEGRATION_REPORT_PATH.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 

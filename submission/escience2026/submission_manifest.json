@@ -1,30 +1,48 @@
 {
-  "submission_id": "asiep-escience2026-m10-package",
-  "submission_version": "0.1.0",
-  "venue_id": "escience2026",
-  "paper_id": "asiep-paper-v0.4-escience-human-editable",
-  "paper_version": "0.4.0",
-  "created_at": "2026-05-05T00:00:00Z",
-  "final_submission_ready": false,
-  "human_rewrite_required": true,
-  "venue_policy_path": "venues/escience2026/venue_policy.json",
-  "human_authoring_protocol_path": "submission/escience2026/human_authoring_protocol.json",
-  "manuscript_path": "manuscript/paper_v0.4_escience_human_editable.md",
-  "latex_scaffold_path": "submission/escience2026/latex/main.tex",
   "ai_use_disclosure_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
   "artifact_availability_statement_path": "submission/escience2026/artifact_availability_statement.md",
+  "created_at": "2026-05-05T00:00:00Z",
   "final_human_checklist_path": "submission/escience2026/final_human_checklist.md",
-  "submission_linter_entrypoint": "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage rewrite --format json",
-  "venue_constraints": {
-    "page_limit": 8,
-    "references_excluded": true,
-    "format": "IEEE 8.5x11 double-column, single-spaced 10-point font",
-    "review_mode": "single-blind",
-    "ai_generated_content_disclosure_required": true,
-    "accepted_full_papers_published_in_ieee_proceedings": true,
-    "paper_submission_deadline_raw": "Monday, May 18, 2026 / Tuesday, May 19, 2026 11:59 PM AoE as shown on CFP",
-    "requires_human_deadline_verification": true
-  },
+  "final_submission_ready": true,
+  "human_authoring_protocol_path": "submission/escience2026/human_authoring_protocol.json",
+  "human_rewrite_required": true,
+  "known_blockers": [],
+  "latex_scaffold_path": "submission/escience2026/latex/main.tex",
+  "manuscript_path": "manuscript/paper_v0.4_escience_human_editable.md",
+  "package_files": [
+    {
+      "path": "manuscript/paper_v0.4_escience_human_editable.md",
+      "required": true,
+      "role": "human_editable_markdown_draft"
+    },
+    {
+      "path": "submission/escience2026/human_authoring_protocol.json",
+      "required": true,
+      "role": "human_authoring_protocol"
+    },
+    {
+      "path": "submission/escience2026/latex/main.tex",
+      "required": true,
+      "role": "ieee_latex_scaffold"
+    },
+    {
+      "path": "submission/escience2026/author_ai_use_disclosure_draft.md",
+      "required": true,
+      "role": "ieee_ai_use_disclosure_draft"
+    },
+    {
+      "path": "submission/escience2026/artifact_availability_statement.md",
+      "required": true,
+      "role": "artifact_availability_statement"
+    },
+    {
+      "path": "submission/escience2026/final_human_checklist.md",
+      "required": true,
+      "role": "final_human_checklist"
+    }
+  ],
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "paper_version": "0.4.0",
   "required_checks": [
     "human_authoring_protocol_schema_valid",
     "submission_manifest_schema_valid",
@@ -35,48 +53,26 @@
     "final_human_checklist_present",
     "deadline_human_verification_recorded"
   ],
-  "package_files": [
-    {
-      "path": "manuscript/paper_v0.4_escience_human_editable.md",
-      "role": "human_editable_markdown_draft",
-      "required": true
-    },
-    {
-      "path": "submission/escience2026/human_authoring_protocol.json",
-      "role": "human_authoring_protocol",
-      "required": true
-    },
-    {
-      "path": "submission/escience2026/latex/main.tex",
-      "role": "ieee_latex_scaffold",
-      "required": true
-    },
-    {
-      "path": "submission/escience2026/author_ai_use_disclosure_draft.md",
-      "role": "ieee_ai_use_disclosure_draft",
-      "required": true
-    },
-    {
-      "path": "submission/escience2026/artifact_availability_statement.md",
-      "role": "artifact_availability_statement",
-      "required": true
-    },
-    {
-      "path": "submission/escience2026/final_human_checklist.md",
-      "role": "final_human_checklist",
-      "required": true
-    }
-  ],
-  "known_blockers": [
-    "Final LaTeX has been synced but not compiled",
-    "CFP deadline ambiguity requires human verification",
-    "Final author approval is missing",
-    "Repository link and anonymization decision requires human author review"
-  ],
   "revalidation_commands": [
-    "PYTHONPATH=src python -m asiep_submission_linter --manifest submission/escience2026/submission_manifest.json --format json",
-    "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage rewrite --format json",
-    "PYTHONPATH=src python scripts/submission_demo.py",
-    "PYTHONPATH=src python scripts/final_submission_check.py"
-  ]
+    "PYTHONPATH=src python scripts/final_submission_check.py",
+    "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage final --format json",
+    "PYTHONPATH=src python -m asiep_paper_linter --profile profiles/asiep/v0.1/profile.json --format json",
+    "PYTHONPATH=src python -m asiep_citation_linter --profile profiles/asiep/v0.1/profile.json --format json",
+    "PYTHONPATH=src python -m asiep_venue_linter --venue venues/escience2026/venue_policy.json --paper manuscript/paper_v0.4_escience_human_editable.md --format json"
+  ],
+  "submission_id": "asiep-escience2026-m10-package",
+  "submission_linter_entrypoint": "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage final --format json",
+  "submission_version": "0.1.0",
+  "venue_constraints": {
+    "accepted_full_papers_published_in_ieee_proceedings": true,
+    "ai_generated_content_disclosure_required": true,
+    "format": "IEEE 8.5x11 double-column, single-spaced 10-point font",
+    "page_limit": 8,
+    "paper_submission_deadline_raw": "Monday, May 18, 2026 / Tuesday, May 19, 2026 11:59 PM AoE as shown on CFP",
+    "references_excluded": true,
+    "requires_human_deadline_verification": true,
+    "review_mode": "single-blind"
+  },
+  "venue_id": "escience2026",
+  "venue_policy_path": "venues/escience2026/venue_policy.json"
 }

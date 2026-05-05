@@ -2,43 +2,40 @@
   "ai_use_disclosure_status": {
     "disclosure_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
     "draft_present": true,
+    "final_ready": true,
     "recommended_status": "recommended_acceptable_pending_final_author_review",
-    "requires_human_review": true
-  },
-  "author_final_approval_status": {
-    "approved_by_human_author": false,
-    "draft_path": "submission/escience2026/governance_drafts/author_final_approval.draft.json",
-    "draft_present": true,
-    "final_file_present": false,
-    "final_path": "submission/escience2026/author_final_approval.json",
-    "final_submission_ready": false,
-    "recommended_plan_path": "submission/escience2026/final_gate_recommendations/author_final_approval.recommended_plan.json",
-    "status": "approval_record_prepared_not_signed"
+    "requires_human_review": true,
+    "status": "reviewed_final_ready"
   },
   "author_block_status": "fixed_pending_final_human_review",
+  "author_final_approval_status": {
+    "approved_by": "Zhang Bin",
+    "approved_by_human_author": true,
+    "draft_path": "submission/escience2026/governance_drafts/author_final_approval.draft.json",
+    "draft_present": true,
+    "final_file_present": true,
+    "final_path": "submission/escience2026/author_final_approval.json",
+    "final_submission_ready": true,
+    "recommended_plan_path": "submission/escience2026/final_gate_recommendations/author_final_approval.recommended_plan.json",
+    "status": "signed_final_ready"
+  },
   "author_identity_recommendation_present": true,
   "author_placeholders_present": false,
-  "blocking_items": [
-    "recommended records are present but are not final gate files",
-    "author final approval not signed",
-    "live EasyChair/CFP deadline not manually verified",
-    "repository/anonymization policy not finalized",
-    "license not finalized",
-    "sensitive content scan requires final human review",
-    "layout requires final PDF review",
-    "final gate files not created"
-  ],
+  "blocking_items": [],
   "deadline_verification_status": {
-    "deadline_verified": false,
+    "deadline_verified": true,
     "draft_path": "submission/escience2026/governance_drafts/deadline_verification.draft.json",
     "draft_present": true,
-    "final_file_present": false,
+    "final_file_present": true,
     "final_path": "submission/escience2026/deadline_verification.json",
-    "recommended_planning_deadline": "2026-05-18T23:59:00-12:00",
+    "final_ready": true,
     "recommended_path": "submission/escience2026/final_gate_recommendations/deadline_verification.recommended.json",
-    "status": "recommended_conservative_planning_pending_live_verification"
+    "recommended_planning_deadline": "2026-05-18T23:59:00-12:00",
+    "status": "final_verified_conservative_deadline",
+    "verified_deadline": "2026-05-18T23:59:00-12:00"
   },
-  "final_gate_files_missing": [
+  "final_gate_files_missing": [],
+  "final_gate_files_present": [
     "submission/escience2026/deadline_verification.json",
     "submission/escience2026/repository_policy_decision.json",
     "submission/escience2026/license_decision.json",
@@ -46,29 +43,43 @@
     "submission/escience2026/layout_review.json",
     "submission/escience2026/author_final_approval.json"
   ],
-  "final_gate_files_present": [],
+  "final_gate_promoted_at": "2026-05-05T15:40:03.341937+00:00",
+  "final_gate_promoted_by": "Zhang Bin",
   "final_gate_recommendations_path": "submission/escience2026/final_gate_recommendations",
   "final_gate_recommendations_present": true,
   "final_review_packet_path": "submission/escience2026/final_review_packet",
   "final_review_packet_present": true,
-  "final_submission_ready": false,
+  "final_submission_check_passed": true,
+  "final_submission_ready": true,
   "governance_drafts_present": true,
   "latex_compile_status": {
     "compile_report_path": "submission/escience2026/latex_compile_report.json",
     "compile_success": true,
     "pdf_path": "submission/escience2026/latex/main.pdf"
   },
+  "layout_review_status": {
+    "author_placeholders_present": false,
+    "final_file_present": true,
+    "final_ready": true,
+    "overfull_boxes_count": 4,
+    "overfull_boxes_status": "accepted_after_pdf_review",
+    "page_count": 8,
+    "pdf_reviewed": true
+  },
   "license_status": {
-    "final_file_present": false,
+    "artifact_license": "CC-BY-4.0",
+    "code_license": "Apache-2.0",
+    "final_file_present": true,
     "final_path": "submission/escience2026/license_decision.json",
-    "final_ready": false,
+    "final_ready": true,
+    "manuscript_license": "CC-BY-4.0",
     "recommended_license": {
       "artifact_license": "CC-BY-4.0",
       "code_license": "Apache-2.0",
       "manuscript_license": "CC-BY-4.0"
     },
     "recommended_path": "submission/escience2026/final_gate_recommendations/license_decision.recommended.json",
-    "status": "recommended_pending_final_human_review",
+    "status": "finalized",
     "support_path": "submission/escience2026/license_decision.md",
     "template_path": "submission/escience2026/license_decision.template.json",
     "template_present": true
@@ -80,9 +91,9 @@
     "references_excluded_page_count": 8,
     "within_page_limit": true
   },
-  "promotion_required_for_final_submission": true,
   "promotion_dry_run_completed": true,
   "promotion_dry_run_supported": true,
+  "promotion_required_for_final_submission": false,
   "recommended_ai_disclosure_status": "recommended_acceptable_pending_final_author_review",
   "recommended_decisions_count": 8,
   "recommended_layout_status": "provisionally_acceptable_pending_pdf_review",
@@ -91,35 +102,33 @@
   "recommended_repository_policy": "public_repo_allowed",
   "recommended_sensitive_scan_status": "expected_fixture_or_documentation_markers_pending_final_review",
   "remaining_human_actions": [
-    "Review every recommendation record in submission/escience2026/final_gate_recommendations/.",
-    "Verify the live EasyChair/CFP deadline and create submission/escience2026/deadline_verification.json only after verification.",
-    "Finalize repository/anonymization policy and create submission/escience2026/repository_policy_decision.json.",
-    "Finalize license policy and create submission/escience2026/license_decision.json.",
-    "Review sensitive-content findings and create submission/escience2026/sensitive_content_review.json only after review.",
-    "Review the final PDF layout and create submission/escience2026/layout_review.json only after review.",
-    "Review AI-use disclosure.",
-    "Sign final approval and create submission/escience2026/author_final_approval.json only after all gates pass.",
-    "Run scripts/promote_recommended_gates.py only after explicit human confirmation of every final gate."
+    "Log in to EasyChair manually.",
+    "Re-check the live venue deadline before upload.",
+    "Upload submission/escience2026/latex/main.pdf manually.",
+    "Check title, author, abstract, keywords, AI-use disclosure, and repository-link policy in the submission system.",
+    "Click submit manually only after the EasyChair form preview is correct."
   ],
   "repository_policy_status": {
     "draft_path": "submission/escience2026/governance_drafts/repository_policy_decision.draft.json",
     "draft_present": true,
-    "final_file_present": false,
+    "final_file_present": true,
     "final_path": "submission/escience2026/repository_policy_decision.json",
-    "final_ready": false,
+    "final_ready": true,
     "recommended_path": "submission/escience2026/final_gate_recommendations/repository_policy_decision.recommended.json",
     "recommended_repository_policy": "public_repo_allowed",
-    "status": "recommended_pending_final_human_review"
+    "repository_policy": "public_repo_allowed",
+    "status": "final_public_repo_allowed"
   },
   "sensitive_content_scan_status": {
-    "final_ready": false,
+    "final_ready": true,
     "findings_count": 7,
     "recommended_classification": "expected_fixture_or_documentation_markers",
     "recommended_path": "submission/escience2026/final_gate_recommendations/sensitive_content_review.recommended.json",
     "report_path": "submission/escience2026/sensitive_content_scan_report.json",
-    "requires_human_review": true,
+    "requires_human_review": false,
     "scan_completed": true,
-    "status": "scan_completed_recommended_classification_pending_final_review"
+    "status": "reviewed_final_ready",
+    "unresolved_possible_sensitive_content": false
   },
   "target_venue": "escience2026"
 }

@@ -1,0 +1,12 @@
+{
+  "artifact_license": "CC-BY-4.0",
+  "code_license": "Apache-2.0",
+  "decided_at": "2026-05-05T15:40:03.341937+00:00",
+  "decided_by": "Zhang Bin",
+  "decision_id": "asiep-escience2026-license-final",
+  "final_ready": true,
+  "manuscript_license": "CC-BY-4.0",
+  "promoted_from": "submission/escience2026/final_gate_recommendations/license_decision.recommended.json",
+  "rationale": "Promoted from recommendation after human license review.",
+  "target_venue": "escience2026"
+}
