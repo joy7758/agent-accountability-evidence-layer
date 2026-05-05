@@ -1,0 +1,10 @@
+{
+  "verification_id": "deadline-verification-escience2026-template",
+  "target_venue": "escience2026",
+  "deadline_checked_by": "TODO:human-author",
+  "checked_at": "TODO:YYYY-MM-DDTHH:MM:SSZ",
+  "official_source_url": "TODO:official CFP or EasyChair URL",
+  "verified_deadline": "TODO:verified deadline with timezone",
+  "notes": "TODO:record how the May 18 / May 19 AoE ambiguity was resolved.",
+  "deadline_verified": false
+}

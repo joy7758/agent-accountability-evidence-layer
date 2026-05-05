@@ -1,0 +1,103 @@
+{
+  "$schema": "https://example.org/asiep/submission-governance/deadline-verification.v0.1.schema.json",
+  "record_type": "deadline_verification",
+  "record_version": "0.1",
+  "generated": {
+    "generated_date_sgt": "2026-05-05",
+    "timezone": "Asia/Singapore",
+    "generated_by": "OpenAI ChatGPT / GPT-5.5 Pro under author instruction",
+    "human_review_required": true
+  },
+  "project": {
+    "project_short_name": "ASIEP",
+    "manuscript_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
+    "optional_subtitle": "From Agent Traces to Verifiable Evidence Packages",
+    "target_venue": "22nd IEEE International eScience Conference (eScience 2026)",
+    "target_track": "full paper / technical program",
+    "claim_boundary": [
+      "minimal local implementation",
+      "local fixture evaluation",
+      "not external certification",
+      "not production deployment",
+      "not a certified standard",
+      "not a general benchmark of agent capability"
+    ]
+  },
+  "venue": {
+    "name": "22nd IEEE International eScience Conference",
+    "short_name": "eScience 2026",
+    "location": "Naples, Italy",
+    "conference_dates": {
+      "start": "2026-09-28",
+      "end": "2026-10-02"
+    },
+    "submission_system": "EasyChair",
+    "review_model": "single-blind",
+    "full_paper_page_limit": "8 pages excluding references"
+  },
+  "deadline_verification": {
+    "source_status": "verified_from_official_cfp_and_easychair_cfp",
+    "deadline_timezone": "AoE / Anywhere on Earth / UTC-12",
+    "official_deadline_text_observed": "Paper Submissions Due: Monday, May 18, 2026, Tuesday, May 19, 2026 (11:59 PM, anywhere on earth)",
+    "easychair_top_deadline_observed": "Submission deadline May 18, 2026",
+    "conservative_planning_deadline": {
+      "deadline_aoe": "2026-05-18T23:59:00-12:00",
+      "equivalent_sgt": "2026-05-19T19:59:00+08:00",
+      "rationale": "The official CFP line includes both May 18 and May 19, while the EasyChair CFP summary lists May 18. Treat May 18 AoE as the internal hard deadline unless the EasyChair submission form or program chairs confirm the later date."
+    },
+    "latest_deadline_text_mentioned": {
+      "deadline_aoe": "2026-05-19T23:59:00-12:00",
+      "equivalent_sgt": "2026-05-20T19:59:00+08:00",
+      "rationale": "The official CFP text also mentions Tuesday, May 19, 2026 at 11:59 PM AoE. This is recorded as a possible later textual deadline, not as the internal planning deadline."
+    },
+    "notification_deadline": {
+      "date": "2026-06-29",
+      "source_text": "Notification of Paper Acceptance: Monday, June 29, 2026"
+    },
+    "camera_ready_deadline": {
+      "date": "2026-08-07",
+      "source_text": "Camera-ready Submissions due: Friday, August 7, 2026"
+    },
+    "conference_dates": {
+      "start": "2026-09-28",
+      "end": "2026-10-02"
+    },
+    "submission_status_on_generated_date": "open_before_deadline",
+    "deadline_risk_level": "medium_due_to_May18_May19_textual_ambiguity",
+    "recommended_internal_freeze": {
+      "manuscript_freeze_sgt": "2026-05-17T23:59:00+08:00",
+      "repository_freeze_sgt": "2026-05-17T23:59:00+08:00",
+      "final_pdf_check_sgt": "2026-05-18T23:59:00+08:00",
+      "submission_buffer_rationale": "Keeps at least one Singapore business day before the conservative AoE deadline conversion."
+    }
+  },
+  "submission_policy_flags": {
+    "preprint_allowed": true,
+    "ai_use_disclosure_required": true,
+    "single_blind_review": true,
+    "artifact_repository_publication_not_barred_by_anonymity_policy": true
+  },
+  "sources": [
+    {
+      "source_id": "escience2026_cfp_official",
+      "title": "Call for Papers - 22nd IEEE International Conference on eScience",
+      "url": "https://www.escience-conference.org/2026/call-for-papers",
+      "publisher": "IEEE International Conference on eScience",
+      "accessed_date_sgt": "2026-05-05",
+      "source_role": "primary_official"
+    },
+    {
+      "source_id": "easychair_escience2026_cfp",
+      "title": "eScience2026: 22nd IEEE International eScience Conference",
+      "url": "https://easychair.org/cfp/eScience2026",
+      "publisher": "EasyChair Smart CFP",
+      "accessed_date_sgt": "2026-05-05",
+      "source_role": "secondary_submission_portal_cfp"
+    }
+  ],
+  "decision": {
+    "deadline_decision": "use_conservative_planning_deadline",
+    "decision_status": "ready_for_author_review",
+    "human_action_required": "Confirm the live EasyChair form deadline before final submission."
+  }
+}

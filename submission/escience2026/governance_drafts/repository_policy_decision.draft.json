@@ -1,0 +1,139 @@
+{
+  "$schema": "https://example.org/asiep/submission-governance/repository-policy-decision.v0.1.schema.json",
+  "record_type": "repository_policy_decision",
+  "record_version": "0.1",
+  "generated": {
+    "generated_date_sgt": "2026-05-05",
+    "timezone": "Asia/Singapore",
+    "generated_by": "OpenAI ChatGPT / GPT-5.5 Pro under author instruction",
+    "human_review_required": true
+  },
+  "project": {
+    "project_short_name": "ASIEP",
+    "manuscript_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
+    "optional_subtitle": "From Agent Traces to Verifiable Evidence Packages",
+    "target_venue": "22nd IEEE International eScience Conference (eScience 2026)",
+    "target_track": "full paper / technical program",
+    "claim_boundary": [
+      "minimal local implementation",
+      "local fixture evaluation",
+      "not external certification",
+      "not production deployment",
+      "not a certified standard",
+      "not a general benchmark of agent capability"
+    ]
+  },
+  "policy_basis": {
+    "venue_review_model": "single-blind",
+    "preprint_policy": "submitted papers may be posted on preprint servers",
+    "ai_use_policy": "AI-generated content shall be disclosed in the acknowledgements section",
+    "full_paper_limit": "8 pages excluding references",
+    "sources": [
+      "escience2026_cfp_official",
+      "easychair_escience2026_cfp"
+    ]
+  },
+  "decision": {
+    "repository_visibility": "public_allowed_after_author_review",
+    "submission_anonymity_constraint": "no_double_blind_anonymization_required_by_observed_cfp",
+    "preprint_posting": "allowed_if_author_chooses",
+    "recommended_release_timing": "tag a clean v0.1-submission artifact release before or at submission, after final author review and sensitive-content scan",
+    "recommended_release_tag": "v0.1-submission-local-fixture",
+    "repository_positioning": "research artifact repository for a minimal local evidence-profile implementation",
+    "not_to_claim": [
+      "external certification",
+      "production deployment",
+      "certified standard",
+      "real FDO registry registration",
+      "globally resolvable PID issuance",
+      "full RO-Crate certification",
+      "full OpenTelemetry integration",
+      "full LangSmith API integration",
+      "general benchmark SOTA"
+    ]
+  },
+  "recommended_repository_contents": {
+    "include": [
+      "ASIEP schema/profile manifest",
+      "validator",
+      "repair planner",
+      "local bundle resolver",
+      "local trace importer",
+      "local FDO-like / RO-Crate-like packager",
+      "evaluator",
+      "local fixture corpus",
+      "attack cases",
+      "generated paper asset tables",
+      "evaluation report JSON",
+      "crosswalk JSON",
+      "README with local-only claim boundaries"
+    ],
+    "exclude_or_redact": [
+      "raw user prompts unless synthetic or redacted",
+      "raw user inputs unless synthetic or redacted",
+      "raw model outputs containing sensitive content",
+      "API keys, tokens, secrets, cookies, credentials",
+      "unredacted private feedback comments",
+      "claims unsupported by local fixture evidence"
+    ]
+  },
+  "license_decision": {
+    "status": "author_to_finalize",
+    "recommended_code_license_options": [
+      "Apache-2.0",
+      "MIT"
+    ],
+    "recommended_synthetic_fixture_license_options": [
+      "CC0-1.0",
+      "CC-BY-4.0"
+    ],
+    "manuscript_license": "follow IEEE submission and publication terms",
+    "reason_for_defer": "License choice affects downstream reuse and publication rights; author must finalize before public release."
+  },
+  "pre_publication_checklist": [
+    {
+      "check": "sensitive_content_scan",
+      "status": "required",
+      "minimum_action": "Run sentinel/key scanning and manual review for prompts, user inputs, model outputs, and secrets."
+    },
+    {
+      "check": "claim_boundary_scan",
+      "status": "required",
+      "minimum_action": "Remove or rewrite claims such as certified, production-ready, full integration, or benchmark SOTA."
+    },
+    {
+      "check": "artifact_reproducibility",
+      "status": "required",
+      "minimum_action": "Ensure validator, resolver, packager, and evaluator run on local fixtures and regenerate reported tables."
+    },
+    {
+      "check": "README_policy",
+      "status": "required",
+      "minimum_action": "State that artifacts are local fixtures and generated local packages, not external certification."
+    },
+    {
+      "check": "AI_use_disclosure_consistency",
+      "status": "required",
+      "minimum_action": "Keep repository README and manuscript disclosure consistent."
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "escience2026_cfp_official",
+      "title": "Call for Papers - 22nd IEEE International Conference on eScience",
+      "url": "https://www.escience-conference.org/2026/call-for-papers",
+      "publisher": "IEEE International Conference on eScience",
+      "accessed_date_sgt": "2026-05-05",
+      "source_role": "primary_official"
+    },
+    {
+      "source_id": "easychair_escience2026_cfp",
+      "title": "eScience2026: 22nd IEEE International eScience Conference",
+      "url": "https://easychair.org/cfp/eScience2026",
+      "publisher": "EasyChair Smart CFP",
+      "accessed_date_sgt": "2026-05-05",
+      "source_role": "secondary_submission_portal_cfp"
+    }
+  ],
+  "decision_status": "policy_prepared_for_author_review"
+}

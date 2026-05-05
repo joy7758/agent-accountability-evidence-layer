@@ -909,6 +909,141 @@
       "default_strategy": "Keep submission engineering machine-readable before M11.",
       "remediation_hint": "Inspect the submission linter JSON output and repair the submission manifest, protocol, manuscript, or support files.",
       "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_COMPILE_POLICY_INVALID",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["repair LaTeX compile report schema output", "correct compile report fields"],
+      "forbidden_actions": ["ignore schema-invalid compile reports"],
+      "default_strategy": "Keep M12 compile status machine-readable.",
+      "remediation_hint": "Repair interfaces/asiep_latex_compile_report.schema.json inputs or generated report fields before final submission checks.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_ROOT_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["restore LaTeX root", "correct LaTeX root path"],
+      "forbidden_actions": ["claim compile readiness without a LaTeX root"],
+      "default_strategy": "Restore the synced IEEE LaTeX scaffold before compiling.",
+      "remediation_hint": "Restore submission/escience2026/latex or correct the LaTeX root path in the profile/submission manifest.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_MAIN_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["restore main.tex", "correct main_tex path"],
+      "forbidden_actions": ["compile a different manuscript silently"],
+      "default_strategy": "Require the explicit eScience main.tex entrypoint.",
+      "remediation_hint": "Restore submission/escience2026/latex/main.tex before compile and page-count checks.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_COMPILE_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["fix LaTeX syntax", "escape special characters", "fix bibliography path", "compact tables for layout"],
+      "forbidden_actions": ["delete citations", "delete limitations", "change evaluation numbers", "remove AI-use disclosure"],
+      "default_strategy": "Fix technical LaTeX issues without changing paper claims.",
+      "remediation_hint": "Inspect the LaTeX log, fix syntax/layout issues without changing paper claims, and compile again.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_PDF_MISSING",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["compile the LaTeX manuscript", "restore generated PDF when available"],
+      "forbidden_actions": ["claim PDF generation without a PDF file"],
+      "default_strategy": "Generate a PDF before page-budget verification.",
+      "remediation_hint": "Compile the IEEE LaTeX manuscript and generate submission/escience2026/latex/main.pdf.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_PAGE_COUNT_FAILED",
+      "repairability": "human_required",
+      "allowed_actions": ["run pdfinfo", "inspect PDF page count manually", "record page count result"],
+      "forbidden_actions": ["claim page compliance without checking"],
+      "default_strategy": "Require explicit page count evidence before final readiness.",
+      "remediation_hint": "Use pdfinfo or another local PDF metadata tool to verify total pages and the references-excluded page budget.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_PAGE_BUDGET_EXCEEDED",
+      "repairability": "human_required",
+      "allowed_actions": ["shorten paper", "adjust layout", "reduce table footprint", "recompile"],
+      "forbidden_actions": ["delete limitations", "remove evidence boundaries", "change metrics to save space"],
+      "default_strategy": "Human authors must revise length and layout while preserving claims and limitations.",
+      "remediation_hint": "Human authors must shorten the manuscript or revise layout, then recompile and recheck the 8-page limit excluding references.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_REFERENCE_BOUNDARY_UNCHECKED",
+      "repairability": "human_required",
+      "allowed_actions": ["inspect compiled PDF", "identify first reference page", "record references-excluded page count"],
+      "forbidden_actions": ["mark within_page_limit=true without a reliable boundary"],
+      "default_strategy": "Keep final readiness blocked until human page-budget verification.",
+      "remediation_hint": "Human authors must inspect the compiled PDF and confirm the main paper fits within 8 pages excluding references.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_BIBTEX_FAILED",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["fix bibliography path", "fix BibTeX syntax", "rerun BibTeX"],
+      "forbidden_actions": ["invent BibTeX entries", "delete citations to hide failures"],
+      "default_strategy": "Use existing verified references and repair citation plumbing.",
+      "remediation_hint": "Fix the bibliography path or BibTeX syntax without inventing references.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_UNRESOLVED_CITATION",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["map citation to existing verified BibTeX entry", "report unsupported citation for human review"],
+      "forbidden_actions": ["fabricate citation", "remove citation from an external claim without review"],
+      "default_strategy": "Resolve only against references/asiep_references.bib and source registry.",
+      "remediation_hint": "Map each citation key to an existing verified BibTeX entry or remove the unsupported claim.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_UNRESOLVED_REFERENCE",
+      "repairability": "agent_fixable",
+      "allowed_actions": ["add missing labels", "remove stale cross-reference", "rerun LaTeX"],
+      "forbidden_actions": ["delete substantive referenced material to hide an error"],
+      "default_strategy": "Repair cross-reference wiring without changing claims.",
+      "remediation_hint": "Fix missing labels or references in the LaTeX scaffold and recompile.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "LATEX_LAYOUT_CHECK_REQUIRED",
+      "repairability": "human_required",
+      "allowed_actions": ["inspect overfull boxes", "adjust table layout", "mark layout review complete after PDF inspection"],
+      "forbidden_actions": ["ignore layout warnings in final readiness"],
+      "default_strategy": "Keep layout warnings visible until human review.",
+      "remediation_hint": "Human authors must inspect the compiled PDF layout and resolve overfull boxes or table fit issues.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "FINAL_APPROVAL_MISSING",
+      "repairability": "human_required",
+      "allowed_actions": ["human author reviews final gates", "create author_final_approval.json after approval"],
+      "forbidden_actions": ["auto-create final approval", "mark final ready without author responsibility"],
+      "default_strategy": "Block final readiness until human authors approve.",
+      "remediation_hint": "Human authors must create author_final_approval.json only after checking claims, citations, metrics, disclosure, LaTeX, page count, repository policy, and deadline.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "FINAL_REPOSITORY_POLICY_UNDECIDED",
+      "repairability": "human_required",
+      "allowed_actions": ["choose public repository", "choose anonymized artifact", "omit repository until camera-ready"],
+      "forbidden_actions": ["publish or hide repository link without author decision"],
+      "default_strategy": "Require an explicit repository/anonymization decision before final readiness.",
+      "remediation_hint": "Human authors must decide whether to include a public repository link, anonymized artifact package, or omit the repository until camera-ready.",
+      "requires_external_evidence": false
+    },
+    {
+      "code": "FINAL_DEADLINE_UNVERIFIED",
+      "repairability": "human_required",
+      "allowed_actions": ["verify official CFP or EasyChair deadline", "record checked source and timestamp"],
+      "forbidden_actions": ["hide May 18/May 19 AoE ambiguity", "mark final ready without deadline verification"],
+      "default_strategy": "Keep final readiness blocked until the ambiguous deadline is checked by a human.",
+      "remediation_hint": "Human authors must verify the final EasyChair/CFP deadline and create deadline_verification.json before final submission readiness.",
+      "requires_external_evidence": false
     }
   ]
 }

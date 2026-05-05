@@ -94,6 +94,8 @@
   "human_authoring_protocol_schema_path": "interfaces/asiep_human_authoring_protocol.schema.json",
   "submission_manifest_schema_path": "interfaces/asiep_submission_manifest.schema.json",
   "submission_lint_report_schema_path": "interfaces/asiep_submission_lint_report.schema.json",
+  "latex_compile_report_schema_path": "interfaces/asiep_latex_compile_report.schema.json",
+  "author_final_approval_schema_path": "interfaces/asiep_author_final_approval.schema.json",
   "repair_policy_path": "profiles/asiep/v0.1/repair_policy.json",
   "import_policy_path": "profiles/asiep/v0.1/import_policy.json",
   "package_policy_path": "profiles/asiep/v0.1/package_policy.json",
@@ -119,7 +121,15 @@
   "ai_use_disclosure_draft_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
   "human_rewrite_board_path": "submission/escience2026/human_rewrite_board.json",
   "section_packets_path": "submission/escience2026/section_packets",
+  "latex_compile_report_path": "submission/escience2026/latex_compile_report.json",
+  "governance_drafts_path": "submission/escience2026/governance_drafts",
+  "final_gate_status_path": "submission/escience2026/final_gate_status.json",
+  "ai_assisted_submission_notes_path": "submission/escience2026/ai_assisted_submission_notes.md",
+  "repository_policy_decision_template_path": "submission/escience2026/repository_policy_decision.template.json",
+  "deadline_verification_template_path": "submission/escience2026/deadline_verification.template.json",
+  "author_final_approval_template_path": "submission/escience2026/author_final_approval.template.json",
   "final_submission_check_script_path": "scripts/final_submission_check.py",
+  "latex_submission_demo_script_path": "scripts/latex_submission_demo.py",
   "target_venue_assets": {
     "escience2026": {
       "venue_policy_path": "venues/escience2026/venue_policy.json",
@@ -382,7 +392,22 @@
     "SUBMISSION_DEADLINE_VERIFICATION_MISSING",
     "SUBMISSION_PAGE_BUDGET_RISK",
     "SUBMISSION_FINAL_CHECKLIST_MISSING",
-    "SUBMISSION_LINTER_FAILED"
+    "SUBMISSION_LINTER_FAILED",
+    "LATEX_COMPILE_POLICY_INVALID",
+    "LATEX_ROOT_MISSING",
+    "LATEX_MAIN_MISSING",
+    "LATEX_COMPILE_FAILED",
+    "LATEX_PDF_MISSING",
+    "LATEX_PAGE_COUNT_FAILED",
+    "LATEX_PAGE_BUDGET_EXCEEDED",
+    "LATEX_REFERENCE_BOUNDARY_UNCHECKED",
+    "LATEX_BIBTEX_FAILED",
+    "LATEX_UNRESOLVED_CITATION",
+    "LATEX_UNRESOLVED_REFERENCE",
+    "LATEX_LAYOUT_CHECK_REQUIRED",
+    "FINAL_APPROVAL_MISSING",
+    "FINAL_REPOSITORY_POLICY_UNDECIDED",
+    "FINAL_DEADLINE_UNVERIFIED"
   ],
   "supported_output_formats": [
     {
@@ -428,6 +453,10 @@
     {
       "format": "submission-lint-json",
       "consumer": "agent eScience human-rewrite package, IEEE scaffold, and final human checklist review loops"
+    },
+    {
+      "format": "latex-compile-report-json",
+      "consumer": "agent LaTeX compile, page-budget, unresolved citation, and final submission gate review loops"
     }
   ],
   "conformance_matrix_path": "conformance/asiep_v0.1_matrix.yaml"

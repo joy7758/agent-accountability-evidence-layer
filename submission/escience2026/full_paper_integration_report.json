@@ -1,10 +1,23 @@
 {
-  "paper_id": "asiep-paper-v0.4-escience-human-editable",
-  "manuscript_path": "manuscript/paper_v0.4_escience_human_editable.md",
-  "latex_root": "submission/escience2026/latex",
-  "integrated_sections_count": 13,
-  "remaining_author_verify_markers": 0,
-  "remaining_citation_required_markers": 0,
+  "ai_use_disclosure_present": true,
+  "allowed_boundary_phrases_found": [
+    "not a certified standard",
+    "not a production deployment",
+    "not a full OpenTelemetry or LangSmith integration",
+    "not a real FDO registry implementation",
+    "not full RO-Crate certification",
+    "not external certification",
+    "not as a benchmark of agent capability",
+    "not as proof of production readiness"
+  ],
+  "author_final_approval_exists": false,
+  "citation_key_notes": [
+    {
+      "reason": "references/asiep_references.bib and references/source_registry.json already define langsmith_observability_concepts as the stable LangSmith observability source key.",
+      "requested_key": "langsmith_observability",
+      "used_existing_key": "langsmith_observability_concepts"
+    }
+  ],
   "citation_keys_checked": [
     "agentdevel_2026",
     "fdo_architecture_spec",
@@ -16,67 +29,7 @@
     "w3c_prov_dm",
     "workflow_run_rocrate"
   ],
-  "missing_citation_keys": [],
-  "citation_key_notes": [
-    {
-      "requested_key": "langsmith_observability",
-      "used_existing_key": "langsmith_observability_concepts",
-      "reason": "references/asiep_references.bib and references/source_registry.json already define langsmith_observability_concepts as the stable LangSmith observability source key."
-    }
-  ],
-  "forbidden_claims_found": [],
-  "allowed_boundary_phrases_found": [
-    "not a certified standard",
-    "not a production deployment",
-    "not a full OpenTelemetry or LangSmith integration",
-    "not a real FDO registry implementation",
-    "not full RO-Crate certification",
-    "not external certification",
-    "not as a benchmark of agent capability",
-    "not as proof of production readiness"
-  ],
-  "evaluation_numbers_checked": [
-    {
-      "metric": "evidence_completeness",
-      "value": 1.0,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    },
-    {
-      "metric": "cross_standard_coverage",
-      "value": 0.9333,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    },
-    {
-      "metric": "gate_reproducibility",
-      "value": 1.0,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    },
-    {
-      "metric": "tamper_detection_recall",
-      "value": 1.0,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    },
-    {
-      "metric": "false_positive_rate",
-      "value": 0.0,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    },
-    {
-      "metric": "privacy_policy_compliance",
-      "value": 1.0,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    },
-    {
-      "metric": "packaging_closure",
-      "value": 1.0,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    },
-    {
-      "metric": "agent_readability",
-      "value": 1.0,
-      "evidence_path": "reports/asiep_v0.1_evaluation_report.json"
-    }
-  ],
+  "deadline_verified": false,
   "evaluation_evidence_paths": [
     "reports/asiep_v0.1_evaluation_report.json",
     "paper_assets/tables/evaluation_metrics.md",
@@ -84,7 +37,58 @@
     "evaluation/corpus/asiep_v0.1_corpus.json",
     "evaluation/crosswalk/asiep_v0.1_crosswalk.json"
   ],
-  "latex_synced": true,
+  "evaluation_numbers_checked": [
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "evidence_completeness",
+      "value": 1.0
+    },
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "cross_standard_coverage",
+      "value": 0.9333
+    },
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "gate_reproducibility",
+      "value": 1.0
+    },
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "tamper_detection_recall",
+      "value": 1.0
+    },
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "false_positive_rate",
+      "value": 0.0
+    },
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "privacy_policy_compliance",
+      "value": 1.0
+    },
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "packaging_closure",
+      "value": 1.0
+    },
+    {
+      "evidence_path": "reports/asiep_v0.1_evaluation_report.json",
+      "metric": "agent_readability",
+      "value": 1.0
+    }
+  ],
+  "final_author_approval_required": true,
+  "final_deadline_verified": false,
+  "final_repository_policy_decided": false,
+  "final_submission_ready": false,
+  "forbidden_claims_found": [],
+  "integrated_sections_count": 13,
+  "latex_compile_attempted": true,
+  "latex_compile_report_path": "submission/escience2026/latex_compile_report.json",
+  "latex_compile_success": true,
+  "latex_compiled": true,
   "latex_files_created": [
     "submission/escience2026/latex/main.tex",
     "submission/escience2026/latex/sections/introduction.tex",
@@ -101,21 +105,31 @@
     "submission/escience2026/latex/tables/evaluation_metrics.tex",
     "submission/escience2026/latex/tables/crosswalk_summary.tex"
   ],
-  "ai_use_disclosure_present": true,
-  "latex_compiled": false,
-  "page_count_checked": false,
-  "deadline_verified": false,
-  "repository_anonymization_decision_made": false,
-  "author_final_approval_exists": false,
-  "final_submission_ready": false,
-  "final_author_approval_required": true,
+  "latex_page_count_checked": true,
+  "latex_page_count_total": 8,
+  "latex_pdf_path": "submission/escience2026/latex/main.pdf",
+  "latex_references_excluded_page_count": 8,
+  "latex_root": "submission/escience2026/latex",
+  "latex_synced": true,
+  "latex_unresolved_citations": [],
+  "latex_unresolved_references": [],
+  "latex_within_page_limit": true,
+  "manuscript_path": "manuscript/paper_v0.4_escience_human_editable.md",
+  "missing_citation_keys": [],
+  "page_count_checked": true,
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "remaining_author_verify_markers": 0,
+  "remaining_citation_required_markers": 0,
   "remaining_human_actions": [
-    "Compile the IEEE LaTeX manuscript.",
-    "Check page count against 8 pages excluding references.",
     "Verify the eScience May 18 / May 19 AoE deadline ambiguity manually.",
     "Decide repository link and anonymization policy.",
     "Review AI-use disclosure against current IEEE/eScience policy.",
     "Create author_final_approval.json only after human approval.",
-    "Run scripts/final_submission_check.py and require valid=true before final submission."
-  ]
+    "Run scripts/final_submission_check.py and require valid=true before final submission.",
+    "Review submission/escience2026/latex_compile_report.json.",
+    "Create repository_policy_decision.json only after human repository/anonymization decision.",
+    "Create deadline_verification.json only after human deadline verification.",
+    "Create author_final_approval.json only after human final approval."
+  ],
+  "repository_anonymization_decision_made": false
 }

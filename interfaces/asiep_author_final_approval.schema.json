@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_author_final_approval.schema.json",
+  "title": "ASIEP Author Final Approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "approval_id",
+    "paper_id",
+    "target_venue",
+    "approved_by",
+    "approved_at",
+    "approved_by_human_author",
+    "citations_checked",
+    "claims_checked",
+    "evaluation_numbers_checked",
+    "ai_disclosure_checked",
+    "page_count_checked",
+    "latex_compiled",
+    "repository_policy_checked",
+    "deadline_checked",
+    "final_submission_ready"
+  ],
+  "properties": {
+    "approval_id": { "type": "string", "minLength": 1 },
+    "paper_id": { "type": "string", "minLength": 1 },
+    "target_venue": { "type": "string", "minLength": 1 },
+    "approved_by": { "type": "string", "minLength": 1 },
+    "approved_at": { "type": "string", "format": "date-time" },
+    "approved_by_human_author": { "type": "boolean" },
+    "citations_checked": { "type": "boolean" },
+    "claims_checked": { "type": "boolean" },
+    "evaluation_numbers_checked": { "type": "boolean" },
+    "ai_disclosure_checked": { "type": "boolean" },
+    "page_count_checked": { "type": "boolean" },
+    "latex_compiled": { "type": "boolean" },
+    "repository_policy_checked": { "type": "boolean" },
+    "deadline_checked": { "type": "boolean" },
+    "final_submission_ready": { "type": "boolean" },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "$schema": "https://example.org/asiep/submission-governance/author-final-approval.v0.1.schema.json",
+  "record_type": "author_final_approval",
+  "record_version": "0.1",
+  "generated": {
+    "generated_date_sgt": "2026-05-05",
+    "timezone": "Asia/Singapore",
+    "generated_by": "OpenAI ChatGPT / GPT-5.5 Pro under author instruction",
+    "human_review_required": true
+  },
+  "project": {
+    "project_short_name": "ASIEP",
+    "manuscript_title": "A FAIR Evidence Object Layer for Auditable Agent Self-Improvement",
+    "optional_subtitle": "From Agent Traces to Verifiable Evidence Packages",
+    "target_venue": "22nd IEEE International eScience Conference (eScience 2026)",
+    "target_track": "full paper / technical program",
+    "claim_boundary": [
+      "minimal local implementation",
+      "local fixture evaluation",
+      "not external certification",
+      "not production deployment",
+      "not a certified standard",
+      "not a general benchmark of agent capability"
+    ]
+  },
+  "author_identity": {
+    "display_name": "Zhang Bin",
+    "preferred_name": "leon",
+    "orcid": "0009-0002-8861-1481",
+    "email_included": false,
+    "privacy_note": "Email address and unrelated personal information are intentionally not included in this approval artifact."
+  },
+  "approval_scope": {
+    "manuscript_sections_covered": [
+      "Abstract",
+      "Introduction",
+      "Problem and Scope",
+      "Requirements for Agent Self-Improvement Evidence",
+      "ASIEP Profile and Lifecycle",
+      "Agent-native Toolchain",
+      "Evidence Bundle and Local Packaging",
+      "Evaluation",
+      "Cross-standard Mapping",
+      "Limitations",
+      "Conclusion",
+      "Acknowledgements and AI-use Disclosure"
+    ],
+    "evidence_artifacts_covered": [
+      "reports/asiep_v0.1_evaluation_report.json",
+      "paper_assets/tables/evaluation_metrics.md",
+      "paper_assets/tables/attack_corpus_results.md",
+      "evaluation/corpus/asiep_v0.1_corpus.json",
+      "evaluation/crosswalk/asiep_v0.1_crosswalk.json"
+    ],
+    "repository_policy_file": "repository_policy_decision.json",
+    "deadline_policy_file": "deadline_verification.json"
+  },
+  "approval_status": {
+    "approved_by_human_author": false,
+    "status": "pending_author_final_confirmation",
+    "reason": "This file prepares the approval record but does not replace the author's final inspection or signature.",
+    "required_author_action": "After reviewing the final manuscript PDF, repository contents, evidence artifacts, and submission form, set approved_by_human_author to true, add approval_date_sgt, and add a signature or final commit hash."
+  },
+  "editable_author_confirmation": {
+    "approved_by_human_author": null,
+    "approval_date_sgt": null,
+    "author_name": null,
+    "author_orcid": null,
+    "final_manuscript_commit_or_sha256": null,
+    "final_repository_commit": null,
+    "signature_statement": "I have reviewed the final manuscript, repository policy, deadline record, evidence artifacts, and AI-use disclosure, and approve the submission package."
+  },
+  "final_submission_checklist": [
+    {
+      "item": "deadline_confirmed_in_live_submission_system",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "final_pdf_matches_page_limit_8_pages_excluding_references",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "AI_use_disclosure_present_in_acknowledgements",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "local_only_limitations_preserved",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "evaluation_metrics_match_local_reports",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "citations_and_references_checked",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "repository_sensitive_content_scan_completed",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "repository_release_policy_finalized",
+      "required": true,
+      "status": "pending"
+    },
+    {
+      "item": "license_choice_finalized_if_repository_is_public",
+      "required": true,
+      "status": "pending"
+    }
+  ],
+  "claim_boundary_final_check": {
+    "must_preserve": [
+      "ASIEP is a minimal FAIR-compatible evidence object profile.",
+      "Evaluation is based on a local fixture corpus and generated local packages.",
+      "OpenTelemetry-like and LangSmith-like mean local fixtures, not live integrations.",
+      "FDO-like and RO-Crate-like mean local representations, not registry certification.",
+      "Privacy-policy compliance is sentinel/key scanning, not full DLP.",
+      "The work is not a production governance system and not complete for all agent systems."
+    ],
+    "must_not_claim": [
+      "minimal local implementation",
+      "local fixture evaluation",
+      "not external certification",
+      "not production deployment",
+      "not a certified standard",
+      "not a general benchmark of agent capability",
+      "full OpenTelemetry integration",
+      "full LangSmith integration",
+      "real FDO registration",
+      "PID registration",
+      "full RO-Crate certification",
+      "solves agent governance"
+    ]
+  },
+  "ai_use_disclosure_summary": {
+    "planned_route": "Human-authored manuscript with AI-assisted planning, code/toolchain scaffolding support, verification, boundary-risk review, and language polishing.",
+    "ai_system": "OpenAI ChatGPT / GPT-5.5 Pro",
+    "sections_to_disclose": [
+      "Abstract",
+      "Introduction",
+      "Problem and Scope",
+      "Requirements",
+      "ASIEP Profile and Lifecycle",
+      "Toolchain",
+      "Evidence Bundle",
+      "Evaluation",
+      "Cross-standard Mapping",
+      "Limitations",
+      "Conclusion",
+      "Acknowledgements and AI-use Disclosure"
+    ],
+    "negative_assurance": [
+      "AI was not used to fabricate experimental results.",
+      "AI was not used to fabricate citations.",
+      "AI was not used to fabricate evidence artifacts.",
+      "Author remains responsible for all submitted content."
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "escience2026_cfp_official",
+      "title": "Call for Papers - 22nd IEEE International Conference on eScience",
+      "url": "https://www.escience-conference.org/2026/call-for-papers",
+      "publisher": "IEEE International Conference on eScience",
+      "accessed_date_sgt": "2026-05-05",
+      "source_role": "primary_official"
+    },
+    {
+      "source_id": "easychair_escience2026_cfp",
+      "title": "eScience2026: 22nd IEEE International eScience Conference",
+      "url": "https://easychair.org/cfp/eScience2026",
+      "publisher": "EasyChair Smart CFP",
+      "accessed_date_sgt": "2026-05-05",
+      "source_role": "secondary_submission_portal_cfp"
+    }
+  ],
+  "decision_status": "approval_record_prepared_not_signed"
+}

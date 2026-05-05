@@ -1,0 +1,20 @@
+{
+  "approval_id": "author-final-approval-escience2026-template",
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "target_venue": "escience2026",
+  "approved_by": "TODO:human-author",
+  "approved_at": "1970-01-01T00:00:00Z",
+  "approved_by_human_author": false,
+  "citations_checked": false,
+  "claims_checked": false,
+  "evaluation_numbers_checked": false,
+  "ai_disclosure_checked": false,
+  "page_count_checked": false,
+  "latex_compiled": false,
+  "repository_policy_checked": false,
+  "deadline_checked": false,
+  "final_submission_ready": false,
+  "notes": [
+    "Do not copy this template to author_final_approval.json until a human author has completed every final gate."
+  ]
+}
