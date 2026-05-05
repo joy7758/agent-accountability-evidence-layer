@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import subprocess
+import sys
 from pathlib import Path
 
 from asiep_evaluator import evaluate_profile
@@ -7,6 +9,7 @@ from asiep_importer import import_trace
 from asiep_packager import package_bundle
 from asiep_paper_linter import lint_paper
 from asiep_citation_linter import lint_citations
+from asiep_venue_linter import lint_venue
 from asiep_resolver import resolve_bundle
 from asiep_validator import validate_file
 
@@ -92,6 +95,19 @@ def main() -> int:
     citation_result = lint_citations(ROOT / "profiles" / "asiep" / "v0.1" / "profile.json")
     status = "PASS" if citation_result["valid"] and citation_result["sources_checked"] >= 10 else "FAIL"
     print(f"{status} asiep_paper_v0.2_citations: sources={citation_result['sources_checked']} errors={len(citation_result['errors'])}")
+    if status != "PASS":
+        return 1
+    venue_result = lint_venue(
+        ROOT / "venues" / "escience2026" / "venue_policy.json",
+        ROOT / "manuscript" / "paper_v0.3_escience.md",
+    )
+    status = "PASS" if venue_result["valid"] and venue_result["readiness_score"] >= 80 else "FAIL"
+    print(f"{status} asiep_paper_v0.3_escience: readiness={venue_result['readiness_score']} errors={len(venue_result['errors'])}")
+    if status != "PASS":
+        return 1
+    demo = subprocess.run([sys.executable, str(ROOT / "scripts" / "venue_demo.py")], cwd=ROOT, capture_output=True, text=True)
+    status = "PASS" if demo.returncode == 0 and "target_recommendation=escience2026" in demo.stdout else "FAIL"
+    print(f"{status} asiep_venue_demo: {demo.stdout.strip()}")
     if status != "PASS":
         return 1
     return 0

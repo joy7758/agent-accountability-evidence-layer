@@ -49,6 +49,8 @@ PYTHONPATH=src python scripts/evaluate_profile_demo.py
 PYTHONPATH=src python -m asiep_paper_linter --profile profiles/asiep/v0.1/profile.json --format json
 PYTHONPATH=src python -m asiep_citation_linter --profile profiles/asiep/v0.1/profile.json --format json
 PYTHONPATH=src python scripts/citation_demo.py
+PYTHONPATH=src python -m asiep_venue_linter --venue venues/escience2026/venue_policy.json --paper manuscript/paper_v0.3_escience.md --format json
+PYTHONPATH=src python scripts/venue_demo.py
 ```
 
 Expected CLI result for the valid example:
@@ -349,6 +351,69 @@ Current M8 limits:
 - no citation is treated as evidence of external ASIEP adoption or certification
 - no new runtime module, API integration, collector, registry call, or PID
   registration is added
+
+## M9 Venue Targeting
+
+M9 creates a venue-targeted draft for IEEE eScience 2026 and a caution-only
+AIES 2026 positioning brief. The current recommendation is eScience 2026
+because the project is strongest as FAIR evidence infrastructure: provenance,
+reproducibility, workflow-style packaging, local evidence packages, reusable
+validators, and agent-readable review.
+
+View the eScience draft:
+
+```bash
+sed -n '1,260p' manuscript/paper_v0.3_escience.md
+```
+
+Run the eScience venue linter:
+
+```bash
+PYTHONPATH=src python -m asiep_venue_linter --venue venues/escience2026/venue_policy.json --paper manuscript/paper_v0.3_escience.md --format json
+```
+
+Run the venue demo:
+
+```bash
+PYTHONPATH=src python scripts/venue_demo.py
+```
+
+Venue assets:
+
+```text
+venues/
+|-- escience2026/venue_policy.json
+`-- aies2026/venue_policy.json
+
+submission/escience2026/
+|-- readiness_report.json
+|-- submission_checklist.md
+|-- author_ai_use_disclosure_draft.md
+|-- abstract_200words.md
+|-- contribution_box.md
+|-- limitations_box.md
+|-- reviewer_response_seed.md
+`-- page_budget_notes.md
+
+submission/aies2026/
+|-- positioning_notes.md
+|-- ai_use_policy_risk.md
+|-- manual_rewrite_required.md
+`-- governance_reframing.md
+```
+
+AIES 2026 remains a backup governance route. It requires human-authored prose,
+stronger sociotechnical framing, and explicit AI-use policy review; the
+Codex-generated positioning brief must not be submitted directly.
+
+Current M9 limits:
+
+- paper v0.3 is a draft for human authoring, not a final submission
+- venue policy fields are machine-readable planning records and require human
+  verification against current CFP and author instructions
+- no LaTeX formatting, final page count, real submission, or external
+  certification is claimed
+- no ASIEP runtime functionality is added in M9
 
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.

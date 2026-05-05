@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_venue_policy.schema.json",
+  "title": "ASIEP Venue Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "venue_id",
+    "venue_name",
+    "venue_version",
+    "target_track",
+    "submission_type",
+    "page_limit",
+    "reference_exclusion_policy",
+    "deadline",
+    "review_mode",
+    "ai_use_policy",
+    "required_sections",
+    "recommended_sections",
+    "forbidden_claims",
+    "required_disclosures",
+    "required_positioning",
+    "output_requirements",
+    "citation_requirements",
+    "readiness_checks"
+  ],
+  "properties": {
+    "venue_id": { "type": "string", "minLength": 1 },
+    "venue_name": { "type": "string", "minLength": 1 },
+    "venue_version": { "type": "string", "minLength": 1 },
+    "target_track": { "type": "string", "minLength": 1 },
+    "submission_type": { "type": "string", "minLength": 1 },
+    "page_limit": { "type": "integer", "minimum": 1 },
+    "reference_exclusion_policy": { "type": "string", "minLength": 1 },
+    "deadline": { "type": "string", "minLength": 1 },
+    "review_mode": { "type": "string", "minLength": 1 },
+    "ai_use_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ai_text_allowed",
+        "ai_editing_allowed",
+        "disclosure_required",
+        "human_final_authoring_required",
+        "policy_notes"
+      ],
+      "properties": {
+        "ai_text_allowed": { "type": "boolean" },
+        "ai_editing_allowed": { "type": "boolean" },
+        "disclosure_required": { "type": "boolean" },
+        "human_final_authoring_required": { "type": "boolean" },
+        "policy_notes": { "type": "string" }
+      }
+    },
+    "required_sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "recommended_sections": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "forbidden_claims": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "required_disclosures": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "required_positioning": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "output_requirements": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "citation_requirements": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "readiness_checks": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

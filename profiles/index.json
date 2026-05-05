@@ -34,7 +34,11 @@
         "citation_claim_map",
         "bibtex",
         "citation_linter",
-        "paper_v0.2"
+        "paper_v0.2",
+        "venue_linter",
+        "venue_readiness",
+        "paper_v0.3_escience",
+        "aies_positioning_brief"
       ],
       "keywords": [
         "ASIEP",
@@ -54,7 +58,11 @@
         "source registry",
         "citation linter",
         "citation hardening",
-        "external reference verification"
+        "external reference verification",
+        "venue readiness",
+        "eScience 2026",
+        "AIES 2026",
+        "venue-targeted paper"
       ]
     }
   ]
