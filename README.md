@@ -472,6 +472,45 @@ Current M10 limits:
 - no runtime functionality, external integration, registry call, or submission
   action is added
 
+## M11 Human Rewrite Verification
+
+M11 shifts Codex from drafting to checking. Human authors own final prose,
+claims, citations, and submission approval. The M11-A assets are:
+
+```text
+submission/escience2026/
+|-- human_rewrite_board.json
+|-- section_packets/
+|-- final_human_checklist.md
+`-- submission_lint_report.json
+
+scripts/final_submission_check.py
+```
+
+Run the rewrite-stage linter while human rewrite is in progress:
+
+```bash
+PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage rewrite --format json
+```
+
+Run the final gate after all human rewrite work is complete:
+
+```bash
+PYTHONPATH=src python scripts/final_submission_check.py
+```
+
+In M11-A, `final_submission_check.py` is expected to fail because
+`AUTHOR_VERIFY` markers remain. That is intentional. It means the paper has
+not yet been human-rewritten for final submission.
+
+Current M11-A limits:
+
+- section packets are checklists, not replacement prose
+- `paper_v0.4` is not modified by Codex in this phase
+- final-stage checks fail until humans remove all markers
+- LaTeX compile and 8-page verification remain human/M11-B work
+- no ASIEP runtime functionality is added
+
 Validator error codes are stable enough for v0.1 tests, but the profile is not
 yet a finalized standard.
 

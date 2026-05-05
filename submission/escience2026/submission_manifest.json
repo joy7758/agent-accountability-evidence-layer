@@ -14,7 +14,7 @@
   "ai_use_disclosure_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
   "artifact_availability_statement_path": "submission/escience2026/artifact_availability_statement.md",
   "final_human_checklist_path": "submission/escience2026/final_human_checklist.md",
-  "submission_linter_entrypoint": "PYTHONPATH=src python -m asiep_submission_linter --manifest submission/escience2026/submission_manifest.json --format json",
+  "submission_linter_entrypoint": "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage rewrite --format json",
   "venue_constraints": {
     "page_limit": 8,
     "references_excluded": true,
@@ -75,6 +75,8 @@
   ],
   "revalidation_commands": [
     "PYTHONPATH=src python -m asiep_submission_linter --manifest submission/escience2026/submission_manifest.json --format json",
-    "PYTHONPATH=src python scripts/submission_demo.py"
+    "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage rewrite --format json",
+    "PYTHONPATH=src python scripts/submission_demo.py",
+    "PYTHONPATH=src python scripts/final_submission_check.py"
   ]
 }

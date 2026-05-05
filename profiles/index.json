@@ -43,7 +43,10 @@
         "human_authoring_protocol",
         "submission_manifest",
         "ieee_latex_scaffold",
-        "submission_linter"
+        "submission_linter",
+        "human_rewrite_board",
+        "section_packets",
+        "final_submission_check"
       ],
       "keywords": [
         "ASIEP",
@@ -71,7 +74,9 @@
         "human rewrite",
         "submission package",
         "IEEE LaTeX",
-        "AI-use disclosure"
+        "AI-use disclosure",
+        "final verification",
+        "AUTHOR_VERIFY"
       ]
     }
   ]

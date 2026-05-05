@@ -839,6 +839,15 @@
       "requires_external_evidence": false
     },
     {
+      "code": "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN",
+      "repairability": "human_required",
+      "allowed_actions": ["human rewrite section", "human verify claims", "remove marker after verification"],
+      "forbidden_actions": ["delete AUTHOR_VERIFY without human rewrite", "treat AI-generated draft as final prose"],
+      "default_strategy": "Block final-stage submission checks until human authors clear every marker.",
+      "remediation_hint": "Human authors must rewrite the marked sections, verify claims and citations, then remove each AUTHOR_VERIFY marker before final submission checks.",
+      "requires_external_evidence": false
+    },
+    {
       "code": "SUBMISSION_LATEX_SCAFFOLD_MISSING",
       "repairability": "agent_fixable",
       "allowed_actions": ["create IEEEtran scaffold", "correct latex scaffold path"],

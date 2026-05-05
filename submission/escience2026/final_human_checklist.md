@@ -42,3 +42,17 @@ M10 creates a human rewrite package. It is not a submission-ready paper.
 - [ ] Decide artifact availability and anonymization wording.
 - [ ] Run paper, citation, venue, and submission linters.
 - [ ] Manually inspect all generated checklists and readiness reports.
+
+## M11 Final Gates
+
+- [ ] All `AUTHOR_VERIFY` markers removed by human author.
+- [ ] All citation keys checked against `references/asiep_references.bib`.
+- [ ] All local-only limitations preserved.
+- [ ] All evaluation numbers verified against
+      `reports/asiep_v0.1_evaluation_report.json`.
+- [ ] AI-use disclosure reviewed against IEEE policy.
+- [ ] eScience deadline ambiguity manually checked.
+- [ ] LaTeX compiled.
+- [ ] Page count checked against 8-page limit excluding references.
+- [ ] Repository/anonymization decision made.
+- [ ] Final lint passed.

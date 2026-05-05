@@ -863,6 +863,15 @@ ERROR_CODES: dict[str, ErrorCodeSpec] = {
         repairability="agent_fixable",
         invariant_id="I4",
     ),
+    "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN": ErrorCodeSpec(
+        code="SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN",
+        title="Author verification markers remain",
+        severity="error",
+        description="The M11 final-stage check found AUTHOR_VERIFY markers still present in the human-editable manuscript.",
+        remediation_hint="Human authors must rewrite the marked sections, verify claims and citations, then remove each AUTHOR_VERIFY marker before final submission checks.",
+        repairability="human_required",
+        invariant_id="I4",
+    ),
     "SUBMISSION_LATEX_SCAFFOLD_MISSING": ErrorCodeSpec(
         code="SUBMISSION_LATEX_SCAFFOLD_MISSING",
         title="LaTeX scaffold missing",

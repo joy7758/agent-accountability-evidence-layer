@@ -13,11 +13,21 @@ ROOT = Path(__file__).resolve().parents[2]
 PROFILE_PATH = ROOT / "profiles" / "asiep" / "v0.1" / "profile.json"
 
 
-def lint_submission(manifest_path: str | Path) -> dict[str, Any]:
+def lint_submission(
+    manifest_path: str | Path | None = None,
+    *,
+    profile_path: str | Path = PROFILE_PATH,
+    stage: str = "rewrite",
+) -> dict[str, Any]:
+    if stage not in {"rewrite", "final"}:
+        raise ValueError("stage must be 'rewrite' or 'final'")
     errors: list[dict[str, Any]] = []
     warnings: list[dict[str, Any]] = []
     checks: list[dict[str, Any]] = []
-    profile = _load_json(PROFILE_PATH)
+    profile_file = _resolve_path(profile_path)
+    profile = _load_json(profile_file)
+    if manifest_path is None:
+        manifest_path = profile.get("submission_manifest_path", "submission/escience2026/submission_manifest.json")
     manifest_file = _resolve_path(manifest_path)
     manifest = _load_json(manifest_file)
 
@@ -49,15 +59,58 @@ def lint_submission(manifest_path: str | Path) -> dict[str, Any]:
     checklist_text = _read_text(_resolve_path(manifest.get("final_human_checklist_path", "")))
 
     marker = protocol.get("author_verify_marker", "AUTHOR_VERIFY")
-    author_verify_markers = paper_text.count(marker) + latex_text.count(marker)
+    paper_author_verify_markers = paper_text.count(marker)
+    latex_author_verify_markers = latex_text.count(marker)
+    author_verify_markers = paper_author_verify_markers + latex_author_verify_markers
+    citation_required_markers = paper_text.lower().count("citation_required")
     _record(
         checks,
         "author_verify_markers_present",
         author_verify_markers > 0,
         f"{author_verify_markers} markers found",
     )
-    if author_verify_markers == 0:
+    if stage == "rewrite" and author_verify_markers == 0:
         errors.append(_issue("SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING", "M10 draft must retain AUTHOR_VERIFY markers for M11 human rewrite."))
+    if stage == "final":
+        _record(
+            checks,
+            "author_verify_markers_removed",
+            paper_author_verify_markers == 0,
+            f"{paper_author_verify_markers} paper markers remain",
+        )
+        _record(
+            checks,
+            "citation_required_markers_removed",
+            citation_required_markers == 0,
+            f"{citation_required_markers} citation_required markers remain",
+        )
+        if paper_author_verify_markers > 0:
+            errors.append(
+                _issue(
+                    "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN",
+                    f"{paper_author_verify_markers} AUTHOR_VERIFY markers remain in the human-editable manuscript.",
+                    json_path="$.manuscript_path",
+                    json_pointer="/manuscript_path",
+                )
+            )
+        if latex_author_verify_markers > 0:
+            errors.append(
+                _issue(
+                    "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN",
+                    f"{latex_author_verify_markers} AUTHOR_VERIFY markers remain in the LaTeX scaffold.",
+                    json_path="$.latex_scaffold_path",
+                    json_pointer="/latex_scaffold_path",
+                )
+            )
+        if citation_required_markers > 0:
+            errors.append(
+                _issue(
+                    "CITATION_REQUIRED_MARKER_REMAINS",
+                    f"{citation_required_markers} citation_required markers remain in the human-editable manuscript.",
+                    json_path="$.manuscript_path",
+                    json_pointer="/manuscript_path",
+                )
+            )
 
     disclosure_ready = _check_ai_disclosure(errors, checks, disclosure_text)
     latex_ready = _check_latex(errors, checks, latex_text)
@@ -74,6 +127,7 @@ def lint_submission(manifest_path: str | Path) -> dict[str, Any]:
         "profile": profile["profile_name"],
         "profile_version": profile["profile_version"],
         "valid": not errors,
+        "stage": stage,
         "submission_id": manifest.get("submission_id", "unknown"),
         "venue_id": manifest.get("venue_id", "unknown"),
         "paper_id": manifest.get("paper_id", "unknown"),
@@ -85,6 +139,10 @@ def lint_submission(manifest_path: str | Path) -> dict[str, Any]:
         "summary": {
             "required_files_checked": required_files_checked,
             "author_verify_markers": author_verify_markers,
+            "paper_author_verify_markers": paper_author_verify_markers,
+            "latex_author_verify_markers": latex_author_verify_markers,
+            "citation_required_markers": citation_required_markers,
+            "final_stage_blocked": stage == "final" and bool(errors),
             "deadline_requires_human_verification": deadline_ready,
             "ieee_ai_disclosure_ready": disclosure_ready,
             "latex_scaffold_ready": latex_ready,

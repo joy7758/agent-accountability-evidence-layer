@@ -22,6 +22,8 @@
       "check venue readiness",
       "check eScience human rewrite package",
       "lint submission package",
+      "track human rewrite progress",
+      "run final submission gates",
       "revalidate after repair",
       "route cross-standard mapping"
     ],
@@ -55,6 +57,9 @@
       "human rewrite",
       "IEEE LaTeX scaffold",
       "AI-use disclosure",
+      "human rewrite board",
+      "section packets",
+      "final submission check",
       "repair plan",
       "conformance"
     ]
@@ -112,6 +117,9 @@
   "artifact_availability_statement_path": "submission/escience2026/artifact_availability_statement.md",
   "final_human_checklist_path": "submission/escience2026/final_human_checklist.md",
   "ai_use_disclosure_draft_path": "submission/escience2026/author_ai_use_disclosure_draft.md",
+  "human_rewrite_board_path": "submission/escience2026/human_rewrite_board.json",
+  "section_packets_path": "submission/escience2026/section_packets",
+  "final_submission_check_script_path": "scripts/final_submission_check.py",
   "target_venue_assets": {
     "escience2026": {
       "venue_policy_path": "venues/escience2026/venue_policy.json",
@@ -119,7 +127,9 @@
       "submission_assets_path": "submission/escience2026",
       "human_authoring_protocol_path": "submission/escience2026/human_authoring_protocol.json",
       "submission_manifest_path": "submission/escience2026/submission_manifest.json",
-      "latex_scaffold_path": "submission/escience2026/latex_scaffold"
+      "latex_scaffold_path": "submission/escience2026/latex_scaffold",
+      "human_rewrite_board_path": "submission/escience2026/human_rewrite_board.json",
+      "section_packets_path": "submission/escience2026/section_packets"
     },
     "aies2026": {
       "venue_policy_path": "venues/aies2026/venue_policy.json",
@@ -135,6 +145,7 @@
   "citation_linter_supported": true,
   "venue_linter_supported": true,
   "submission_linter_supported": true,
+  "final_submission_check_supported": true,
   "supported_reference_schemes": [
     "bundle://",
     "file-relative",
@@ -218,7 +229,15 @@
     "cli": "python -m asiep_submission_linter",
     "default_output_format": "text",
     "agent_output_format": "json",
-    "json_command_template": "PYTHONPATH=src python -m asiep_submission_linter --manifest submission/escience2026/submission_manifest.json --format json"
+    "json_command_template": "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage {stage} --format json",
+    "rewrite_command": "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage rewrite --format json",
+    "final_command": "PYTHONPATH=src python -m asiep_submission_linter --profile profiles/asiep/v0.1/profile.json --stage final --format json"
+  },
+  "final_submission_check_entrypoint": {
+    "script": "scripts/final_submission_check.py",
+    "cli": "python scripts/final_submission_check.py",
+    "default_output_format": "json",
+    "json_command_template": "PYTHONPATH=src python scripts/final_submission_check.py"
   },
   "examples": {
     "valid_examples": [
@@ -356,6 +375,7 @@
     "SUBMISSION_HUMAN_PROTOCOL_INVALID",
     "SUBMISSION_MANUSCRIPT_MISSING",
     "SUBMISSION_AUTHOR_VERIFY_MARKERS_MISSING",
+    "SUBMISSION_AUTHOR_VERIFY_MARKERS_REMAIN",
     "SUBMISSION_LATEX_SCAFFOLD_MISSING",
     "SUBMISSION_AI_DISCLOSURE_MISSING",
     "SUBMISSION_ARTIFACT_STATEMENT_MISSING",
