@@ -1,0 +1,113 @@
+{
+  "checks": [
+    {
+      "check_id": "file:human_editable_markdown_draft",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "file:human_authoring_protocol",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "file:ieee_latex_scaffold",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "file:ieee_ai_use_disclosure_draft",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "file:artifact_availability_statement",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "file:final_human_checklist",
+      "message": "exists",
+      "passed": true
+    },
+    {
+      "check_id": "author_verify_markers_present",
+      "message": "14 markers found",
+      "passed": true
+    },
+    {
+      "check_id": "ai_disclosure_acknowledgements",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "ai_disclosure_identifies_system",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "ai_disclosure_identifies_sections",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "ai_disclosure_describes_level",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "ai_disclosure_author_responsibility",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "latex_ieeetran",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "latex_conference",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "latex_10pt",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "artifact_availability_statement",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "final_human_checklist",
+      "message": "present",
+      "passed": true
+    },
+    {
+      "check_id": "deadline_human_verification_recorded",
+      "message": "recorded",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "final_submission_ready": false,
+  "human_rewrite_required": true,
+  "paper_id": "asiep-paper-v0.4-escience-human-editable",
+  "profile": "ASIEP",
+  "profile_version": "0.1.0",
+  "submission_id": "asiep-escience2026-m10-package",
+  "summary": {
+    "artifact_statement_ready": true,
+    "author_verify_markers": 14,
+    "deadline_requires_human_verification": true,
+    "human_checklist_ready": true,
+    "ieee_ai_disclosure_ready": true,
+    "latex_scaffold_ready": true,
+    "required_files_checked": 6
+  },
+  "valid": true,
+  "venue_id": "escience2026",
+  "warnings": []
+}

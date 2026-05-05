@@ -10,6 +10,7 @@ from asiep_packager import package_bundle
 from asiep_paper_linter import lint_paper
 from asiep_citation_linter import lint_citations
 from asiep_venue_linter import lint_venue
+from asiep_submission_linter import lint_submission
 from asiep_resolver import resolve_bundle
 from asiep_validator import validate_file
 
@@ -108,6 +109,20 @@ def main() -> int:
     demo = subprocess.run([sys.executable, str(ROOT / "scripts" / "venue_demo.py")], cwd=ROOT, capture_output=True, text=True)
     status = "PASS" if demo.returncode == 0 and "target_recommendation=escience2026" in demo.stdout else "FAIL"
     print(f"{status} asiep_venue_demo: {demo.stdout.strip()}")
+    if status != "PASS":
+        return 1
+    submission_result = lint_submission(ROOT / "submission" / "escience2026" / "submission_manifest.json")
+    status = "PASS" if submission_result["valid"] and submission_result["human_rewrite_required"] and not submission_result["final_submission_ready"] else "FAIL"
+    print(
+        f"{status} asiep_submission_package: "
+        f"author_verify_markers={submission_result['summary']['author_verify_markers']} "
+        f"errors={len(submission_result['errors'])}"
+    )
+    if status != "PASS":
+        return 1
+    submission_demo = subprocess.run([sys.executable, str(ROOT / "scripts" / "submission_demo.py")], cwd=ROOT, capture_output=True, text=True)
+    status = "PASS" if submission_demo.returncode == 0 and "submission_linter_valid=True" in submission_demo.stdout else "FAIL"
+    print(f"{status} asiep_submission_demo: {submission_demo.stdout.strip()}")
     if status != "PASS":
         return 1
     return 0

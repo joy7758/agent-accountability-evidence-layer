@@ -1,0 +1,44 @@
+# Final Human Checklist
+
+M10 creates a human rewrite package. It is not a submission-ready paper.
+
+## CFP And Policy
+
+- [ ] Verify the current IEEE eScience 2026 CFP page.
+- [ ] Resolve the deadline ambiguity: Monday, May 18, 2026 / Tuesday, May 19,
+      2026 11:59 PM AoE as shown on CFP.
+- [ ] Confirm full paper page limit: 8 pages excluding references.
+- [ ] Confirm IEEE 8.5x11 double-column, single-spaced 10-point format.
+- [ ] Confirm review mode and repository-link policy for single-blind review.
+- [ ] Confirm accepted full paper proceedings policy.
+
+## Human Rewrite
+
+- [ ] Rewrite every section in human-authored prose.
+- [ ] Remove every `AUTHOR_VERIFY` marker.
+- [ ] Verify all metrics against `reports/asiep_v0.1_evaluation_report.json`.
+- [ ] Verify all citations against `references/source_registry.json` and
+      `references/asiep_references.bib`.
+- [ ] Preserve local fixture, minimal implementation, and no-external-
+      certification boundaries.
+- [ ] Confirm no unsupported standard adoption, registry, or deployment claim
+      remains.
+
+## IEEE AI-use Disclosure
+
+- [ ] Put AI-use disclosure in acknowledgements if AI-generated content remains
+      in submitted content.
+- [ ] Identify the AI system used.
+- [ ] Identify the sections where AI-generated content was used.
+- [ ] Briefly describe the level of use.
+- [ ] State that human authors are responsible for all submitted content.
+- [ ] Do not list AI tools as authors.
+
+## Formatting And Submission
+
+- [ ] Move the human-rewritten text into the IEEE LaTeX scaffold.
+- [ ] Compile the LaTeX manuscript locally.
+- [ ] Confirm the main text fits within 8 pages excluding references.
+- [ ] Decide artifact availability and anonymization wording.
+- [ ] Run paper, citation, venue, and submission linters.
+- [ ] Manually inspect all generated checklists and readiness reports.

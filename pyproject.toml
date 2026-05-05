@@ -31,6 +31,7 @@ asiep-evaluator = "asiep_evaluator.__main__:main"
 asiep-paper-linter = "asiep_paper_linter.__main__:main"
 asiep-citation-linter = "asiep_citation_linter.__main__:main"
 asiep-venue-linter = "asiep_venue_linter.__main__:main"
+asiep-submission-linter = "asiep_submission_linter.__main__:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

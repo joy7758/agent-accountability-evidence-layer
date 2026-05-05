@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/asiep/interfaces/asiep_submission_manifest.schema.json",
+  "title": "ASIEP eScience Submission Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "submission_id",
+    "submission_version",
+    "venue_id",
+    "paper_id",
+    "paper_version",
+    "created_at",
+    "final_submission_ready",
+    "human_rewrite_required",
+    "venue_policy_path",
+    "human_authoring_protocol_path",
+    "manuscript_path",
+    "latex_scaffold_path",
+    "ai_use_disclosure_path",
+    "artifact_availability_statement_path",
+    "final_human_checklist_path",
+    "submission_linter_entrypoint",
+    "venue_constraints",
+    "required_checks",
+    "package_files",
+    "known_blockers",
+    "revalidation_commands"
+  ],
+  "properties": {
+    "submission_id": { "type": "string", "minLength": 1 },
+    "submission_version": { "type": "string", "minLength": 1 },
+    "venue_id": { "type": "string", "minLength": 1 },
+    "paper_id": { "type": "string", "minLength": 1 },
+    "paper_version": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "minLength": 1 },
+    "final_submission_ready": { "type": "boolean" },
+    "human_rewrite_required": { "type": "boolean" },
+    "venue_policy_path": { "type": "string", "minLength": 1 },
+    "human_authoring_protocol_path": { "type": "string", "minLength": 1 },
+    "manuscript_path": { "type": "string", "minLength": 1 },
+    "latex_scaffold_path": { "type": "string", "minLength": 1 },
+    "ai_use_disclosure_path": { "type": "string", "minLength": 1 },
+    "artifact_availability_statement_path": { "type": "string", "minLength": 1 },
+    "final_human_checklist_path": { "type": "string", "minLength": 1 },
+    "submission_linter_entrypoint": { "type": "string", "minLength": 1 },
+    "venue_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page_limit",
+        "references_excluded",
+        "format",
+        "review_mode",
+        "ai_generated_content_disclosure_required",
+        "accepted_full_papers_published_in_ieee_proceedings",
+        "paper_submission_deadline_raw",
+        "requires_human_deadline_verification"
+      ],
+      "properties": {
+        "page_limit": { "type": "integer", "minimum": 1 },
+        "references_excluded": { "type": "boolean" },
+        "format": { "type": "string", "minLength": 1 },
+        "review_mode": { "type": "string", "minLength": 1 },
+        "ai_generated_content_disclosure_required": { "type": "boolean" },
+        "accepted_full_papers_published_in_ieee_proceedings": { "type": "boolean" },
+        "paper_submission_deadline_raw": { "type": "string", "minLength": 1 },
+        "requires_human_deadline_verification": { "type": "boolean" }
+      }
+    },
+    "required_checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "package_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "role", "required"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "minLength": 1 },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "known_blockers": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "revalidation_commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
